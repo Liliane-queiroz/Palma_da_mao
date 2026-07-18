@@ -1,0 +1,15 @@
+# ============================================================
+# Template de configuração do banco de dados
+# ============================================================
+# COMO USAR:
+# 1. Copie este arquivo e renomeie a cópia para "db.properties"
+#    (na mesma pasta: src/main/resources/)
+# 2. Preencha os valores abaixo com os dados do SEU MySQL local
+# 3. NUNCA envie o arquivo db.properties real para o Git
+#    (ele está listado no .gitignore por conter senha)
+# ============================================================
+
+db.url=jdbc:mysql://localhost:PORTA_DO_SEU_MYSQL/palma_do_campo?useSSL=false&serverTimezone=America/Sao_Paulo&allowPublicKeyRetrieval=true
+db.user=root
+db.password=COLOQUE_SUA_SENHA_AQUI
+db.driver=com.mysql.cj.jdbc.Driver
