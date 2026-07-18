@@ -1,0 +1,20 @@
+# ===== Build do Maven =====
+target/
+
+# ===== Credenciais - NUNCA subir isso pro Git =====
+src/main/resources/db.properties
+
+# ===== Arquivos de IDE =====
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+
+# ===== Sistema operacional =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
