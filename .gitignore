@@ -2,7 +2,7 @@
 target/
 
 # ===== Credenciais - NUNCA subir isso pro Git =====
-src/main/resources/db.properties
+palmadocampo/src/main/resources/db.properties
 
 # ===== Arquivos de IDE =====
 .vscode/
