@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.palmadocampo.model.Produto;
+import br.com.palmadocampo.model.ProdutoVitrine;
 
 public class ProdutoDAO {
 
@@ -142,4 +143,34 @@ public class ProdutoDAO {
         produto.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
         return produto;
     }
+
+    public List<ProdutoVitrine> listarTodosComCategoria() throws SQLException {
+    String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+               + "p.prod_foto_url, c.ctg_descricao "
+               + "FROM produto p "
+               + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
+               + "WHERE p.situacao_id = 1 "
+               + "ORDER BY p.data_criacao DESC";
+
+    List<ProdutoVitrine> produtos = new ArrayList<>();
+
+    try (Connection conexao = ConexaoFactory.getConexao();
+         PreparedStatement comando = conexao.prepareStatement(sql);
+         ResultSet resultado = comando.executeQuery()) {
+
+        while (resultado.next()) {
+            ProdutoVitrine produto = new ProdutoVitrine();
+            produto.setId(resultado.getInt("prod_id"));
+            produto.setNome(resultado.getString("prod_nome"));
+            produto.setDescricao(resultado.getString("prod_descricao"));
+            produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+            produto.setFotoUrl(resultado.getString("prod_foto_url"));
+            produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+            produtos.add(produto);
+        }
+    }
+
+    return produtos;
+}
+
 }

@@ -106,25 +106,18 @@ a porta é 23318
 Esse é o script do banco, vale ressaltar que:
 TEM QUE RODAR PEDAÇO POR PEDAÇO, NÃO ADIANTA QUERER RODAR TUDO DE UMA VEZ, SELECIONA OS BLOCOS A ONDE ACABA O ";" E DA UM CTR + ENTER.
 
-CREATE DATABASE IF NOT EXISTS palma_do_campo
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
+CREATE DATABASE palma_do_campo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE palma_do_campo;
 
-CREATE TABLE situacao (
+CREATE TABLE IF NOT EXISTS situacao (
 sit_id INT AUTO_INCREMENT PRIMARY KEY,
 sit_descricao VARCHAR(30) NOT NULL UNIQUE
 );
 
-INSERT INTO situacao (sit_descricao) VALUES
-('ATIVO'),
-('INATIVO'),
-('SEM ESTOQUE'),
-('A VENDA'),
-('OCULTO');
+INSERT IGNORE INTO situacao (sit_descricao) VALUES
+('ATIVO'), ('INATIVO'), ('SEM ESTOQUE'), ('A VENDA'), ('OCULTO');
 
-CREATE TABLE usuario (
+CREATE TABLE IF NOT EXISTS usuario (
 usu_id INT AUTO_INCREMENT PRIMARY KEY,
 usu_cpfcnpj VARCHAR(20) NOT NULL UNIQUE,
 usu_nome VARCHAR(150) NOT NULL,
@@ -139,25 +132,21 @@ usu_tipo ENUM('PRODUTOR', 'ADMINISTRADOR') NOT NULL DEFAULT 'PRODUTOR',
 situacao_id INT NOT NULL,
 data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 data_atualizacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_usuario_situacao
-        FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
-
+CONSTRAINT fk_usuario_situacao
+FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
 );
 
-CREATE TABLE categoria (
+CREATE TABLE IF NOT EXISTS categoria (
 ctg_id INT AUTO_INCREMENT PRIMARY KEY,
 ctg_descricao VARCHAR(100) NOT NULL UNIQUE,
 situacao_id INT NOT NULL,
 data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 data_atualizacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_categoria_situacao
-        FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
-
+CONSTRAINT fk_categoria_situacao
+FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
 );
 
-CREATE TABLE produto (
+CREATE TABLE IF NOT EXISTS produto (
 prod_id INT AUTO_INCREMENT PRIMARY KEY,
 prod_nome VARCHAR(150) NOT NULL,
 prod_descricao VARCHAR(1000),
@@ -168,15 +157,13 @@ categoria_id INT NOT NULL,
 situacao_id INT NOT NULL,
 data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 data_atualizacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_produto_categoria
-        FOREIGN KEY (categoria_id) REFERENCES categoria(ctg_id),
-    CONSTRAINT fk_produto_situacao
-        FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
-
+CONSTRAINT fk_produto_categoria
+FOREIGN KEY (categoria_id) REFERENCES categoria(ctg_id),
+CONSTRAINT fk_produto_situacao
+FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
 );
 
-CREATE TABLE estoque (
+CREATE TABLE IF NOT EXISTS estoque (
 est_id INT AUTO_INCREMENT PRIMARY KEY,
 usuario_id INT NOT NULL,
 produto_id INT NOT NULL,
@@ -185,14 +172,12 @@ est_unidade ENUM('UN', 'KG', 'G', 'L', 'ML', 'DZ', 'MACO') NOT NULL DEFAULT 'UN'
 situacao_id INT NOT NULL,
 data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 data_atualizacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_estoque_usuario
-        FOREIGN KEY (usuario_id) REFERENCES usuario(usu_id),
-    CONSTRAINT fk_estoque_produto
-        FOREIGN KEY (produto_id) REFERENCES produto(prod_id),
-    CONSTRAINT fk_estoque_situacao
-        FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
-
+CONSTRAINT fk_estoque_usuario
+FOREIGN KEY (usuario_id) REFERENCES usuario(usu_id),
+CONSTRAINT fk_estoque_produto
+FOREIGN KEY (produto_id) REFERENCES produto(prod_id),
+CONSTRAINT fk_estoque_situacao
+FOREIGN KEY (situacao_id) REFERENCES situacao(sit_id)
 );
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,6 +190,18 @@ Copie o arquivo `src/main/resources/db.properties.example`
 Cole na mesma pasta e renomeie a cópia para `db.properties`
 Abra o `db.properties` e substitua `COLOQUE_SUA_SENHA_AQUI` pela senha
 do MySQL da sua própria máquina
+
+============================================================================
+Fazendo o projeto rodar:
+em Maven
+    marketplace-rural
+                Lifecycle
+                        rode o compile e o packpage
+
+  do MySQL da sua própria máquina
+
+============================================================================  
+
 
 ---
 
