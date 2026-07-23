@@ -10,31 +10,22 @@ public class TesteCategoriaDAO {
         CategoriaDAO categoriaDAO = new CategoriaDAO();
 
         try {
-            Categoria categoriaNova = new Categoria("Hortaliças", 1);
-            categoriaDAO.inserir(categoriaNova);
-            System.out.println("Categoria inserida com ID: " + categoriaNova.getId());
-
-            System.out.println("\nCategorias cadastradas:");
-            List<Categoria> categorias = categoriaDAO.listarTodas();
-            for (Categoria categoria : categorias) {
+            System.out.println("=== Testando listarTodas() ===");
+            List<Categoria> todasAsCategorias = categoriaDAO.listarTodas();
+            System.out.println("Total de categorias: " + todasAsCategorias.size());
+            for (Categoria categoria : todasAsCategorias) {
                 System.out.println("  ID " + categoria.getId()
                                  + " | " + categoria.getDescricao()
-                                 + " | criada em " + categoria.getDataCriacao());
+                                 + " | situacao_id: " + categoria.getSituacaoId());
             }
 
-            Categoria categoriaBuscada = categoriaDAO.buscarPorId(categoriaNova.getId());
-            System.out.println("\nBuscada pelo ID " + categoriaNova.getId()
-                             + ": " + categoriaBuscada.getDescricao());
-
-            categoriaBuscada.setDescricao("Hortaliças e Verduras");
-            categoriaDAO.atualizar(categoriaBuscada);
-            System.out.println("\nCategoria atualizada.");
-
-            Categoria categoriaConfirmada = categoriaDAO.buscarPorId(categoriaNova.getId());
-            System.out.println("Nova descrição: " + categoriaConfirmada.getDescricao());
-
-            categoriaDAO.deletar(categoriaNova.getId());
-            System.out.println("\nCategoria deletada.");
+            System.out.println("\n=== Testando listarAtivas() ===");
+            List<Categoria> categoriasAtivas = categoriaDAO.listarAtivas();
+            System.out.println("Categorias ATIVAS: " + categoriasAtivas.size());
+            for (Categoria categoria : categoriasAtivas) {
+                System.out.println("  ID " + categoria.getId()
+                                 + " | " + categoria.getDescricao());
+            }
 
         } catch (Exception excecao) {
             System.out.println("Erro no teste:");

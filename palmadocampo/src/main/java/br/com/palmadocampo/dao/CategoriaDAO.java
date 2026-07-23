@@ -53,6 +53,30 @@ public class CategoriaDAO {
         return categorias;
     }
 
+    public List<Categoria> listarAtivas() throws SQLException {
+    String sql = "SELECT ctg_id, ctg_descricao, situacao_id, data_criacao, data_atualizacao FROM categoria WHERE situacao_id = 1 ORDER BY ctg_descricao";
+
+    List<Categoria> categorias = new ArrayList<>();
+
+    try (Connection conexao = ConexaoFactory.getConexao();
+         PreparedStatement comando = conexao.prepareStatement(sql);
+         ResultSet resultado = comando.executeQuery()) {
+
+        while (resultado.next()) {
+            Categoria categoria = new Categoria();
+            categoria.setId(resultado.getInt("ctg_id"));
+            categoria.setDescricao(resultado.getString("ctg_descricao"));
+            categoria.setSituacaoId(resultado.getInt("situacao_id"));
+            categoria.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
+            categoria.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
+            categorias.add(categoria);
+        }
+    }
+
+    return categorias;
+}
+
+
     public Categoria buscarPorId(int id) throws SQLException {
         String sql = "SELECT ctg_id, ctg_descricao, situacao_id, data_criacao, data_atualizacao FROM categoria WHERE ctg_id = ?";
 
