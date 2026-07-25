@@ -13,6 +13,7 @@ import java.util.List;
 import br.com.palmadocampo.model.Produto;
 import br.com.palmadocampo.model.ProdutoVitrine;
 
+/*Insere um novo produto(tabela) no banco e guarda o ID gerado*/
 public class ProdutoDAO {
 
     public void inserir(Produto produto) throws SQLException {
@@ -66,6 +67,7 @@ public class ProdutoDAO {
         return produtos;
     }
 
+/*Comando apenas para admin executar*/ 
     public Produto buscarPorId(int id) throws SQLException {
         String sql = "SELECT prod_id, prod_nome, prod_descricao, prod_preco_estimado, "
                    + "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, "
@@ -87,6 +89,7 @@ public class ProdutoDAO {
         return null;
     }
 
+/*Comando apenas para admin executar*/ 
     public void atualizar(Produto produto) throws SQLException {
         String sql = "UPDATE produto SET prod_nome = ?, prod_descricao = ?, "
                    + "prod_preco_estimado = ?, prod_foto_url = ?, prod_data_prevista_entrega = ?, "
@@ -113,6 +116,7 @@ public class ProdutoDAO {
         }
     }
 
+ /*Comando apenas para admin executar*/    
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM produto WHERE prod_id = ?";
 
@@ -144,6 +148,7 @@ public class ProdutoDAO {
         return produto;
     }
 
+/*Da um select em algumas coluna da tabela produto e uni o id categoria da tabela produdo com o id categoria da tabela categoria e ordena por ordem descrescente a coluna de data criação */
     public List<ProdutoVitrine> listarTodosComCategoria() throws SQLException {
     String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
                + "p.prod_foto_url, c.ctg_descricao "

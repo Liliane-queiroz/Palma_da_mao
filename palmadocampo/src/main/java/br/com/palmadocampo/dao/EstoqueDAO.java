@@ -8,10 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.palmadocampo.model.Estoque;
+import br.com.palmadocampo.model.Estoque; 
 
+/*Insere no estoque(tabela) no banco e guarda o ID gerado*/
 public class EstoqueDAO {
-
+/*Insere um estoque no banco com os dados do objeto recebido e depois coloca o ID gerado no objeto*/
     public void inserir(Estoque estoque) throws SQLException {
         String sql = "INSERT INTO estoque (usuario_id, produto_id, est_qtd, est_unidade, situacao_id) "
                    + "VALUES (?, ?, ?, ?, ?)";
@@ -33,7 +34,7 @@ public class EstoqueDAO {
             }
         }
     }
-
+/*Da um select em todas as colunas e ordena por ID*/
     public List<Estoque> listarTodos() throws SQLException {
         String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
                    + "situacao_id, data_criacao, data_atualizacao "
@@ -45,6 +46,7 @@ public class EstoqueDAO {
              PreparedStatement comando = conexao.prepareStatement(sql);
              ResultSet resultado = comando.executeQuery()) {
 
+/*Enquanto tiver linhas no resultado, chama o método montarEstoque() pra cada linha e adiciona na lista*/
             while (resultado.next()) {
                 estoques.add(montarEstoque(resultado));
             }
@@ -53,6 +55,7 @@ public class EstoqueDAO {
         return estoques;
     }
 
+/*Da um select em todas as colunas para procurar um valor ainda não definido*/
     public Estoque buscarPorId(int id) throws SQLException {
         String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
                    + "situacao_id, data_criacao, data_atualizacao "
@@ -95,6 +98,7 @@ public class EstoqueDAO {
         return estoques;
     }
 
+/*Comando apenas para admin executar*/ 
     public void atualizar(Estoque estoque) throws SQLException {
         String sql = "UPDATE estoque SET usuario_id = ?, produto_id = ?, est_qtd = ?, "
                    + "est_unidade = ?, situacao_id = ? WHERE est_id = ?";
@@ -112,6 +116,7 @@ public class EstoqueDAO {
         }
     }
 
+/*Comando apenas para admin executar*/ 
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM estoque WHERE est_id = ?";
 

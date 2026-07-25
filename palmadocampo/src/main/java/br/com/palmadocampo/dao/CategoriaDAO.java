@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.com.palmadocampo.model.Categoria;
 
+/*Insere na categoria(tabela) no banco e guarda o ID gerado*/
 public class CategoriaDAO {
 
     public void inserir(Categoria categoria) throws SQLException {
@@ -30,6 +31,8 @@ public class CategoriaDAO {
         }
     }
 
+/*Da um select nas colunas da tabela categoria e ordena descrição por ordem crescente*/
+//Retorna todas as categorias//
     public List<Categoria> listarTodas() throws SQLException {
         String sql = "SELECT ctg_id, ctg_descricao, situacao_id, data_criacao, data_atualizacao FROM categoria ORDER BY ctg_descricao";
 
@@ -39,6 +42,8 @@ public class CategoriaDAO {
              PreparedStatement comando = conexao.prepareStatement(sql);
              ResultSet resultado = comando.executeQuery()) {
 
+
+/*Enquanto tiver linhas preenchidas no banco eu crio um novo objeto chamado categoria, defino os valores das colunas e adiciono na lista*/                  
             while (resultado.next()) {
                 Categoria categoria = new Categoria();
                 categoria.setId(resultado.getInt("ctg_id"));
@@ -52,6 +57,9 @@ public class CategoriaDAO {
 
         return categorias;
     }
+
+/*Da um select nas colunas da tabela categoria onde situacao_id é = 1(ativo) e ordena descrição por ordem crescente*/ 
+//Retorna todas só categorias ativas//
 
     public List<Categoria> listarAtivas() throws SQLException {
     String sql = "SELECT ctg_id, ctg_descricao, situacao_id, data_criacao, data_atualizacao FROM categoria WHERE situacao_id = 1 ORDER BY ctg_descricao";
@@ -76,7 +84,7 @@ public class CategoriaDAO {
     return categorias;
 }
 
-
+/*Comando apenas para admin executar*/ 
     public Categoria buscarPorId(int id) throws SQLException {
         String sql = "SELECT ctg_id, ctg_descricao, situacao_id, data_criacao, data_atualizacao FROM categoria WHERE ctg_id = ?";
 
@@ -101,6 +109,7 @@ public class CategoriaDAO {
         return null;
     }
 
+/*Comando apenas para admin executar*/ 
     public void atualizar(Categoria categoria) throws SQLException {
         String sql = "UPDATE categoria SET ctg_descricao = ?, situacao_id = ? WHERE ctg_id = ?";
 
@@ -114,6 +123,7 @@ public class CategoriaDAO {
         }
     }
 
+/*Comando apenas para admin executar*/ 
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM categoria WHERE ctg_id = ?";
 

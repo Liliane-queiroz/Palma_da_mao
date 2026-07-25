@@ -10,8 +10,10 @@ import java.util.List;
 
 import br.com.palmadocampo.model.Usuario;
 
+/*responsável por acessar o banco de dados da tabela usuario*/
 public class UsuarioDAO {
 
+/*Insere um novo usuário no banco*/
     public void inserir(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuario (usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
                    + "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
@@ -42,6 +44,7 @@ public class UsuarioDAO {
         }
     }
 
+/*Da um select em todas as colunas e ordena por nome do usuario*/
     public List<Usuario> listarTodos() throws SQLException {
         String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
                    + "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
@@ -62,6 +65,7 @@ public class UsuarioDAO {
         return usuarios;
     }
 
+/*Insere um novo usuário no banco*/
     public Usuario buscarPorId(int id) throws SQLException {
         String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
                    + "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
@@ -83,6 +87,7 @@ public class UsuarioDAO {
         return null;
     }
 
+/*Comando apenas para admin executar*/ 
     public void atualizar(Usuario usuario) throws SQLException {
         String sql = "UPDATE usuario SET usu_cpfcnpj = ?, usu_nome = ?, usu_telefone = ?, "
                    + "usu_email = ?, usu_senha_hash = ?, usu_endereco = ?, usu_cidade = ?, "
@@ -107,7 +112,7 @@ public class UsuarioDAO {
             comando.executeUpdate();
         }
     }
-
+/*Comando apenas para admin executar*/ 
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM usuario WHERE usu_id = ?";
 

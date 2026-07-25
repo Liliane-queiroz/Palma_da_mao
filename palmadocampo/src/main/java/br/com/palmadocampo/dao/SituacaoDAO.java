@@ -10,6 +10,8 @@ import java.util.List;
 
 import br.com.palmadocampo.model.Situacao;
 
+
+/* Classe responsável por acessar o banco de dados da tabela situacao*/
 public class SituacaoDAO {
 
     public void inserir(Situacao situacao) throws SQLException {
@@ -49,6 +51,7 @@ public class SituacaoDAO {
         return situacoes;
     }
 
+/*Comando apenas para admin executar*/ 
     public Situacao buscarPorId(int id) throws SQLException {
         String sql = "SELECT sit_id, sit_descricao FROM situacao WHERE sit_id = ?";
 
@@ -70,6 +73,7 @@ public class SituacaoDAO {
         return null;
     }
 
+/*Comando apenas para admin executar*/ 
     public void atualizar(Situacao situacao) throws SQLException {
         String sql = "UPDATE situacao SET sit_descricao = ? WHERE sit_id = ?";
 
@@ -82,6 +86,7 @@ public class SituacaoDAO {
         }
     }
 
+/*Comando apenas para admin executar*/ 
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM situacao WHERE sit_id = ?";
 

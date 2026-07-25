@@ -7,6 +7,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/*
+*Conexão com o banco,
+*Centraliza as configurações do banco,
+*Evita repetir código e
+*Facilita manutenção
+*/
 public class ConexaoFactory {
 
     private static final Properties propriedades = new Properties();

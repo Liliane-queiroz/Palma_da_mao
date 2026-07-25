@@ -1,5 +1,5 @@
 # ============================================================
-# Template de configuração do banco de dados
+# Exemplo de configuração do banco de dados
 # ============================================================
 # COMO USAR:
 # 1. Copie este arquivo e renomeie a cópia para "db.properties"
