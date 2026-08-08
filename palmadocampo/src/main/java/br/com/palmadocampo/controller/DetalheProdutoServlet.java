@@ -1,0 +1,52 @@
+package br.com.palmadocampo.controller;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+import br.com.palmadocampo.dao.ProdutoDAO;
+import br.com.palmadocampo.model.ProdutoDetalhe;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet("/detalhes")
+public class DetalheProdutoServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
+        try {
+            // Lê o id que veio na URL (ex.: /detalhes?id=5)
+            String idTexto = requisicao.getParameter("id");
+
+            // Se não veio id, ou veio vazio, volta pra vitrine
+            if (idTexto == null || idTexto.isBlank()) {
+                resposta.sendRedirect(requisicao.getContextPath() + "/vitrine");
+                return;
+            }
+
+            int id = Integer.parseInt(idTexto);
+
+            ProdutoDAO produtoDAO = new ProdutoDAO();
+            ProdutoDetalhe produto = produtoDAO.buscarDetalhePorId(id);
+
+            // Se não achou produto com esse id, manda pro tratamento de "não encontrado"
+            if (produto == null) {
+                resposta.sendError(HttpServletResponse.SC_NOT_FOUND, "Produto não encontrado");
+                return;
+            }
+
+            requisicao.setAttribute("produto", produto);
+            requisicao.getRequestDispatcher("/WEB-INF/views/produtos/detalhes.jsp")
+                      .forward(requisicao, resposta);
+
+        } catch (NumberFormatException erro) {
+            // O id veio, mas não era um número (ex.: /detalhes?id=abc)
+            resposta.sendError(HttpServletResponse.SC_BAD_REQUEST, "Id inválido");
+        } catch (SQLException erro) {
+            throw new ServletException("Erro ao carregar detalhes do produto", erro);
+        }
+    }
+}

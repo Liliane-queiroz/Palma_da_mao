@@ -1,0 +1,227 @@
+
+/* Duas colunas: foto à esquerda, painel de infos à direita */
+.container-detalhes {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;   /* foto um pouco maior que o painel */
+    gap: 0;
+    align-items: stretch;
+    min-height: calc(100vh - 180px); 
+}
+
+.detalhes-imagem-fundo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                  
+    filter: blur(20px);                
+    transform: scale(1.1);              
+    z-index: 1;                        
+}
+
+.detalhes-foto {
+    position: relative;                 /* âncora pras setas se posicionarem */
+    background-color: #EFEBE0;          /* fundo bege claro atrás da foto */
+    border-radius: 12px 0 0 12px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;  
+   /* min-height: 500px;*/
+}
+
+.detalhes-imagem {
+	position: absolute;                 
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);  
+    z-index: 2;  
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+/* Setas de trocar foto (enfeite por enquanto) */
+.seta-foto {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 2.8rem;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+   	z-index: 3; 
+}
+
+.seta-foto-esquerda {
+    left: 1rem;
+}
+
+.seta-foto-direita {
+    right: 1rem;
+}
+
+.seta-foto:hover {
+    opacity: 0.6;
+}
+
+.detalhes-painel {
+    background-color: var(--cor-cards);
+    border-radius: 0 12px 12px 0;
+    padding: 2rem;
+    /*box-shadow: -2px -2px 0 0 #F5F6E3,
+                 0 2px 8px rgba(0,0,0,.1);*/
+                 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;            
+}
+
+.detalhes-nome {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+
+.detalhes-preco {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+
+.detalhes-localizacao {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.detalhes-localizacao .bi-geo-alt {
+    font-size: 1.1rem;
+}
+
+.detalhes-descricao {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+}
+
+.detalhes-descricao strong {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== BLOCO DO VENDEDOR ===== */
+.detalhes-vendedor {
+    border-top: 1px solid rgba(0,0,0,.1);   /* linha sutil separando */
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.vendedor-titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+
+.vendedor-perfil {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+   	cursor: pointer;                    
+    transition: opacity 0.3s ease; 
+}
+
+.vendedor-perfil:hover {
+    opacity: 0.6;
+}
+
+.vendedor-avatar {
+    font-size: 2.5rem;
+    color: #1a1a1a;
+}
+
+.vendedor-nome {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+
+.vendedor-desde {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.vendedor-avaliacao-titulo {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.vendedor-estrelas {
+    display: flex;
+    gap: 0.2rem;
+    font-size: 1.3rem;
+    color: #FF7C40;                     /* laranja da tua paleta */
+    margin-bottom: 0.5rem;
+}
+
+.btn-whatsapp {
+    width: 100%;
+    background-color: #093824;          /* verde escuro da tua paleta */
+    color: white;
+    border: none;
+    padding: 1.4rem 1rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    transition: background-color .3s ease, transform .3s ease;
+}
+
+.btn-whatsapp .bi-whatsapp {
+    font-size: 1.5rem;
+}
+
+.btn-whatsapp:hover {
+    background-color: #052520;
+    transform: scale(1.02);
+}
+
+/* RESPONSIVIDADE MOBILE */
+@media (max-width: 768px) {
+    .container-detalhes {
+        grid-template-columns: 1fr;    
+        gap: 1rem;
+    }
+
+    .detalhes-foto {
+        min-height: 300px;
+        padding: 1rem;
+    }
+
+    .detalhes-nome {
+        font-size: 1.5rem;
+    }
+}

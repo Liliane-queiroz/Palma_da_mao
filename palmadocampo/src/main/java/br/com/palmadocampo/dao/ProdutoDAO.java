@@ -12,6 +12,7 @@ import java.util.List;
 
 import br.com.palmadocampo.model.Produto;
 import br.com.palmadocampo.model.ProdutoVitrine;
+import br.com.palmadocampo.model.ProdutoDetalhe;
 
 /*Insere um novo produto(tabela) no banco e guarda o ID gerado*/
 public class ProdutoDAO {
@@ -178,4 +179,48 @@ public class ProdutoDAO {
     return produtos;
 }
 
+    /* Busca um produto pelo id trazendo também a categoria e os dados do produtor.
+    O vínculo com o produtor é feito pela tabela estoque, que liga produto e usuario. */
+ public ProdutoDetalhe buscarDetalhePorId(int id) throws SQLException {
+     String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+                + "p.prod_foto_url, c.ctg_descricao, "
+                + "u.usu_nome, u.usu_cidade, u.usu_regiao, u.data_criacao "
+                + "FROM produto p "
+                + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
+                + "INNER JOIN estoque e ON e.produto_id = p.prod_id "
+                + "INNER JOIN usuario u ON e.usuario_id = u.usu_id "
+                + "WHERE p.prod_id = ? AND p.situacao_id = 1";
+
+     try (Connection conexao = ConexaoFactory.getConexao();
+          PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+         comando.setInt(1, id);
+
+         try (ResultSet resultado = comando.executeQuery()) {
+             if (resultado.next()) {
+                 return montarProdutoDetalhe(resultado);
+             }
+         }
+     }
+
+     return null;
+ }
+
+ /* Monta um ProdutoDetalhe a partir de uma linha do ResultSet (padrão DRY). */
+ private ProdutoDetalhe montarProdutoDetalhe(ResultSet resultado) throws SQLException {
+     ProdutoDetalhe produto = new ProdutoDetalhe();
+     produto.setId(resultado.getInt("prod_id"));
+     produto.setNome(resultado.getString("prod_nome"));
+     produto.setDescricao(resultado.getString("prod_descricao"));
+     produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+     produto.setFotoUrl(resultado.getString("prod_foto_url"));
+     produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+
+     produto.setProdutorNome(resultado.getString("usu_nome"));
+     produto.setProdutorCidade(resultado.getString("usu_cidade"));
+     produto.setProdutorRegiao(resultado.getString("usu_regiao"));
+     produto.setProdutorDataCadastro(resultado.getTimestamp("data_criacao").toLocalDateTime());
+     return produto;
+ }
+    
 }
