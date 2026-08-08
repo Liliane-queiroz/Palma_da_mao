@@ -10,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.palmadocampo.dao.CategoriaDAO;
 import br.com.palmadocampo.dao.ConexaoFactory;
@@ -56,42 +59,82 @@ public class CadastroProdutoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // ===== ETAPA 1: Validar e processar upload da imagem =====
-            Part parteArquivo = requisicao.getPart("arquivo");
-            if (parteArquivo == null || parteArquivo.getSize() == 0) {
-                requisicao.setAttribute("erro", "Você deve selecionar uma imagem");
+            // ===== ETAPA 1: Validar e processar upload de MÚLTIPLAS imagens =====
+            Collection<Part> todasAsParts = requisicao.getParts()
+                .stream()
+                .filter(part -> "arquivo".equals(part.getName()) && part.getSize() > 0)
+                .collect(Collectors.toList());
+
+            if (todasAsParts.isEmpty()) {
+                requisicao.setAttribute("erro", "Você deve selecionar pelo menos uma imagem");
                 doGet(requisicao, resposta);
                 return;
             }
 
-            // Validar se é imagem
-            String tipoConteudo = parteArquivo.getContentType();
-            if (!tipoConteudo.startsWith("image/")) {
-                requisicao.setAttribute("erro", "O arquivo deve ser uma imagem (JPG, PNG, GIF)");
+            // Validar quantidade máxima
+            if (todasAsParts.size() > 5) {
+                requisicao.setAttribute("erro", "Máximo 5 fotos permitidas!");
                 doGet(requisicao, resposta);
                 return;
             }
 
-            // Gerar nome do arquivo com timestamp
-            String nomeOriginal = extrairNomeArquivo(parteArquivo);
-            String extensao = extrairExtensao(nomeOriginal);
-            String nomeArquivo = System.currentTimeMillis() + "_" + nomeOriginal;
+            // Lista pra guardar os caminhos das fotos
+            List<String> caminhosFotos = new ArrayList<>();
+            List<String> caminhosCompletos = new ArrayList<>(); // Pra deletar se erro
 
-            // Salvar arquivo no servidor
-            String caminhoAbsoluto = getServletContext().getRealPath("/") + PASTA_UPLOAD;
-            // Caminho relativo pra guardar no banco
-            String caminhoRelativo = "/" + PASTA_UPLOAD + nomeArquivo;
+            // Processar cada arquivo
+            for (Part parteArquivo : todasAsParts) {
+                
+                // Validar se é imagem
+                String tipoConteudo = parteArquivo.getContentType();
+                if (!tipoConteudo.startsWith("image/")) {
+                    // Deletar fotos já salvadas
+                    for (String caminho : caminhosCompletos) {
+                        deletarArquivo(caminho);
+                    }
+                    requisicao.setAttribute("erro", "Um ou mais arquivos não são imagens (JPG, PNG, GIF)");
+                    doGet(requisicao, resposta);
+                    return;
+                }
 
-            // Criar a pasta se não existir
-            File pastaUpload = new File(caminhoAbsoluto);
-            if (!pastaUpload.exists()) {
-                pastaUpload.mkdirs();
-                System.out.println("Pasta criada: " + caminhoAbsoluto);
+                // Validar tamanho (máx 5MB)
+                if (parteArquivo.getSize() > 5 * 1024 * 1024) {
+                    // Deletar fotos já salvadas
+                    for (String caminho : caminhosCompletos) {
+                        deletarArquivo(caminho);
+                    }
+                    requisicao.setAttribute("erro", "Uma ou mais fotos ultrapassam 5 MB!");
+                    doGet(requisicao, resposta);
+                    return;
+                }
+
+                // Gerar nome do arquivo com timestamp
+                String nomeOriginal = extrairNomeArquivo(parteArquivo);
+                String extensao = extrairExtensao(nomeOriginal);
+                String nomeArquivo = System.currentTimeMillis() + "_" + nomeOriginal;
+
+                // Salvar arquivo no servidor
+                String caminhoAbsoluto = getServletContext().getRealPath("/") + PASTA_UPLOAD;
+                String caminhoRelativo = "/" + PASTA_UPLOAD + nomeArquivo;
+
+                // Criar a pasta se não existir
+                File pastaUpload = new File(caminhoAbsoluto);
+                if (!pastaUpload.exists()) {
+                    pastaUpload.mkdirs();
+                    System.out.println("Pasta criada: " + caminhoAbsoluto);
+                }
+
+                String caminhoCompleto = caminhoAbsoluto + nomeArquivo;
+                parteArquivo.write(caminhoCompleto);
+                System.out.println("Arquivo salvo em: " + caminhoCompleto);
+
+                // Adicionar na lista de caminhos
+                caminhosFotos.add(caminhoRelativo);
+                caminhosCompletos.add(caminhoCompleto);
             }
 
-            String caminhoCompleto = caminhoAbsoluto + nomeArquivo;
-            parteArquivo.write(caminhoCompleto);
-            System.out.println("Arquivo salvo em: " + caminhoCompleto);
+            // Juntar todos os caminhos em uma string separada por vírgula
+            String fotosUrl = String.join(",", caminhosFotos);
 
             // ===== ETAPA 2: Coletar dados do formulário =====
             String produtoNome = requisicao.getParameter("nome").trim();
@@ -105,7 +148,10 @@ public class CadastroProdutoServlet extends HttpServlet {
             // Validar campos obrigatórios
             if (produtoNome.isEmpty() || categoriaIdStr == null || quantidadeStr.isEmpty() ||
                     unidade.isEmpty()) {
-                deletarArquivo(caminhoCompleto);
+                // Deletar fotos se erro
+                for (String caminho : caminhosCompletos) {
+                    deletarArquivo(caminho);
+                }
                 requisicao.setAttribute("erro", "Preencha todos os campos obrigatórios");
                 doGet(requisicao, resposta);
                 return;
@@ -123,10 +169,7 @@ public class CadastroProdutoServlet extends HttpServlet {
             try {
                 conexao = ConexaoFactory.getConexao();
 
-                // Desabilitar auto-commit para controlar transação, ou seja, caso ocorra algum
-                // erro
-                // de falha de conexão de internet ele não salva automaticamente,
-                // pois o MySQL confirma cada comando automaticamente.
+                // Desabilitar auto-commit para controlar transação
                 conexao.setAutoCommit(false);
 
                 // INSERT PRODUTO
@@ -144,7 +187,7 @@ public class CadastroProdutoServlet extends HttpServlet {
                     } else {
                         comandoProduto.setNull(3, java.sql.Types.DECIMAL);
                     }
-                    comandoProduto.setString(4, caminhoRelativo);
+                    comandoProduto.setString(4, fotosUrl); // Múltiplas fotos separadas por vírgula
                     if (dataEntrega != null) {
                         comandoProduto.setObject(5, dataEntrega);
                     } else {
@@ -182,7 +225,6 @@ public class CadastroProdutoServlet extends HttpServlet {
                 }
 
                 // Se chegou aqui, ambos os INSERTs funcionaram
-                // seu trabalho é confirmar que tudo funcionou
                 conexao.commit();
                 System.out.println("COMMIT realizado com sucesso");
 
@@ -200,7 +242,10 @@ public class CadastroProdutoServlet extends HttpServlet {
                     }
                 }
 
-                deletarArquivo(caminhoCompleto);
+                // Deletar todas as fotos em caso de erro
+                for (String caminho : caminhosCompletos) {
+                    deletarArquivo(caminho);
+                }
                 requisicao.setAttribute("erro", "Erro ao publicar o anúncio: " + erro.getMessage());
                 try {
                     doGet(requisicao, resposta);

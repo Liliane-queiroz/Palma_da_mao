@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Anunciar Produto - Palma do Campo</title>
     <style>
         * {
@@ -85,6 +86,61 @@
         .form-group.full {
             grid-column: 1 / -1;
         }
+
+        .preview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.preview-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-item .remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-item .remove-btn:hover {
+    background: darkred;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.success-message {
+    color: green;
+    font-size: 14px;
+    margin-top: 5px;
+}               
 
         button {
             background-color: #4CAF50;
@@ -178,10 +234,13 @@
 
             <!-- Foto (obrigatória) -->
             <div class="form-group">
-                <label for="arquivo">Foto do Produto <span class="campo-obrigatorio">*</span></label>
-                <input type="file" id="arquivo" name="arquivo" accept="image/*" required>
-                <small style="color: #666; margin-top: 5px;">Formatos aceitos: JPG, PNG, GIF. Máximo 5 MB.</small>
+                <label for="arquivo">Foto do Produto <span class="campo-obrigatorio">*</span></label>   
+                <input type="file" id="arquivo" name="arquivo" accept="image/*" multiple required>
+                <small style="color: #666; margin-top: 5px;">Formatos aceitos: JPG, PNG, GIF. Máximo 5 MB.  Máximo 5 fotos.</small>
             </div>
+
+        <!--preview das fotos -->
+            <div id="preview-fotos" class="preview-container"></div>
 
             <!-- Nome (obrigatório) -->
             <div class="form-group">
@@ -251,5 +310,11 @@
             </div>
         </form>
     </div>
+
+    <!-- Div pra preview -->
+<div id="preview-fotos" class="preview-container"></div>
+
+<!-- Link do arquivo JS -->
+<script src="${pageContext.request.contextPath}/resources/js/cadastro-produto.js"></script>
 </body>
 </html>
