@@ -17,72 +17,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
 </head>
-<body>
-    	<nav class="navbar-geral">
-    		<div class="container-parte-busca">
-        		<div class="logo">
-            		<img src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 4.png" alt="Logo Palma do Campo">
-            		<span>Palma do Campo</span>
-        		</div>
-				
-        		<div class="navbar-buscar-group">
-            		<input type="text" class="buscar" placeholder="Buscar produtos">
-            		<span class="separador"></span>
-            		<div class="navbar-localizacao-wrapper"> 
-            	  		<i class="bi bi-geo-alt"></i>
-            			<select class="navbar-localizacao">
-              				<option value="AC">AC</option>
-                			<option value="AM">AM</option>
-                			<option value="PA">PA</option>
-                			<option value="RO">RO</option>
-                			<option value="RR">RR</option>
-               				<option value="TO">TO</option>
-           				</select>
-           			</div>
-           				<span class="separador"></span>
-           				<button class="btn-buscar">
-                			<i class="bi bi-search"></i>
-            			</button>
-        		</div>
-        		<div class="navbar-buttons">
-            			<button class="btn-anunciar">Anunciar</button>
-            			<button class="btn-meus-anuncios">Meus anúncios</button>
-            			<button class="btn-menu-produtor">
-                			Menu do produtor
-                			<i class="bi bi-person-gear"></i>
-            			</button>
-        		</div>
-			</div>
-			<!-- onchange="if(this.value) window.location.href = this.value;"  (colocar no categoria-dropdown) -->
-				       	
-    		<div class="container-categorias">
-        		<div class="esteira-categorias" id="esteiraCategorias">
-        			<a href="#" class="categoria-link">Tudo</a>
-        			<a href="#" class="categoria-link">Animais para Criação</a>
-        			<a href="#" class="categoria-link">Artesanato Rural</a>
-        			<a href="#" class="categoria-link">Carnes e Peixes</a>
-        			<a href="#" class="categoria-link">Doces, Geleias e Conservas</a>
-        			<a href="#" class="categoria-link">Flores, Plantas, Mudas e Sementes</a>
-        			<a href="#" class="categoria-link">Frutas</a>
-        			<a href="#" class="categoria-link">Grãos e Castanhas</a>
-        			<a href="#" class="categoria-link">Leite, Queijos e Derivados</a>
-        			<a href="#" class="categoria-link">Mel e Produtos da Colmeia</a>
-        			<a href="#" class="categoria-link">Ovos</a>
-        			<a href="#" class="categoria-link">Pães, Bolos e Massas</a>
-        			<a href="#" class="categoria-link">Raízes e Batatas</a>
-        			<a href="#" class="categoria-link">Serviços Rurais</a>
-        			<a href="#" class="categoria-link">Temperos e Ervas</a>
-        			<a href="#" class="categoria-link">Verduras e Legumes</a>
-        		</div>
-        		<button class="btn-seta-categorias btn-seta-esquerda" id="setaEsquerda" aria-label="Categorias anteriores">
-       				<i class="bi bi-arrow-left-circle"></i>
-   	 			</button>
-    			<button class="btn-seta-categorias btn-seta-direita" id="setaDireita" aria-label="Ver mais categorias">
-        			<i class="bi bi-arrow-right-circle"></i>
-    			</button>
-       		</div> 	
-    	</nav>
-            
+<body> 
+		<jsp:include page="/WEB-INF/views/componentes/navbar.jsp"/>     
        <div class="container-vitrine">
         	<c:choose>
             	<c:when test="${empty produtos}">
@@ -105,7 +41,9 @@
 					<p class="card-categoria">
 						<c:out value="${produto.categoriaDescricao}" />
 					</p>
-					<button class="btn-detalhes">Mais detalhes</button>
+					<a href="${pageContext.request.contextPath}/detalhes?id=${produto.id}" class="btn-detalhes">
+    					Mais detalhes
+					</a>
 				</div>
 				
 					</c:forEach>
@@ -129,5 +67,4 @@
         </a>	
 	</div>
 </body>
-<script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
 </html>
