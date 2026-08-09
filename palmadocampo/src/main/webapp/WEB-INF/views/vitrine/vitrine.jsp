@@ -18,16 +18,31 @@
 
 </head>
 <body> 
-		<jsp:include page="/WEB-INF/views/componentes/navbar.jsp"/>     
+		<jsp:include page="/WEB-INF/views/componentes/navbar.jsp"/> 
+		
+		<c:if test="${not empty termoBuscado}">
+    		<div class="titulo-busca">
+        		<h2>Resultados para "<c:out value='${termoBuscado}' />"</h2>
+    		</div>
+		</c:if>    
        <div class="container-vitrine">
         	<c:choose>
             	<c:when test="${empty produtos}">
-                	<p>Nenhum produto disponível no momento.</p>
-            	</c:when>
+    				<c:choose>
+        				<c:when test="${not empty termoBuscado}">
+            				<p class="vitrine-vazia">Nenhum resultado para "<c:out value='${termoBuscado}' />"</p>
+        				</c:when>
+        				<c:otherwise>
+            				<p class="vitrine-vazia">Nenhum produto disponível no momento.</p>
+        				</c:otherwise>
+    				</c:choose>
+				</c:when>
             <c:otherwise>
                     <c:forEach var="produto" items="${produtos}">
 				<div class="card-produto">
 					<div class="img-card">
+					
+					<!-- ${produto.fotoUrl} -->
 						<img src="${pageContext.request.contextPath}/resources/images/uploads/produtos/frango_italiano_teste.jpg" class="card-imagem" alt="${produto.nome}"/>
 					</div>
 					

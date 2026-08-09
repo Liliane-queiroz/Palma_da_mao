@@ -8,8 +8,8 @@
             		<span>Palma do Campo</span>
         		</div>
 				
-        		<div class="navbar-buscar-group">
-            		<input type="text" class="buscar" placeholder="Buscar produtos">
+        		<form class="navbar-buscar-group" action="${pageContext.request.contextPath}/buscar" method="get">
+    				<input type="text" name="termo" class="buscar" placeholder="Buscar produtos">
             		<span class="separador"></span>
             		<div class="navbar-localizacao-wrapper"> 
             	  		<i class="bi bi-geo-alt"></i>
@@ -23,10 +23,10 @@
            				</select>
            			</div>
            				<span class="separador"></span>
-           				<button class="btn-buscar">
+           				<button type="submit" class="btn-buscar">
                 			<i class="bi bi-search"></i>
             			</button>
-        		</div>
+        		</form>
         		<div class="navbar-buttons">
             			<button class="btn-anunciar">Anunciar</button>
             			<button class="btn-meus-anuncios">Meus anúncios</button>
