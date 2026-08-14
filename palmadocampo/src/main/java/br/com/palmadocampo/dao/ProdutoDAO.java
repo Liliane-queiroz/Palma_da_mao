@@ -218,6 +218,40 @@ public class ProdutoDAO {
      return produtos;
  }
 
+ /* Lista produtos ativos de uma categoria específica, filtrando pela descrição da categoria. */
+ public List<ProdutoVitrine> listarPorCategoria(String categoria) throws SQLException {
+     String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+                + "p.prod_foto_url, c.ctg_descricao "
+                + "FROM produto p "
+                + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
+                + "WHERE p.situacao_id = 1 "
+                + "AND c.ctg_descricao = ? "
+                + "ORDER BY p.data_criacao DESC";
+
+     List<ProdutoVitrine> produtos = new ArrayList<>();
+
+     try (Connection conexao = ConexaoFactory.getConexao();
+          PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+         comando.setString(1, categoria);
+
+         try (ResultSet resultado = comando.executeQuery()) {
+             while (resultado.next()) {
+                 ProdutoVitrine produto = new ProdutoVitrine();
+                 produto.setId(resultado.getInt("prod_id"));
+                 produto.setNome(resultado.getString("prod_nome"));
+                 produto.setDescricao(resultado.getString("prod_descricao"));
+                 produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+                 produto.setFotoUrl(resultado.getString("prod_foto_url"));
+                 produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+                 produtos.add(produto);
+             }
+         }
+     }
+
+     return produtos;
+ }
+ 
     /* Busca um produto pelo id trazendo também a categoria e os dados do produtor.
     O vínculo com o produtor é feito pela tabela estoque, que liga produto e usuario. */
  public ProdutoDetalhe buscarDetalhePorId(int id) throws SQLException {

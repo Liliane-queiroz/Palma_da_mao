@@ -4,7 +4,7 @@
 	<nav class="navbar-geral">
     		<div class="container-parte-busca">
         		<div class="logo">
-            		<img src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 4.png" alt="Logo Palma do Campo">
+            		<img src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 6.png" alt="Logo Palma do Campo">
             		<span>Palma do Campo</span>
         		</div>
 				
@@ -39,23 +39,23 @@
 				       	
     		<div class="container-categorias">
         		<div class="esteira-categorias" id="esteiraCategorias">
-        			<a href="#" class="categoria-link">Tudo</a>
-        			<a href="#" class="categoria-link">Animais para Criação</a>
-        			<a href="#" class="categoria-link">Artesanato Rural</a>
-        			<a href="#" class="categoria-link">Carnes e Peixes</a>
-        			<a href="#" class="categoria-link">Doces, Geleias e Conservas</a>
-        			<a href="#" class="categoria-link">Flores, Plantas, Mudas e Sementes</a>
-        			<a href="#" class="categoria-link">Frutas</a>
-        			<a href="#" class="categoria-link">Grãos e Castanhas</a>
-        			<a href="#" class="categoria-link">Leite, Queijos e Derivados</a>
-        			<a href="#" class="categoria-link">Mel e Produtos da Colmeia</a>
-        			<a href="#" class="categoria-link">Ovos</a>
-        			<a href="#" class="categoria-link">Pães, Bolos e Massas</a>
-        			<a href="#" class="categoria-link">Raízes e Batatas</a>
-        			<a href="#" class="categoria-link">Serviços Rurais</a>
-        			<a href="#" class="categoria-link">Temperos e Ervas</a>
-        			<a href="#" class="categoria-link">Verduras e Legumes</a>
-        		</div>
+    				<a href="${pageContext.request.contextPath}/vitrine" class="categoria-link">Tudo</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Animais para Criação" class="categoria-link">Animais para Criação</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Artesanato Rural" class="categoria-link">Artesanato Rural</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Carnes e Peixes" class="categoria-link">Carnes e Peixes</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Doces, Geleias e Conservas" class="categoria-link">Doces, Geleias e Conservas</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Flores, Plantas, Mudas e Sementes" class="categoria-link">Flores, Plantas, Mudas e Sementes</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Frutas" class="categoria-link">Frutas</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Grãos e Castanhas" class="categoria-link">Grãos e Castanhas</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Leite, Queijos e Derivados" class="categoria-link">Leite, Queijos e Derivados</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Mel e Produtos da Colmeia" class="categoria-link">Mel e Produtos da Colmeia</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Ovos" class="categoria-link">Ovos</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Pães, Bolos e Massas" class="categoria-link">Pães, Bolos e Massas</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Raízes e Batatas" class="categoria-link">Raízes e Batatas</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Serviços Rurais" class="categoria-link">Serviços Rurais</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Temperos e Ervas" class="categoria-link">Temperos e Ervas</a>
+    				<a href="${pageContext.request.contextPath}/categoria?nome=Verduras e Legumes" class="categoria-link">Verduras e Legumes</a>
+</div>
         		<button class="btn-seta-categorias btn-seta-esquerda" id="setaEsquerda" aria-label="Categorias anteriores">
        				<i class="bi bi-arrow-left-circle-fill"></i>
    	 			</button>

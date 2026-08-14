@@ -5,224 +5,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Anunciar Produto - Palma do Campo</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/global.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/cadastro-produto.css">
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="date"],
-        input[type="file"],
-        select,
-        textarea {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        input[type="date"]:focus,
-        input[type="file"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        .preview-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.preview-item {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.preview-item .remove-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.preview-item .remove-btn:hover {
-    background: darkred;
-}
-
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-.success-message {
-    color: green;
-    font-size: 14px;
-    margin-top: 5px;
-}               
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .erro {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-        }
-
-        .sucesso {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-        }
-
-        .voltar {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .voltar a {
-            color: #4CAF50;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .voltar a:hover {
-            text-decoration: underline;
-        }
-
-        .campo-obrigatorio {
-            color: red;
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Righteous&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Anunciar Produto</h1>
 
-        <!-- Exibir mensagens de erro se houver -->
+        <!-- Cabeçalho verde com ícone laranja -->
+        <div class="cadastro-cabecalho">
+            <img src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 6.png" alt="Logo" class="cadastro-logo">
+            <h1>Anunciar produto</h1>
+        </div>
+
+        <!-- Mensagem de erro (se houver) -->
         <c:if test="${not empty erro}">
             <div class="erro">
                 <strong>Erro:</strong> ${erro}
             </div>
         </c:if>
 
-        <!-- Exibir mensagem de sucesso se houver -->
+        <!-- Mensagem de sucesso (se houver) -->
         <c:if test="${not empty sucesso}">
             <div class="sucesso">
                 <strong>Sucesso:</strong> ${sucesso}
@@ -232,20 +42,24 @@
         <!-- Formulário -->
         <form method="POST" action="${pageContext.request.contextPath}/cadastro-produto" enctype="multipart/form-data">
 
-            <!-- Foto (obrigatória) -->
+            <!-- Foto (obrigatória) - área tracejada clicável -->
             <div class="form-group">
-                <label for="arquivo">Foto do Produto <span class="campo-obrigatorio">*</span></label>   
-                <input type="file" id="arquivo" name="arquivo" accept="image/*" multiple required>
-                <small style="color: #666; margin-top: 5px;">Formatos aceitos: JPG, PNG, GIF. Máximo 5 MB.  Máximo 5 fotos.</small>
+                <label for="arquivo">Foto do produto <span class="campo-obrigatorio">*</span></label>
+                <label for="arquivo" class="upload-foto">
+                    <i class="bi bi-camera"></i>
+                    <p>Arraste ou clique para enviar</p>
+                    <input type="file" id="arquivo" name="arquivo" accept="image/*" multiple required>
+                </label>
+                <small>Formatos aceitos: JPG, PNG, GIF. Máximo 5 MB. Máximo 10 fotos.</small>
             </div>
 
-        <!--preview das fotos -->
+            <!-- Preview das fotos -->
             <div id="preview-fotos" class="preview-container"></div>
 
             <!-- Nome (obrigatório) -->
             <div class="form-group">
-                <label for="nome">Nome do Produto <span class="campo-obrigatorio">*</span></label>
-                <input type="text" id="nome" name="nome" required maxlength="150">
+                <label for="nome">Nome do produto <span class="campo-obrigatorio">*</span></label>
+                <input type="text" id="nome" name="nome" required maxlength="150" placeholder="Ovos caipira">
             </div>
 
             <!-- Categoria (obrigatória) -->
@@ -261,25 +75,24 @@
 
             <!-- Descrição -->
             <div class="form-group">
-                <label for="descricao">Descrição do Produto</label>
-                <textarea id="descricao" name="descricao" maxlength="1000" placeholder="Descreva seu produto com detalhes..."></textarea>
-            </div>
+   				<label for="descricao">Descrição do produto <span class="campo-obrigatorio">*</span></label>
+    			<textarea id="descricao" name="descricao" maxlength="1000" required placeholder="Descreva seu produto com detalhes..."></textarea>
+			</div>
 
-            <!-- Preço e Quantidade em linha -->
+            <!-- Preço e Quantidade em duas colunas -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="preco">Preço Estimado (R$)</label>
-                    <input type="number" id="preco" name="preco" step="0.01" min="0" placeholder="0,00">
-                    <small style="color: #666; margin-top: 5px;">Deixe vazio para "a combinar"</small>
-                </div>
+    				<label for="preco">Preço (R$) <span class="campo-obrigatorio">*</span></label>
+    				<input type="number" id="preco" name="preco" step="0.01" min="0" required placeholder="0,00">
+				</div>
 
                 <div class="form-group">
                     <label for="quantidade">Quantidade <span class="campo-obrigatorio">*</span></label>
-                    <input type="number" id="quantidade" name="quantidade" step="0.01" min="0" required>
+                    <input type="number" id="quantidade" name="quantidade" step="0.01" min="0" required placeholder="50">
                 </div>
             </div>
 
-            <!-- Unidade e Data de Entrega em linha -->
+            <!-- Unidade e Data de entrega em duas colunas -->
             <div class="form-row">
                 <div class="form-group">
                     <label for="unidade">Unidade <span class="campo-obrigatorio">*</span></label>
@@ -296,13 +109,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="dataEntrega">Data Prevista de Entrega</label>
+                    <label for="dataEntrega">Data prevista de entrega</label>
                     <input type="date" id="dataEntrega" name="dataEntrega">
                 </div>
             </div>
 
             <!-- Botão de envio -->
-            <button type="submit">Publicar Anúncio</button>
+            <button type="submit">
+                <i class="bi bi-check-lg"></i>
+                Publicar anúncio
+            </button>
 
             <!-- Link para voltar -->
             <div class="voltar">
@@ -311,10 +127,7 @@
         </form>
     </div>
 
-    <!-- Div pra preview -->
-<div id="preview-fotos" class="preview-container"></div>
-
-<!-- Link do arquivo JS -->
-<script src="${pageContext.request.contextPath}/resources/js/cadastro-produto.js"></script>
+    <!-- Link do arquivo JS -->
+    <script src="${pageContext.request.contextPath}/resources/js/cadastro-produto.js"></script>
 </body>
 </html>

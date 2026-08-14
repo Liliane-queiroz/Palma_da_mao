@@ -25,6 +25,11 @@
         		<h2>Resultados para "<c:out value='${termoBuscado}' />"</h2>
     		</div>
 		</c:if>    
+		<c:if test="${not empty categoriaSelecionada}">
+			<div class="titulo-busca">
+        		<h2>Categoria: <c:out value='${categoriaSelecionada}' /></h2>
+    		</div>
+		</c:if>
        <div class="container-vitrine">
         	<c:choose>
             	<c:when test="${empty produtos}">
