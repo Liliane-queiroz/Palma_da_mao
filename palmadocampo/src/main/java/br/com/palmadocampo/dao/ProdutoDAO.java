@@ -17,283 +17,286 @@ import br.com.palmadocampo.model.ProdutoDetalhe;
 /*Insere um novo produto(tabela) no banco e guarda o ID gerado*/
 public class ProdutoDAO {
 
-    public void inserir(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, "
-                   + "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	public void inserir(Produto produto) throws SQLException {
+		String sql = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, "
+				+ "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            comando.setString(1, produto.getNome());
-            comando.setString(2, produto.getDescricao());
-            comando.setBigDecimal(3, produto.getPrecoEstimado());
-            comando.setString(4, produto.getFotoUrl());
+			comando.setString(1, produto.getNome());
+			comando.setString(2, produto.getDescricao());
+			comando.setBigDecimal(3, produto.getPrecoEstimado());
+			comando.setString(4, produto.getFotoUrl());
 
-            if (produto.getDataPrevistaEntrega() != null) {
-                comando.setDate(5, Date.valueOf(produto.getDataPrevistaEntrega()));
-            } else {
-                comando.setNull(5, Types.DATE);
-            }
+			if (produto.getDataPrevistaEntrega() != null) {
+				comando.setDate(5, Date.valueOf(produto.getDataPrevistaEntrega()));
+			} else {
+				comando.setNull(5, Types.DATE);
+			}
 
-            comando.setInt(6, produto.getCategoriaId());
-            comando.setInt(7, produto.getSituacaoId());
-            comando.executeUpdate();
+			comando.setInt(6, produto.getCategoriaId());
+			comando.setInt(7, produto.getSituacaoId());
+			comando.executeUpdate();
 
-            try (ResultSet resultado = comando.getGeneratedKeys()) {
-                if (resultado.next()) {
-                    produto.setId(resultado.getInt(1));
-                }
-            }
-        }
-    }
+			try (ResultSet resultado = comando.getGeneratedKeys()) {
+				if (resultado.next()) {
+					produto.setId(resultado.getInt(1));
+				}
+			}
+		}
+	}
 
-    public List<Produto> listarTodos() throws SQLException {
-        String sql = "SELECT prod_id, prod_nome, prod_descricao, prod_preco_estimado, "
-                   + "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, "
-                   + "data_criacao, data_atualizacao "
-                   + "FROM produto ORDER BY prod_nome";
+	public List<Produto> listarTodos() throws SQLException {
+		String sql = "SELECT prod_id, prod_nome, prod_descricao, prod_preco_estimado, "
+				+ "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, "
+				+ "data_criacao, data_atualizacao " + "FROM produto ORDER BY prod_nome";
 
-        List<Produto> produtos = new ArrayList<>();
+		List<Produto> produtos = new ArrayList<>();
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql);
-             ResultSet resultado = comando.executeQuery()) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql);
+				ResultSet resultado = comando.executeQuery()) {
 
-            while (resultado.next()) {
-                produtos.add(montarProduto(resultado));
-            }
-        }
+			while (resultado.next()) {
+				produtos.add(montarProduto(resultado));
+			}
+		}
 
-        return produtos;
-    }
+		return produtos;
+	}
 
-/*Comando apenas para admin executar*/ 
-    public Produto buscarPorId(int id) throws SQLException {
-        String sql = "SELECT prod_id, prod_nome, prod_descricao, prod_preco_estimado, "
-                   + "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, "
-                   + "data_criacao, data_atualizacao "
-                   + "FROM produto WHERE prod_id = ?";
+	/* Comando apenas para admin executar */
+	public Produto buscarPorId(int id) throws SQLException {
+		String sql = "SELECT prod_id, prod_nome, prod_descricao, prod_preco_estimado, "
+				+ "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, "
+				+ "data_criacao, data_atualizacao " + "FROM produto WHERE prod_id = ?";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-            comando.setInt(1, id);
+			comando.setInt(1, id);
 
-            try (ResultSet resultado = comando.executeQuery()) {
-                if (resultado.next()) {
-                    return montarProduto(resultado);
-                }
-            }
-        }
+			try (ResultSet resultado = comando.executeQuery()) {
+				if (resultado.next()) {
+					return montarProduto(resultado);
+				}
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-/*Comando apenas para admin executar*/ 
-    public void atualizar(Produto produto) throws SQLException {
-        String sql = "UPDATE produto SET prod_nome = ?, prod_descricao = ?, "
-                   + "prod_preco_estimado = ?, prod_foto_url = ?, prod_data_prevista_entrega = ?, "
-                   + "categoria_id = ?, situacao_id = ? WHERE prod_id = ?";
+	/* Comando apenas para admin executar */
+	public void atualizar(Produto produto) throws SQLException {
+		String sql = "UPDATE produto SET prod_nome = ?, prod_descricao = ?, "
+				+ "prod_preco_estimado = ?, prod_foto_url = ?, prod_data_prevista_entrega = ?, "
+				+ "categoria_id = ?, situacao_id = ? WHERE prod_id = ?";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-            comando.setString(1, produto.getNome());
-            comando.setString(2, produto.getDescricao());
-            comando.setBigDecimal(3, produto.getPrecoEstimado());
-            comando.setString(4, produto.getFotoUrl());
+			comando.setString(1, produto.getNome());
+			comando.setString(2, produto.getDescricao());
+			comando.setBigDecimal(3, produto.getPrecoEstimado());
+			comando.setString(4, produto.getFotoUrl());
 
-            if (produto.getDataPrevistaEntrega() != null) {
-                comando.setDate(5, Date.valueOf(produto.getDataPrevistaEntrega()));
-            } else {
-                comando.setNull(5, Types.DATE);
-            }
+			if (produto.getDataPrevistaEntrega() != null) {
+				comando.setDate(5, Date.valueOf(produto.getDataPrevistaEntrega()));
+			} else {
+				comando.setNull(5, Types.DATE);
+			}
 
-            comando.setInt(6, produto.getCategoriaId());
-            comando.setInt(7, produto.getSituacaoId());
-            comando.setInt(8, produto.getId());
-            comando.executeUpdate();
-        }
-    }
+			comando.setInt(6, produto.getCategoriaId());
+			comando.setInt(7, produto.getSituacaoId());
+			comando.setInt(8, produto.getId());
+			comando.executeUpdate();
+		}
+	}
 
- /*Comando apenas para admin executar*/    
-    public void deletar(int id) throws SQLException {
-        String sql = "DELETE FROM produto WHERE prod_id = ?";
+	/* Comando apenas para admin executar */
+	public void deletar(int id) throws SQLException {
+		String sql = "DELETE FROM produto WHERE prod_id = ?";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-            comando.setInt(1, id);
-            comando.executeUpdate();
-        }
-    }
+			comando.setInt(1, id);
+			comando.executeUpdate();
+		}
+	}
 
-    private Produto montarProduto(ResultSet resultado) throws SQLException {
-        Produto produto = new Produto();
-        produto.setId(resultado.getInt("prod_id"));
-        produto.setNome(resultado.getString("prod_nome"));
-        produto.setDescricao(resultado.getString("prod_descricao"));
-        produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
-        produto.setFotoUrl(resultado.getString("prod_foto_url"));
+	private Produto montarProduto(ResultSet resultado) throws SQLException {
+		Produto produto = new Produto();
+		produto.setId(resultado.getInt("prod_id"));
+		produto.setNome(resultado.getString("prod_nome"));
+		produto.setDescricao(resultado.getString("prod_descricao"));
+		produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+		produto.setFotoUrl(resultado.getString("prod_foto_url"));
 
-        Date dataPrevista = resultado.getDate("prod_data_prevista_entrega");
-        if (dataPrevista != null) {
-            produto.setDataPrevistaEntrega(dataPrevista.toLocalDate());
-        }
+		Date dataPrevista = resultado.getDate("prod_data_prevista_entrega");
+		if (dataPrevista != null) {
+			produto.setDataPrevistaEntrega(dataPrevista.toLocalDate());
+		}
 
-        produto.setCategoriaId(resultado.getInt("categoria_id"));
-        produto.setSituacaoId(resultado.getInt("situacao_id"));
-        produto.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
-        produto.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
-        return produto;
-    }
+		produto.setCategoriaId(resultado.getInt("categoria_id"));
+		produto.setSituacaoId(resultado.getInt("situacao_id"));
+		produto.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
+		produto.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
+		return produto;
+	}
 
-/*Da um select em algumas coluna da tabela produto e uni o id categoria da tabela produdo com o id categoria da tabela categoria e ordena por ordem descrescente a coluna de data criação */
-    public List<ProdutoVitrine> listarTodosComCategoria() throws SQLException {
-    String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
-               + "p.prod_foto_url, c.ctg_descricao "
-               + "FROM produto p "
-               + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
-               + "WHERE p.situacao_id = 1 "
-               + "ORDER BY p.data_criacao DESC";
+	/*
+	 * Da um select em algumas coluna da tabela produto e uni o id categoria da
+	 * tabela produdo com o id categoria da tabela categoria e ordena por ordem
+	 * descrescente a coluna de data criação
+	 */
+	public List<ProdutoVitrine> listarTodosComCategoria() throws SQLException {
+		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+				+ "p.prod_foto_url, c.ctg_descricao " + "FROM produto p "
+				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id " + "WHERE p.situacao_id = 1 "
+				+ "ORDER BY p.data_criacao DESC";
 
-    List<ProdutoVitrine> produtos = new ArrayList<>();
+		List<ProdutoVitrine> produtos = new ArrayList<>();
 
-    try (Connection conexao = ConexaoFactory.getConexao();
-         PreparedStatement comando = conexao.prepareStatement(sql);
-         ResultSet resultado = comando.executeQuery()) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql);
+				ResultSet resultado = comando.executeQuery()) {
 
-        while (resultado.next()) {
-            ProdutoVitrine produto = new ProdutoVitrine();
-            produto.setId(resultado.getInt("prod_id"));
-            produto.setNome(resultado.getString("prod_nome"));
-            produto.setDescricao(resultado.getString("prod_descricao"));
-            produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
-            produto.setFotoUrl(resultado.getString("prod_foto_url"));
-            produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
-            produtos.add(produto);
-        }
-    }
+			while (resultado.next()) {
+				ProdutoVitrine produto = new ProdutoVitrine();
+				produto.setId(resultado.getInt("prod_id"));
+				produto.setNome(resultado.getString("prod_nome"));
+				produto.setDescricao(resultado.getString("prod_descricao"));
+				produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+				produto.setFotoUrl(resultado.getString("prod_foto_url"));
+				produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+				produtos.add(produto);
+			}
+		}
 
-    return produtos;
-}
-    
-    /* Pesquisa produtos ativos cujo nome, descrição OU categoria contenham o termo digitado.
-    O LIKE com % antes e depois acha o termo em qualquer posição do texto. */
- public List<ProdutoVitrine> pesquisarProdutos(String termo) throws SQLException {
-     String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
-                + "p.prod_foto_url, c.ctg_descricao "
-                + "FROM produto p "
-                + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
-                + "WHERE p.situacao_id = 1 "
-                + "AND (p.prod_nome LIKE ? OR p.prod_descricao LIKE ? OR c.ctg_descricao LIKE ?) "
-                + "ORDER BY p.data_criacao DESC";
+		return produtos;
+	}
 
-     List<ProdutoVitrine> produtos = new ArrayList<>();
+	/*
+	 * Pesquisa produtos ativos cujo nome, descrição OU categoria contenham o termo
+	 * digitado. O LIKE com % antes e depois acha o termo em qualquer posição do
+	 * texto.
+	 */
+	public List<ProdutoVitrine> pesquisarProdutos(String termo) throws SQLException {
+		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+				+ "p.prod_foto_url, c.ctg_descricao " + "FROM produto p "
+				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id " + "WHERE p.situacao_id = 1 "
+				+ "AND (p.prod_nome LIKE ? OR p.prod_descricao LIKE ? OR c.ctg_descricao LIKE ?) "
+				+ "ORDER BY p.data_criacao DESC";
 
-     try (Connection conexao = ConexaoFactory.getConexao();
-          PreparedStatement comando = conexao.prepareStatement(sql)) {
+		List<ProdutoVitrine> produtos = new ArrayList<>();
 
-         // Monta o termo com % dos dois lados: "batata" vira "%batata%"
-         String termoBusca = "%" + termo + "%";
-         comando.setString(1, termoBusca);   // para o nome
-         comando.setString(2, termoBusca);   // para a descrição
-         comando.setString(3, termoBusca);   // para a categoria
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-         try (ResultSet resultado = comando.executeQuery()) {
-             while (resultado.next()) {
-                 ProdutoVitrine produto = new ProdutoVitrine();
-                 produto.setId(resultado.getInt("prod_id"));
-                 produto.setNome(resultado.getString("prod_nome"));
-                 produto.setDescricao(resultado.getString("prod_descricao"));
-                 produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
-                 produto.setFotoUrl(resultado.getString("prod_foto_url"));
-                 produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
-                 produtos.add(produto);
-             }
-         }
-     }
+			// Monta o termo com % dos dois lados: "batata" vira "%batata%"
+			String termoBusca = "%" + termo + "%";
+			comando.setString(1, termoBusca); // para o nome
+			comando.setString(2, termoBusca); // para a descrição
+			comando.setString(3, termoBusca); // para a categoria
 
-     return produtos;
- }
+			try (ResultSet resultado = comando.executeQuery()) {
+				while (resultado.next()) {
+					ProdutoVitrine produto = new ProdutoVitrine();
+					produto.setId(resultado.getInt("prod_id"));
+					produto.setNome(resultado.getString("prod_nome"));
+					produto.setDescricao(resultado.getString("prod_descricao"));
+					produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+					produto.setFotoUrl(resultado.getString("prod_foto_url"));
+					produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+					produtos.add(produto);
+				}
+			}
+		}
 
- /* Lista produtos ativos de uma categoria específica, filtrando pela descrição da categoria. */
- public List<ProdutoVitrine> listarPorCategoria(String categoria) throws SQLException {
-     String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
-                + "p.prod_foto_url, c.ctg_descricao "
-                + "FROM produto p "
-                + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
-                + "WHERE p.situacao_id = 1 "
-                + "AND c.ctg_descricao = ? "
-                + "ORDER BY p.data_criacao DESC";
+		return produtos;
+	}
 
-     List<ProdutoVitrine> produtos = new ArrayList<>();
+	/*
+	 * Lista produtos ativos de uma categoria específica, filtrando pela descrição
+	 * da categoria.
+	 */
+	public List<ProdutoVitrine> listarPorCategoria(String categoria) throws SQLException {
+		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+				+ "p.prod_foto_url, c.ctg_descricao " + "FROM produto p "
+				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id " + "WHERE p.situacao_id = 1 "
+				+ "AND c.ctg_descricao = ? " + "ORDER BY p.data_criacao DESC";
 
-     try (Connection conexao = ConexaoFactory.getConexao();
-          PreparedStatement comando = conexao.prepareStatement(sql)) {
+		List<ProdutoVitrine> produtos = new ArrayList<>();
 
-         comando.setString(1, categoria);
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-         try (ResultSet resultado = comando.executeQuery()) {
-             while (resultado.next()) {
-                 ProdutoVitrine produto = new ProdutoVitrine();
-                 produto.setId(resultado.getInt("prod_id"));
-                 produto.setNome(resultado.getString("prod_nome"));
-                 produto.setDescricao(resultado.getString("prod_descricao"));
-                 produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
-                 produto.setFotoUrl(resultado.getString("prod_foto_url"));
-                 produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
-                 produtos.add(produto);
-             }
-         }
-     }
+			comando.setString(1, categoria);
 
-     return produtos;
- }
- 
-    /* Busca um produto pelo id trazendo também a categoria e os dados do produtor.
-    O vínculo com o produtor é feito pela tabela estoque, que liga produto e usuario. */
- public ProdutoDetalhe buscarDetalhePorId(int id) throws SQLException {
-     String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
-                + "p.prod_foto_url, c.ctg_descricao, "
-                + "u.usu_nome, u.usu_cidade, u.usu_regiao, u.data_criacao "
-                + "FROM produto p "
-                + "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
-                + "INNER JOIN estoque e ON e.produto_id = p.prod_id "
-                + "INNER JOIN usuario u ON e.usuario_id = u.usu_id "
-                + "WHERE p.prod_id = ? AND p.situacao_id = 1";
+			try (ResultSet resultado = comando.executeQuery()) {
+				while (resultado.next()) {
+					ProdutoVitrine produto = new ProdutoVitrine();
+					produto.setId(resultado.getInt("prod_id"));
+					produto.setNome(resultado.getString("prod_nome"));
+					produto.setDescricao(resultado.getString("prod_descricao"));
+					produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+					produto.setFotoUrl(resultado.getString("prod_foto_url"));
+					produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+					produtos.add(produto);
+				}
+			}
+		}
 
-     try (Connection conexao = ConexaoFactory.getConexao();
-          PreparedStatement comando = conexao.prepareStatement(sql)) {
+		return produtos;
+	}
 
-         comando.setInt(1, id);
+	/*
+	 * Busca um produto pelo id trazendo também a categoria e os dados do produtor.
+	 * O vínculo com o produtor é feito pela tabela estoque, que liga produto e
+	 * usuario.
+	 */
+	public ProdutoDetalhe buscarDetalhePorId(int id) throws SQLException {
+		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+				+ "p.prod_foto_url, c.ctg_descricao, "
+				+ "u.usu_nome, u.usu_cidade, u.usu_regiao, u.usu_telefone, u.data_criacao " + "FROM produto p "
+				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
+				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id "
+				+ "INNER JOIN usuario u ON e.usuario_id = u.usu_id " + "WHERE p.prod_id = ? AND p.situacao_id = 1";
 
-         try (ResultSet resultado = comando.executeQuery()) {
-             if (resultado.next()) {
-                 return montarProdutoDetalhe(resultado);
-             }
-         }
-     }
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-     return null;
- }
+			comando.setInt(1, id);
 
- /* Monta um ProdutoDetalhe a partir de uma linha do ResultSet (padrão DRY). */
- private ProdutoDetalhe montarProdutoDetalhe(ResultSet resultado) throws SQLException {
-     ProdutoDetalhe produto = new ProdutoDetalhe();
-     produto.setId(resultado.getInt("prod_id"));
-     produto.setNome(resultado.getString("prod_nome"));
-     produto.setDescricao(resultado.getString("prod_descricao"));
-     produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
-     produto.setFotoUrl(resultado.getString("prod_foto_url"));
-     produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+			try (ResultSet resultado = comando.executeQuery()) {
+				if (resultado.next()) {
+					return montarProdutoDetalhe(resultado);
+				}
+			}
+		}
 
-     produto.setProdutorNome(resultado.getString("usu_nome"));
-     produto.setProdutorCidade(resultado.getString("usu_cidade"));
-     produto.setProdutorRegiao(resultado.getString("usu_regiao"));
-     produto.setProdutorDataCadastro(resultado.getTimestamp("data_criacao").toLocalDateTime());
-     return produto;
- }
-    
+		return null;
+	}
+
+	/* Monta um ProdutoDetalhe a partir de uma linha do ResultSet (padrão DRY). */
+	private ProdutoDetalhe montarProdutoDetalhe(ResultSet resultado) throws SQLException {
+		ProdutoDetalhe produto = new ProdutoDetalhe();
+		produto.setId(resultado.getInt("prod_id"));
+		produto.setNome(resultado.getString("prod_nome"));
+		produto.setDescricao(resultado.getString("prod_descricao"));
+		produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+		produto.setFotoUrl(resultado.getString("prod_foto_url"));
+		produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+
+		produto.setProdutorNome(resultado.getString("usu_nome"));
+		produto.setProdutorTelefone(resultado.getString("usu_telefone"));
+		produto.setProdutorCidade(resultado.getString("usu_cidade"));
+		produto.setProdutorRegiao(resultado.getString("usu_regiao"));
+		produto.setProdutorDataCadastro(resultado.getTimestamp("data_criacao").toLocalDateTime());
+		return produto;
+	}
+
 }

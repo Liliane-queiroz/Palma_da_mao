@@ -1,0 +1,148 @@
+
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Entrar - Palma do Campo</title>
+
+<!-- CSS global -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/global.css">
+
+<!-- CSS específico da tela de login -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/login.css">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com"
+	crossorigin="anonymous">
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter&family=Righteous&display=swap"
+	rel="stylesheet">
+
+</head>
+
+<body>
+
+	<div class="container">
+
+		<!-- ================================================= -->
+		<!-- ===== LADO ESQUERDO: FORMULÁRIO DE LOGIN ===== -->
+		<!-- ================================================= -->
+
+		<div class="lado-formulario">
+
+			<!-- Cabeçalho -->
+			<div class="cadastro-cabecalho">
+
+				<i class="bi bi-person-circle"></i>
+
+				<h1>Entrar</h1>
+
+			</div>
+
+
+			<!-- Mensagem de erro -->
+			<c:if test="${not empty erro}">
+
+				<div class="erro">
+
+					<strong>Erro:</strong> ${erro}
+
+				</div>
+
+			</c:if>
+
+
+			<!-- Mensagem de sucesso após cadastro -->
+			<c:if test="${param.cadastro == 'sucesso'}">
+
+				<div class="sucesso">Conta criada com sucesso! Faça login para
+					continuar.</div>
+
+			</c:if>
+
+
+			<!-- Formulário -->
+			<form method="POST" action="${pageContext.request.contextPath}/login">
+
+
+				<!-- E-mail -->
+				<div class="form-group">
+
+					<label for="email"> E-mail <span class="campo-obrigatorio">*</span>
+					</label> <input type="email" id="email" name="email" required
+						placeholder="voce@email.com">
+
+				</div>
+
+
+				<!-- Senha -->
+				<div class="form-group">
+
+					<label for="senha"> Senha <span class="campo-obrigatorio">*</span>
+					</label> <input type="password" id="senha" name="senha" required
+						placeholder="Sua senha">
+
+				</div>
+
+
+				<!-- Botão de login -->
+				<button type="submit">
+
+					<i class="bi bi-box-arrow-in-right"></i> Entrar
+
+				</button>
+
+
+				<!-- Link para cadastro -->
+				<div class="voltar">
+
+					<a href="${pageContext.request.contextPath}/cadastro-conta">
+						Não tem conta? Cadastre-se </a>
+
+				</div>
+
+			</form>
+
+		</div>
+
+
+		<!-- ================================================= -->
+		<!-- ===== LADO DIREITO: IMAGEM + LOGO ============== -->
+		<!-- ================================================= -->
+
+		<div class="lado-imagem">
+
+			<!-- Frase da tela de login -->
+			<h2 class="boas-vindas">Conecte-se ao campo</h2>
+
+
+			<!-- Logo -->
+			<img
+				src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png"
+				alt="Palma do Campo" class="logo-cadastro">
+
+
+			<!-- Nome da marca -->
+			<span class="nome-marca"> Palma do Campo </span>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import br.com.palmadocampo.dao.CategoriaDAO;
 import br.com.palmadocampo.dao.ConexaoFactory;
 import br.com.palmadocampo.model.Categoria;
@@ -25,6 +24,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import jakarta.servlet.http.HttpSession;
+import br.com.palmadocampo.model.Usuario;
 
 @WebServlet("/cadastro-produto")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
@@ -35,7 +36,6 @@ public class CadastroProdutoServlet extends HttpServlet {
 
     private static final String PASTA_UPLOAD = "resources/images/uploads/produtos/";
 
-    private static final int USUARIO_TESTE = 1; // Maria Joaquina
 
     @Override
     protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta)
@@ -45,7 +45,7 @@ public class CadastroProdutoServlet extends HttpServlet {
             CategoriaDAO categoriaDAO = new CategoriaDAO();
             List<Categoria> categoriasAtivas = categoriaDAO.listarAtivas();
             requisicao.setAttribute("categorias", categoriasAtivas);
-            requisicao.getRequestDispatcher("/WEB-INF/views/produtor/cadastro-produto.jsp")
+            requisicao.getRequestDispatcher("/WEB-INF/views/produto/cadastro-produto.jsp")
                     .forward(requisicao, resposta);
         } catch (SQLException erro) {
             erro.printStackTrace();
@@ -57,6 +57,18 @@ public class CadastroProdutoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
+    	
+    	// Pega o produtor logado — o AutenticacaoFilter já garante que existe sessão aqui,
+        // mas pegamos com segurança mesmo assim (defesa em profundidade)
+        HttpSession sessao = requisicao.getSession(false);
+        Usuario produtorLogado = (sessao != null)
+                ? (Usuario) sessao.getAttribute("usuarioLogado")
+                : null;
+
+        if (produtorLogado == null) {
+            resposta.sendRedirect(requisicao.getContextPath() + "/login");
+            return;
+        }
 
         try {
             // ===== ETAPA 1: Validar e processar upload de MÚLTIPLAS imagens =====
@@ -214,7 +226,7 @@ public class CadastroProdutoServlet extends HttpServlet {
                         "VALUES (?, ?, ?, ?, ?)";
 
                 try (PreparedStatement comandoEstoque = conexao.prepareStatement(sqlEstoque)) {
-                    comandoEstoque.setInt(1, USUARIO_TESTE); // Maria Joaquina (ID 1)
+                	comandoEstoque.setInt(1, produtorLogado.getId()); // ID do produtor logado
                     comandoEstoque.setInt(2, produtoId);
                     comandoEstoque.setDouble(3, quantidade);
                     comandoEstoque.setString(4, unidade);

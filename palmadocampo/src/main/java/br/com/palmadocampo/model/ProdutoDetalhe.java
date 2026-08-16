@@ -15,6 +15,7 @@ public class ProdutoDetalhe {
 
     // Dados do produtor (vêm da tabela usuario, via estoque)
     private String produtorNome;
+    private String produtorTelefone; 
     private String produtorCidade;
     private String produtorRegiao;
     private LocalDateTime produtorDataCadastro;
@@ -76,6 +77,14 @@ public class ProdutoDetalhe {
 
     public void setProdutorNome(String produtorNome) {
         this.produtorNome = produtorNome;
+    }
+    
+    public String getProdutorTelefone() {
+        return produtorTelefone;
+    }
+
+    public void setProdutorTelefone(String produtorTelefone) {
+        this.produtorTelefone = produtorTelefone;
     }
 
     public String getProdutorCidade() {

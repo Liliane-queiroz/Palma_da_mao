@@ -1,0 +1,274 @@
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: 'Inter', sans-serif;
+	overflow: hidden;
+}
+
+/* ===== CONTAINER PRINCIPAL ===== */
+.container {
+	width: 100%;
+	height: 100vh;
+	min-height: 100vh;
+	display: grid;
+	grid-template-columns: 45% 55%;
+	background-color: #E4E5D3;
+}
+
+/* ===== LADO DIREITO: IMAGEM ====================== */
+.lado-imagem {
+	position: relative;
+	background-image:
+		url('../images/tela-cadastro-login/pexels-athena-6580663-teste.jpg');
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding: 2.5rem;
+	box-sizing: border-box;
+	border-radius: 0;
+}
+
+/* ===== FRASE ===== */
+.boas-vindas {
+	align-self: center;
+	text-align: center;
+	font-size: 2.5rem;
+	color: #1a1a1a;
+	margin: 0;
+	font-weight: bold;
+}
+
+/* ===== LOGO ===== */
+.logo-cadastro {
+	width: 350px;
+	height: auto;
+	transition: transform 1s ease;
+}
+
+/* Giro completo da logo */
+.logo-cadastro:hover {
+	transform: rotate(360deg);
+}
+
+/* ===== NOME DA MARCA ===== */
+.nome-marca {
+	font-family: 'Righteous', sans-serif;
+	font-size: 1.8rem;
+	color: #ffffff;
+	/* Aproxima o nome da logo sem mover a logo */
+	transform: translateY(-9.5rem);
+}
+
+/* ================================================= */
+/* ===== LADO ESQUERDO: FORMULÁRIO ================= */
+/* ================================================= */
+.lado-formulario {
+	padding: 2rem 3rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
+	background-color: #E4E5D3;
+	border-radius: 0;
+}
+
+/* ===== CABEÇALHO ===== */
+.cadastro-cabecalho {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 1.3rem;
+	background: transparent;
+	padding: 0;
+}
+
+/* ===== ÍCONE ===== */
+.cadastro-cabecalho i {
+	color: #FF7C40;
+	font-size: 1.8rem;
+	background: #034C48;
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 0.6rem;
+}
+
+/* ===== TÍTULO ===== */
+.cadastro-cabecalho h1 {
+	font-size: 1.5rem;
+	color: #1a1a1a;
+	margin: 0;
+	text-align: center;
+	font-weight: bold;
+}
+
+/* ================================================= */
+/* ===== MENSAGENS ================================= */
+/* ================================================= */
+.erro {
+	background: #FCEBEB;
+	color: #A32D2D;
+	padding: 0.8rem;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+}
+
+/* Mensagem de sucesso */
+.sucesso {
+	background: #E7F4EA;
+	color: #246B35;
+	padding: 0.8rem;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+}
+
+/* ================================================= */
+/* ===== CAMPOS ==================================== */
+/* ================================================= */
+.form-group {
+	margin-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+label {
+	font-size: 0.9rem;
+	color: #1a1a1a;
+	font-weight: 500;
+	margin-bottom: 0.4rem;
+}
+
+.campo-obrigatorio {
+	color: #FF7C40;
+}
+
+/* ===== INPUTS ===== */
+input[type="text"], input[type="email"], input[type="password"], select
+	{
+	width: 100%;
+	padding: 0.8rem 1rem;
+	border: 1px solid #cfd0be;
+	border-radius: 8px;
+	background: #fff;
+	font-size: 0.95rem;
+	font-family: 'Inter', sans-serif;
+	box-sizing: border-box;
+}
+
+/* ===== INPUT AO CLICAR ===== */
+input:focus, select:focus {
+	outline: none;
+	border-color: #588D77;
+	box-shadow: 0 0 5px rgba(88, 141, 119, 0.3);
+}
+
+/* ================================================= */
+/* ===== BOTÃO ===================================== */
+/* ================================================= */
+button[type="submit"] {
+	width: 100%;
+	background: #FF7C40;
+	color: #fff;
+	border: none;
+	padding: 0.9rem;
+	border-radius: 10px;
+	font-size: 1.05rem;
+	font-weight: 500;
+	cursor: pointer;
+	font-family: 'Inter', sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* ===== HOVER DO BOTÃO ===== */
+button[type="submit"]:hover {
+	background: #e56a30;
+	transform: translateY(-1px);
+}
+
+/* ================================================= */
+/* ===== LINK PARA CADASTRO ======================== */
+/* ================================================= */
+.voltar {
+	text-align: center;
+	margin-top: 1rem;
+	font-size: 0.9rem;
+}
+
+.voltar a {
+	color: #034C48;
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.voltar a:hover {
+	text-decoration: underline;
+}
+
+/* ================================================= */
+/* ===== RESPONSIVIDADE ============================ */
+/* ================================================= */
+@media ( max-width : 900px) {
+	.container {
+		grid-template-columns: 50% 50%;
+	}
+	.lado-formulario {
+		padding: 2rem;
+	}
+	.logo-cadastro {
+		width: 240px;
+	}
+	.boas-vindas {
+		font-size: 2.2rem;
+	}
+}
+
+/* ================================================= */
+/* ===== MOBILE ==================================== */
+/* ================================================= */
+@media ( max-width : 768px) {
+	body {
+		overflow: auto;
+	}
+	.container {
+		height: auto;
+		min-height: 100vh;
+		grid-template-columns: 1fr;
+	}
+
+	/* Formulário aparece primeiro no mobile */
+	.lado-formulario {
+		order: 1;
+		padding: 2rem 1.5rem;
+	}
+
+	/* Imagem aparece depois do formulário */
+	.lado-imagem {
+		order: 2;
+		min-height: 320px;
+		padding: 2rem;
+	}
+	.boas-vindas {
+		font-size: 1.8rem;
+	}
+	.logo-cadastro {
+		width: 180px;
+	}
+	.nome-marca {
+		font-size: 1.5rem;
+		transform: translateY(-2rem);
+	}
+}

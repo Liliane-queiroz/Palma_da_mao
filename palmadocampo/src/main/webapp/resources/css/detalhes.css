@@ -187,6 +187,7 @@
     width: 100%;
     background-color: #093824;          /* verde escuro da tua paleta */
     color: white;
+    text-decoration: none;
     border: none;
     padding: 1.4rem 1rem;
     border-radius: 10px;

@@ -143,6 +143,7 @@ body {
     white-space: nowrap;
 }
 
+.btn-entrar,
 .btn-anunciar,
 .btn-meus-anuncios,
 .btn-menu-produtor {
@@ -157,18 +158,22 @@ body {
 .btn-anunciar {
     background-color: var(--btn-anunciar);
     color: white;
+    text-decoration: none;
 }
 
+.btn-entrar,
 .btn-meus-anuncios,
 .btn-menu-produtor {
     background-color: var(--btn-outros);
     color: white;
+    text-decoration: none;
 }
 
 .btn-anunciar:hover {
-    background-color: #af2f03;
+    background-color: #d53913;
 }
 
+.btn-entrar:hover,
 .btn-meus-anuncios:hover,
 .btn-menu-produtor:hover {
     background-color: #052520;

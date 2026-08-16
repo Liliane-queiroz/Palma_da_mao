@@ -21,7 +21,7 @@
 
         <!-- Cabeçalho verde com ícone laranja -->
         <div class="cadastro-cabecalho">
-            <img src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 6.png" alt="Logo" class="cadastro-logo">
+            <img src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png" alt="Logo" class="cadastro-logo">
             <h1>Anunciar produto</h1>
         </div>
 
