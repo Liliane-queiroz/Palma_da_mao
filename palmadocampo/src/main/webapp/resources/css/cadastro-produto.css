@@ -20,7 +20,6 @@ body {
     background-color: #034C48;
     padding: 1.25rem 1.5rem;
     display: flex;
-    align-items: center;
     gap: 0.6rem;
 }
 
@@ -202,6 +201,7 @@ button[type="submit"]:hover {
 .voltar {
     text-align: center;
     margin-top: 1rem;
+    padding: 1.5rem 0;
 }
 
 .voltar a {

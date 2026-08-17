@@ -20,7 +20,7 @@ body {
 .lado-imagem {
 	position: relative;
 	background-image:
-		url('../images/tela-cadastro-login/pexels-athena-6580663-teste.jpg');
+		url('../images/tela-cadastro-login/pexels-athena.jpg');
 	background-size: cover;
 	background-position: center;
 	display: flex;

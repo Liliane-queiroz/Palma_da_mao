@@ -39,7 +39,7 @@ public class DetalheProdutoServlet extends HttpServlet {
             }
 
             requisicao.setAttribute("produto", produto);
-            requisicao.getRequestDispatcher("/WEB-INF/views/produtos/detalhes.jsp")
+            requisicao.getRequestDispatcher("/WEB-INF/views/produto/detalhes.jsp")
                       .forward(requisicao, resposta);
 
         } catch (NumberFormatException erro) {

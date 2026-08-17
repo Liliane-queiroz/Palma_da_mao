@@ -85,12 +85,12 @@
 					2026</p>
 
 				<!-- Avaliação: estrelas FIXAS, só enfeite por enquanto -->
-				<h3 class="vendedor-avaliacao-titulo">Avaliação de vendas</h3>
+				<!--  <h3 class="vendedor-avaliacao-titulo">Avaliação de vendas</h3>
 				<div class="vendedor-estrelas">
 					<i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i
 						class="bi bi-star-fill"></i> <i class="bi bi-star-half"></i> <i
 						class="bi bi-star"></i>
-				</div>
+				</div>-->
 			</div>
 
 			<!-- Botão de contato via WhatsApp -->

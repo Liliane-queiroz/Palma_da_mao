@@ -179,6 +179,37 @@ public class ProdutoDAO {
 		return produtos;
 	}
 
+	public List<ProdutoVitrine> listarPorUsuario(int usuarioId) throws SQLException {
+		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+				+ "p.prod_foto_url, c.ctg_descricao " + "FROM produto p "
+				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
+				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id " + "WHERE e.usuario_id = ? AND p.situacao_id = 1 "
+				+ "ORDER BY p.data_criacao DESC";
+
+		List<ProdutoVitrine> produtos = new ArrayList<>();
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+			comando.setInt(1, usuarioId);
+
+			try (ResultSet resultado = comando.executeQuery()) {
+				while (resultado.next()) {
+					ProdutoVitrine produto = new ProdutoVitrine();
+					produto.setId(resultado.getInt("prod_id"));
+					produto.setNome(resultado.getString("prod_nome"));
+					produto.setDescricao(resultado.getString("prod_descricao"));
+					produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+					produto.setFotoUrl(resultado.getString("prod_foto_url"));
+					produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+					produtos.add(produto);
+				}
+			}
+		}
+
+		return produtos;
+	}
+
 	/*
 	 * Pesquisa produtos ativos cujo nome, descrição OU categoria contenham o termo
 	 * digitado. O LIKE com % antes e depois acha o termo em qualquer posição do
@@ -297,6 +328,68 @@ public class ProdutoDAO {
 		produto.setProdutorRegiao(resultado.getString("usu_regiao"));
 		produto.setProdutorDataCadastro(resultado.getTimestamp("data_criacao").toLocalDateTime());
 		return produto;
+	}
+
+	/*
+	 * Deleta um produto E seu estoque associado em transação. Valida que o produto
+	 * pertence ao usuário antes de deletar.
+	 */
+	public boolean deletarComEstoque(int produtoId, int usuarioId) throws SQLException {
+		Connection conexao = null;
+		try {
+			conexao = ConexaoFactory.getConexao();
+			conexao.setAutoCommit(false);
+
+			// Verifica se o produto pertence ao usuário (via estoque)
+			String sqlVerifica = "SELECT COUNT(*) as total FROM estoque WHERE produto_id = ? AND usuario_id = ?";
+			try (PreparedStatement comando = conexao.prepareStatement(sqlVerifica)) {
+				comando.setInt(1, produtoId);
+				comando.setInt(2, usuarioId);
+				try (ResultSet resultado = comando.executeQuery()) {
+					resultado.next();
+					if (resultado.getInt("total") == 0) {
+						conexao.rollback();
+						return false; // Produto não pertence a este usuário
+					}
+				}
+			}
+
+			// Deleta o estoque
+			String sqlEstoque = "DELETE FROM estoque WHERE produto_id = ?";
+			try (PreparedStatement comando = conexao.prepareStatement(sqlEstoque)) {
+				comando.setInt(1, produtoId);
+				comando.executeUpdate();
+			}
+
+			// Deleta o produto
+			String sqlProduto = "DELETE FROM produto WHERE prod_id = ?";
+			try (PreparedStatement comando = conexao.prepareStatement(sqlProduto)) {
+				comando.setInt(1, produtoId);
+				comando.executeUpdate();
+			}
+
+			conexao.commit();
+			return true;
+
+		} catch (SQLException erro) {
+			if (conexao != null) {
+				try {
+					conexao.rollback();
+				} catch (SQLException rollbackErro) {
+					rollbackErro.printStackTrace();
+				}
+			}
+			throw erro;
+		} finally {
+			if (conexao != null) {
+				try {
+					conexao.setAutoCommit(true);
+					conexao.close();
+				} catch (SQLException erro) {
+					erro.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

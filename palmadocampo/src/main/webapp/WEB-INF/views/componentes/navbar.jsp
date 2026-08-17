@@ -14,7 +14,8 @@
 			<input type="text" name="termo" class="buscar"
 				placeholder="Buscar produtos"> <span class="separador"></span>
 			<div class="navbar-localizacao-wrapper">
-				<i class="bi bi-geo-alt"></i> <select class="navbar-localizacao">
+				<i class="bi bi-geo-alt"></i> 
+				<select class="navbar-localizacao">
 					<option value="AC">AC</option>
 					<option value="AM">AM</option>
 					<option value="PA">PA</option>
@@ -34,7 +35,8 @@
 					<!-- PRODUTOR LOGADO -->
 					<a href="${pageContext.request.contextPath}/cadastro-produto"
 						class="btn-anunciar">Anunciar</a>
-					<button class="btn-meus-anuncios">Meus anúncios</button>
+					<a href="${pageContext.request.contextPath}/meus-anuncios"
+						class="btn-meus-anuncios">Meus anúncios</a>
 					<button class="btn-menu-produtor">
 						<i class="bi bi-person-circle"></i> Olá,
 						${sessionScope.usuarioLogado.nome} <i class="bi bi-chevron-down"></i>

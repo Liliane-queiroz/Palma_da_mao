@@ -8,136 +8,159 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.palmadocampo.model.Estoque; 
+import br.com.palmadocampo.model.Estoque;
 
 /*Insere no estoque(tabela) no banco e guarda o ID gerado*/
 public class EstoqueDAO {
-/*Insere um estoque no banco com os dados do objeto recebido e depois coloca o ID gerado no objeto*/
-    public void inserir(Estoque estoque) throws SQLException {
-        String sql = "INSERT INTO estoque (usuario_id, produto_id, est_qtd, est_unidade, situacao_id) "
-                   + "VALUES (?, ?, ?, ?, ?)";
+	/*
+	 * Insere um estoque no banco com os dados do objeto recebido e depois coloca o
+	 * ID gerado no objeto
+	 */
+	public void inserir(Estoque estoque) throws SQLException {
+		String sql = "INSERT INTO estoque (usuario_id, produto_id, est_qtd, est_unidade, situacao_id) "
+				+ "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            comando.setInt(1, estoque.getUsuarioId());
-            comando.setInt(2, estoque.getProdutoId());
-            comando.setBigDecimal(3, estoque.getQuantidade());
-            comando.setString(4, estoque.getUnidade());
-            comando.setInt(5, estoque.getSituacaoId());
-            comando.executeUpdate();
+			comando.setInt(1, estoque.getUsuarioId());
+			comando.setInt(2, estoque.getProdutoId());
+			comando.setBigDecimal(3, estoque.getQuantidade());
+			comando.setString(4, estoque.getUnidade());
+			comando.setInt(5, estoque.getSituacaoId());
+			comando.executeUpdate();
 
-            try (ResultSet resultado = comando.getGeneratedKeys()) {
-                if (resultado.next()) {
-                    estoque.setId(resultado.getInt(1));
-                }
-            }
-        }
-    }
-/*Da um select em todas as colunas e ordena por ID*/
-    public List<Estoque> listarTodos() throws SQLException {
-        String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
-                   + "situacao_id, data_criacao, data_atualizacao "
-                   + "FROM estoque ORDER BY est_id";
+			try (ResultSet resultado = comando.getGeneratedKeys()) {
+				if (resultado.next()) {
+					estoque.setId(resultado.getInt(1));
+				}
+			}
+		}
+	}
 
-        List<Estoque> estoques = new ArrayList<>();
+	/* Da um select em todas as colunas e ordena por ID */
+	public List<Estoque> listarTodos() throws SQLException {
+		String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
+				+ "situacao_id, data_criacao, data_atualizacao " + "FROM estoque ORDER BY est_id";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql);
-             ResultSet resultado = comando.executeQuery()) {
+		List<Estoque> estoques = new ArrayList<>();
 
-/*Enquanto tiver linhas no resultado, chama o método montarEstoque() pra cada linha e adiciona na lista*/
-            while (resultado.next()) {
-                estoques.add(montarEstoque(resultado));
-            }
-        }
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql);
+				ResultSet resultado = comando.executeQuery()) {
 
-        return estoques;
-    }
+			/*
+			 * Enquanto tiver linhas no resultado, chama o método montarEstoque() pra cada
+			 * linha e adiciona na lista
+			 */
+			while (resultado.next()) {
+				estoques.add(montarEstoque(resultado));
+			}
+		}
 
-/*Da um select em todas as colunas para procurar um valor ainda não definido*/
-    public Estoque buscarPorId(int id) throws SQLException {
-        String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
-                   + "situacao_id, data_criacao, data_atualizacao "
-                   + "FROM estoque WHERE est_id = ?";
+		return estoques;
+	}
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+	/* Da um select em todas as colunas para procurar um valor ainda não definido */
+	public Estoque buscarPorId(int id) throws SQLException {
+		String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
+				+ "situacao_id, data_criacao, data_atualizacao " + "FROM estoque WHERE est_id = ?";
 
-            comando.setInt(1, id);
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-            try (ResultSet resultado = comando.executeQuery()) {
-                if (resultado.next()) {
-                    return montarEstoque(resultado);
-                }
-            }
-        }
+			comando.setInt(1, id);
 
-        return null;
-    }
+			try (ResultSet resultado = comando.executeQuery()) {
+				if (resultado.next()) {
+					return montarEstoque(resultado);
+				}
+			}
+		}
 
-    public List<Estoque> listarPorUsuario(int usuarioId) throws SQLException {
-        String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
-                   + "situacao_id, data_criacao, data_atualizacao "
-                   + "FROM estoque WHERE usuario_id = ? ORDER BY data_criacao DESC";
+		return null;
+	}
 
-        List<Estoque> estoques = new ArrayList<>();
+	public List<Estoque> listarPorUsuario(int usuarioId) throws SQLException {
+		String sql = "SELECT est_id, usuario_id, produto_id, est_qtd, est_unidade, "
+				+ "situacao_id, data_criacao, data_atualizacao "
+				+ "FROM estoque WHERE usuario_id = ? ORDER BY data_criacao DESC";
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+		List<Estoque> estoques = new ArrayList<>();
 
-            comando.setInt(1, usuarioId);
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-            try (ResultSet resultado = comando.executeQuery()) {
-                while (resultado.next()) {
-                    estoques.add(montarEstoque(resultado));
-                }
-            }
-        }
+			comando.setInt(1, usuarioId);
 
-        return estoques;
-    }
+			try (ResultSet resultado = comando.executeQuery()) {
+				while (resultado.next()) {
+					estoques.add(montarEstoque(resultado));
+				}
+			}
+		}
 
-/*Comando apenas para admin executar*/ 
-    public void atualizar(Estoque estoque) throws SQLException {
-        String sql = "UPDATE estoque SET usuario_id = ?, produto_id = ?, est_qtd = ?, "
-                   + "est_unidade = ?, situacao_id = ? WHERE est_id = ?";
+		return estoques;
+	}
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+	/* Comando apenas para admin executar */
+	public void atualizar(Estoque estoque) throws SQLException {
+		String sql = "UPDATE estoque SET usuario_id = ?, produto_id = ?, est_qtd = ?, "
+				+ "est_unidade = ?, situacao_id = ? WHERE est_id = ?";
 
-            comando.setInt(1, estoque.getUsuarioId());
-            comando.setInt(2, estoque.getProdutoId());
-            comando.setBigDecimal(3, estoque.getQuantidade());
-            comando.setString(4, estoque.getUnidade());
-            comando.setInt(5, estoque.getSituacaoId());
-            comando.setInt(6, estoque.getId());
-            comando.executeUpdate();
-        }
-    }
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-/*Comando apenas para admin executar*/ 
-    public void deletar(int id) throws SQLException {
-        String sql = "DELETE FROM estoque WHERE est_id = ?";
+			comando.setInt(1, estoque.getUsuarioId());
+			comando.setInt(2, estoque.getProdutoId());
+			comando.setBigDecimal(3, estoque.getQuantidade());
+			comando.setString(4, estoque.getUnidade());
+			comando.setInt(5, estoque.getSituacaoId());
+			comando.setInt(6, estoque.getId());
+			comando.executeUpdate();
+		}
+	}
 
-        try (Connection conexao = ConexaoFactory.getConexao();
-             PreparedStatement comando = conexao.prepareStatement(sql)) {
+	/* Comando apenas para admin executar */
+	public void deletar(int id) throws SQLException {
+		String sql = "DELETE FROM estoque WHERE est_id = ?";
 
-            comando.setInt(1, id);
-            comando.executeUpdate();
-        }
-    }
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-    private Estoque montarEstoque(ResultSet resultado) throws SQLException {
-        Estoque estoque = new Estoque();
-        estoque.setId(resultado.getInt("est_id"));
-        estoque.setUsuarioId(resultado.getInt("usuario_id"));
-        estoque.setProdutoId(resultado.getInt("produto_id"));
-        estoque.setQuantidade(resultado.getBigDecimal("est_qtd"));
-        estoque.setUnidade(resultado.getString("est_unidade"));
-        estoque.setSituacaoId(resultado.getInt("situacao_id"));
-        estoque.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
-        estoque.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
-        return estoque;
-    }
+			comando.setInt(1, id);
+			comando.executeUpdate();
+		}
+	}
+
+	private Estoque montarEstoque(ResultSet resultado) throws SQLException {
+		Estoque estoque = new Estoque();
+		estoque.setId(resultado.getInt("est_id"));
+		estoque.setUsuarioId(resultado.getInt("usuario_id"));
+		estoque.setProdutoId(resultado.getInt("produto_id"));
+		estoque.setQuantidade(resultado.getBigDecimal("est_qtd"));
+		estoque.setUnidade(resultado.getString("est_unidade"));
+		estoque.setSituacaoId(resultado.getInt("situacao_id"));
+		estoque.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
+		estoque.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
+		return estoque;
+	}
+
+	public Estoque buscarPorProdutoId(int produtoId) throws SQLException {
+		String sql = "SELECT * FROM estoque WHERE produto_id = ? LIMIT 1";
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+			comando.setInt(1, produtoId);
+
+			try (ResultSet resultado = comando.executeQuery()) {
+				if (resultado.next()) {
+					return montarEstoque(resultado);
+				}
+			}
+		}
+
+		return null;
+	}
 }

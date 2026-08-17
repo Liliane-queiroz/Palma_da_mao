@@ -8,330 +8,304 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.io.IOException;
 import br.com.palmadocampo.dao.CategoriaDAO;
 import br.com.palmadocampo.dao.ConexaoFactory;
+import br.com.palmadocampo.dao.EstoqueDAO;
+import br.com.palmadocampo.dao.ProdutoDAO;
 import br.com.palmadocampo.model.Categoria;
+import br.com.palmadocampo.model.Estoque;
+import br.com.palmadocampo.model.Produto;
+import br.com.palmadocampo.model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import jakarta.servlet.http.HttpSession;
-import br.com.palmadocampo.model.Usuario;
+import jakarta.servlet.http.Part;
 
 @WebServlet("/cadastro-produto")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1 MB
-        maxFileSize = 5242880, // 5 MB
-        maxRequestSize = 5242880 // 5 MB
-)
+@MultipartConfig(maxFileSize = 5242880, maxRequestSize = 52428800)
 public class CadastroProdutoServlet extends HttpServlet {
 
-    private static final String PASTA_UPLOAD = "resources/images/uploads/produtos/";
+	private static final long serialVersionUID = 1L;
+	private static final String PASTA_UPLOAD = "resources/images/uploads/produtos/";
 
+	@Override
+	protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta)
+			throws ServletException, IOException {
 
-    @Override
-    protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta)
-            throws ServletException, IOException {
+		// Pega o produtor logado
+		HttpSession sessao = requisicao.getSession(false);
+		Usuario produtorLogado = (sessao != null) ? (Usuario) sessao.getAttribute("usuarioLogado") : null;
 
-        try {
-            CategoriaDAO categoriaDAO = new CategoriaDAO();
-            List<Categoria> categoriasAtivas = categoriaDAO.listarAtivas();
-            requisicao.setAttribute("categorias", categoriasAtivas);
-            requisicao.getRequestDispatcher("/WEB-INF/views/produto/cadastro-produto.jsp")
-                    .forward(requisicao, resposta);
-        } catch (SQLException erro) {
-            erro.printStackTrace();
-            resposta.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao carregar categorias");
-        }
-    }
+		if (produtorLogado == null) {
+			resposta.sendRedirect(requisicao.getContextPath() + "/login");
+			return;
+		}
 
-    @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
-            throws ServletException, IOException {
-    	
-    	// Pega o produtor logado — o AutenticacaoFilter já garante que existe sessão aqui,
-        // mas pegamos com segurança mesmo assim (defesa em profundidade)
-        HttpSession sessao = requisicao.getSession(false);
-        Usuario produtorLogado = (sessao != null)
-                ? (Usuario) sessao.getAttribute("usuarioLogado")
-                : null;
+		try {
+			// Verifica se é edição (tem ID na URL) ou criação (sem ID)
+			String produtoIdStr = requisicao.getParameter("id");
+			Produto produtoParaEditar = null;
+			boolean eEdicao = false;
 
-        if (produtorLogado == null) {
-            resposta.sendRedirect(requisicao.getContextPath() + "/login");
-            return;
-        }
+			if (produtoIdStr != null && !produtoIdStr.isEmpty()) {
+				try {
+					int produtoId = Integer.parseInt(produtoIdStr);
+					ProdutoDAO produtoDAO = new ProdutoDAO();
+					produtoParaEditar = produtoDAO.buscarPorId(produtoId);
 
-        try {
-            // ===== ETAPA 1: Validar e processar upload de MÚLTIPLAS imagens =====
-            Collection<Part> todasAsParts = requisicao.getParts()
-                .stream()
-                .filter(part -> "arquivo".equals(part.getName()) && part.getSize() > 0)
-                .collect(Collectors.toList());
+					// Valida que o produto pertence ao usuário logado
+					if (produtoParaEditar != null) {
+						// Busca o estoque pra confirmar que pertence ao usuário
+						EstoqueDAO estoqueDAO = new EstoqueDAO();
+						Estoque estoque = estoqueDAO.buscarPorProdutoId(produtoId);
 
-            if (todasAsParts.isEmpty()) {
-                requisicao.setAttribute("erro", "Você deve selecionar pelo menos uma imagem");
-                doGet(requisicao, resposta);
-                return;
-            }
+						if (estoque != null && estoque.getUsuarioId() == produtorLogado.getId()) {
+							eEdicao = true;
+							requisicao.setAttribute("produtoParaEditar", produtoParaEditar);
+							requisicao.setAttribute("estoque", estoque);
+							requisicao.setAttribute("eEdicao", true);
+						} else {
+							// Produto não pertence ao usuário — redireciona
+							resposta.sendRedirect(requisicao.getContextPath() + "/meus-anuncios");
+							return;
+						}
+					}
+				} catch (NumberFormatException erro) {
+					// ID inválido — continua como criação
+				}
+			}
 
-            // Validar quantidade máxima
-            if (todasAsParts.size() > 5) {
-                requisicao.setAttribute("erro", "Máximo 5 fotos permitidas!");
-                doGet(requisicao, resposta);
-                return;
-            }
+			// Se não é edição, apenas manda pra criar novo
+			if (!eEdicao) {
+				requisicao.setAttribute("eEdicao", false);
+			}
 
-            // Lista pra guardar os caminhos das fotos
-            List<String> caminhosFotos = new ArrayList<>();
-            List<String> caminhosCompletos = new ArrayList<>(); // Pra deletar se erro
+			// Carrega as categorias
+			CategoriaDAO categoriaDAO = new CategoriaDAO();
+			List<Categoria> categorias = categoriaDAO.listarAtivas();
+			requisicao.setAttribute("categorias", categorias);
 
-            // Processar cada arquivo
-            for (Part parteArquivo : todasAsParts) {
-                
-                // Validar se é imagem
-                String tipoConteudo = parteArquivo.getContentType();
-                if (!tipoConteudo.startsWith("image/")) {
-                    // Deletar fotos já salvadas
-                    for (String caminho : caminhosCompletos) {
-                        deletarArquivo(caminho);
-                    }
-                    requisicao.setAttribute("erro", "Um ou mais arquivos não são imagens (JPG, PNG, GIF)");
-                    doGet(requisicao, resposta);
-                    return;
-                }
+			requisicao.getRequestDispatcher("/WEB-INF/views/produto/cadastro-produto.jsp").forward(requisicao,
+					resposta);
 
-                // Validar tamanho (máx 5MB)
-                if (parteArquivo.getSize() > 5 * 1024 * 1024) {
-                    // Deletar fotos já salvadas
-                    for (String caminho : caminhosCompletos) {
-                        deletarArquivo(caminho);
-                    }
-                    requisicao.setAttribute("erro", "Uma ou mais fotos ultrapassam 5 MB!");
-                    doGet(requisicao, resposta);
-                    return;
-                }
+		} catch (SQLException erro) {
+			erro.printStackTrace();
+			resposta.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao carregar dados do produto");
+		}
+	}
 
-                // Gerar nome do arquivo com timestamp
-                String nomeOriginal = extrairNomeArquivo(parteArquivo);
-                String extensao = extrairExtensao(nomeOriginal);
-                String nomeArquivo = System.currentTimeMillis() + "_" + nomeOriginal;
+	@Override
+	protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+			throws ServletException, IOException {
 
-                // Salvar arquivo no servidor
-                String caminhoAbsoluto = getServletContext().getRealPath("/") + PASTA_UPLOAD;
-                String caminhoRelativo = "/" + PASTA_UPLOAD + nomeArquivo;
+		// Pega o produtor logado — o AutenticacaoFilter já garante que existe sessão
+		// aqui,
+		// mas pegamos com segurança mesmo assim (defesa em profundidade)
+		HttpSession sessao = requisicao.getSession(false);
+		Usuario produtorLogado = (sessao != null) ? (Usuario) sessao.getAttribute("usuarioLogado") : null;
 
-                // Criar a pasta se não existir
-                File pastaUpload = new File(caminhoAbsoluto);
-                if (!pastaUpload.exists()) {
-                    pastaUpload.mkdirs();
-                    System.out.println("Pasta criada: " + caminhoAbsoluto);
-                }
+		if (produtorLogado == null) {
+			resposta.sendRedirect(requisicao.getContextPath() + "/login");
+			return;
+		}
 
-                String caminhoCompleto = caminhoAbsoluto + nomeArquivo;
-                parteArquivo.write(caminhoCompleto);
-                System.out.println("Arquivo salvo em: " + caminhoCompleto);
+		try {
+			// ===== ETAPA 1: Validar e processar upload de MÚLTIPLAS imagens =====
+			Collection<Part> todasAsParts = requisicao.getParts();
 
-                // Adicionar na lista de caminhos
-                caminhosFotos.add(caminhoRelativo);
-                caminhosCompletos.add(caminhoCompleto);
-            }
+			List<String> caminhosCompletos = new ArrayList<>();
 
-            // Juntar todos os caminhos em uma string separada por vírgula
-            String fotosUrl = String.join(",", caminhosFotos);
+			// Filtra só as partes que são arquivo (tem "filename")
+			for (Part part : todasAsParts) {
+				if (part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
+					String nomeArquivo = gerarNomeUnicoArquivo(part.getSubmittedFileName());
+					String caminhoRelativo = PASTA_UPLOAD + nomeArquivo;
+					String caminhoAbsoluto = requisicao.getServletContext().getRealPath("/") + caminhoRelativo;
 
-            // ===== ETAPA 2: Coletar dados do formulário =====
-            String produtoNome = requisicao.getParameter("nome").trim();
-            String produtoDescricao = requisicao.getParameter("descricao").trim();
-            String produtoPreco = requisicao.getParameter("preco").trim();
-            String categoriaIdStr = requisicao.getParameter("categoria");
-            String quantidadeStr = requisicao.getParameter("quantidade").trim();
-            String unidade = requisicao.getParameter("unidade").trim();
-            String dataEntregaStr = requisicao.getParameter("dataEntrega").trim();
+					// Cria pasta se não existir
+					File pastaUpload = new File(requisicao.getServletContext().getRealPath("/") + PASTA_UPLOAD);
+					if (!pastaUpload.exists()) {
+						pastaUpload.mkdirs();
+					}
 
-            // Validar campos obrigatórios
-            if (produtoNome.isEmpty() || categoriaIdStr == null || quantidadeStr.isEmpty() ||
-                    unidade.isEmpty()) {
-                // Deletar fotos se erro
-                for (String caminho : caminhosCompletos) {
-                    deletarArquivo(caminho);
-                }
-                requisicao.setAttribute("erro", "Preencha todos os campos obrigatórios");
-                doGet(requisicao, resposta);
-                return;
-            }
+					// Salva o arquivo
+					part.write(caminhoAbsoluto);
+					caminhosCompletos.add(caminhoAbsoluto);
 
-            // Converter tipos
-            int categoriaId = Integer.parseInt(categoriaIdStr);
-            Double produtoPrecoDouble = produtoPreco.isEmpty() ? null : Double.parseDouble(produtoPreco);
-            Double quantidade = Double.parseDouble(quantidadeStr);
-            LocalDate dataEntrega = dataEntregaStr.isEmpty() ? null
-                    : LocalDate.parse(dataEntregaStr, DateTimeFormatter.ISO_LOCAL_DATE);
+					System.out.println("Arquivo salvo: " + caminhoAbsoluto);
+				}
+			}
 
-            // ===== ETAPA 3: Inserir Produto e Estoque em TRANSAÇÃO =====
-            Connection conexao = null;
-            try {
-                conexao = ConexaoFactory.getConexao();
+			// ===== ETAPA 2: Validar e processar dados do formulário =====
+			String nomeProduto = requisicao.getParameter("nome");
+			String descricaoProduto = requisicao.getParameter("descricao");
+			String precoStr = requisicao.getParameter("preco");
+			String categoriaIdStr = requisicao.getParameter("categoria");
+			String quantidade = requisicao.getParameter("quantidade");
+			String unidade = requisicao.getParameter("unidade");
 
-                // Desabilitar auto-commit para controlar transação
-                conexao.setAutoCommit(false);
+			// Validações básicas
+			if (nomeProduto == null || nomeProduto.trim().isEmpty()) {
+				throw new IllegalArgumentException("Nome do produto é obrigatório");
+			}
+			if (precoStr == null || precoStr.trim().isEmpty()) {
+				throw new IllegalArgumentException("Preço é obrigatório");
+			}
+			if (categoriaIdStr == null || categoriaIdStr.trim().isEmpty()) {
+				throw new IllegalArgumentException("Categoria é obrigatória");
+			}
 
-                // INSERT PRODUTO
-                String sqlProduto = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, " +
-                        "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			java.math.BigDecimal precoProduto = new java.math.BigDecimal(precoStr.replace(",", "."));
+			int categoriaId = Integer.parseInt(categoriaIdStr);
+			int quantidadeInt = Integer.parseInt(quantidade != null ? quantidade : "0");
 
-                int produtoId;
-                try (PreparedStatement comandoProduto = conexao.prepareStatement(sqlProduto,
-                        PreparedStatement.RETURN_GENERATED_KEYS)) {
-                    comandoProduto.setString(1, produtoNome);
-                    comandoProduto.setString(2, produtoDescricao);
-                    if (produtoPrecoDouble != null) {
-                        comandoProduto.setDouble(3, produtoPrecoDouble);
-                    } else {
-                        comandoProduto.setNull(3, java.sql.Types.DECIMAL);
-                    }
-                    comandoProduto.setString(4, fotosUrl); // Múltiplas fotos separadas por vírgula
-                    if (dataEntrega != null) {
-                        comandoProduto.setObject(5, dataEntrega);
-                    } else {
-                        comandoProduto.setNull(5, java.sql.Types.DATE);
-                    }
-                    comandoProduto.setInt(6, categoriaId);
-                    comandoProduto.setInt(7, 1); // situacao_id = 1 (ATIVO)
+			System.out.println("Dados validados: nome=" + nomeProduto + ", preco=" + precoProduto);
 
-                    int linhasAfetadas = comandoProduto.executeUpdate();
-                    System.out.println("INSERT Produto: " + linhasAfetadas + " linhas afetadas");
+			// ===== ETAPA 3: Inserir ou atualizar ESTOQUE =====
 
-                    try (ResultSet chaveGerada = comandoProduto.getGeneratedKeys()) {
-                        if (chaveGerada.next()) {
-                            produtoId = chaveGerada.getInt(1);
-                            System.out.println("Produto criado com ID: " + produtoId);
-                        } else {
-                            throw new SQLException("Falha ao obter ID do produto gerado");
-                        }
-                    }
-                }
+			Connection conexao = ConexaoFactory.getConexao();
+			conexao.setAutoCommit(false);
 
-                // INSERT ESTOQUE - associa o produto ao usuário (produtor)
-                String sqlEstoque = "INSERT INTO estoque (usuario_id, produto_id, est_qtd, est_unidade, situacao_id) " +
-                        "VALUES (?, ?, ?, ?, ?)";
+			// Verifica se é edição (tem ID na URL)
+			String produtoIdStr = requisicao.getParameter("id");
+			boolean eEdicao = produtoIdStr != null && !produtoIdStr.isEmpty();
+			int produtoId = 0;
+			int produtoIdExistente = 0;
 
-                try (PreparedStatement comandoEstoque = conexao.prepareStatement(sqlEstoque)) {
-                	comandoEstoque.setInt(1, produtorLogado.getId()); // ID do produtor logado
-                    comandoEstoque.setInt(2, produtoId);
-                    comandoEstoque.setDouble(3, quantidade);
-                    comandoEstoque.setString(4, unidade);
-                    comandoEstoque.setInt(5, 1); // situacao_id = 1 (ATIVO)
+			if (eEdicao) {
+				try {
+					produtoIdExistente = Integer.parseInt(produtoIdStr);
+				} catch (NumberFormatException erro) {
+					eEdicao = false;
+				}
+			}
 
-                    int linhasAfetadas = comandoEstoque.executeUpdate();
-                    System.out.println("INSERT Estoque: " + linhasAfetadas + " linhas afetadas");
-                }
+			if (eEdicao) {
+				// ===== UPDATE: Editar produto e estoque existente =====
+				String sqlUpdateProduto = "UPDATE produto SET prod_nome = ?, prod_descricao = ?, "
+						+ "prod_preco_estimado = ?, categoria_id = ? WHERE prod_id = ?";
 
-                // Se chegou aqui, ambos os INSERTs funcionaram
-                conexao.commit();
-                System.out.println("COMMIT realizado com sucesso");
+				try (PreparedStatement comandoProduto = conexao.prepareStatement(sqlUpdateProduto)) {
+					comandoProduto.setString(1, nomeProduto);
+					comandoProduto.setString(2, descricaoProduto);
+					comandoProduto.setBigDecimal(3, precoProduto);
+					comandoProduto.setInt(4, categoriaId);
+					comandoProduto.setInt(5, produtoIdExistente);
+					comandoProduto.executeUpdate();
+				}
 
-            } catch (SQLException erro) {
-                System.out.println("ERRO na transação: " + erro.getMessage());
-                erro.printStackTrace();
+				// UPDATE no estoque (só quantidade e unidade)
+				String sqlUpdateEstoque = "UPDATE estoque SET est_qtd = ?, est_unidade = ? WHERE produto_id = ?";
 
-                // Se qualquer coisa deu errado, desfaz tudo
-                if (conexao != null) {
-                    try {
-                        conexao.rollback();
-                        System.out.println("ROLLBACK realizado");
-                    } catch (SQLException rollbackErro) {
-                        rollbackErro.printStackTrace();
-                    }
-                }
+				try (PreparedStatement comandoEstoque = conexao.prepareStatement(sqlUpdateEstoque)) {
+					comandoEstoque.setInt(1, quantidadeInt);
+					comandoEstoque.setString(2, unidade);
+					comandoEstoque.setInt(3, produtoIdExistente);
+					comandoEstoque.executeUpdate();
+				}
 
-                // Deletar todas as fotos em caso de erro
-                for (String caminho : caminhosCompletos) {
-                    deletarArquivo(caminho);
-                }
-                requisicao.setAttribute("erro", "Erro ao publicar o anúncio: " + erro.getMessage());
-                try {
-                    doGet(requisicao, resposta);
-                } catch (ServletException e) {
-                    e.printStackTrace();
-                }
-                return;
+				System.out.println("UPDATE realizado com sucesso");
+				requisicao.setAttribute("sucesso", "Anúncio atualizado com sucesso");
 
-            } finally {
-                // Restaurar auto-commit e fechar conexão
-                if (conexao != null) {
-                    try {
-                        conexao.setAutoCommit(true);
-                        conexao.close();
-                        System.out.println("Conexão fechada");
-                    } catch (SQLException erro) {
-                        erro.printStackTrace();
-                    }
-                }
-            }
+			} else {
+				// ===== INSERT: Criar novo produto e estoque =====
+				String sqlProduto = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, "
+						+ "categoria_id, situacao_id, prod_data_criacao) VALUES (?, ?, ?, ?, 1, NOW())";
 
-            // ===== ETAPA 4: POST-Redirect-GET =====
-            resposta.sendRedirect(requisicao.getContextPath() + "/vitrine");
+				try (PreparedStatement comandoProduto = conexao.prepareStatement(sqlProduto,
+						Statement.RETURN_GENERATED_KEYS)) {
+					comandoProduto.setString(1, nomeProduto);
+					comandoProduto.setString(2, descricaoProduto);
+					comandoProduto.setBigDecimal(3, precoProduto);
+					comandoProduto.setInt(4, categoriaId);
+					comandoProduto.executeUpdate();
 
-        } catch (NumberFormatException erro) {
-            requisicao.setAttribute("erro", "Valores numéricos inválidos");
-            try {
-                doGet(requisicao, resposta);
-            } catch (ServletException e) {
-                e.printStackTrace();
-            }
-        } catch (Exception erro) {
-            erro.printStackTrace();
-            try {
-                requisicao.setAttribute("erro", "Erro inesperado: " + erro.getMessage());
-                doGet(requisicao, resposta);
-            } catch (ServletException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+					try (ResultSet chaves = comandoProduto.getGeneratedKeys()) {
+						if (chaves.next()) {
+							produtoId = chaves.getInt(1);
+						}
+					}
+				}
 
-    /**
-     * Extrai o nome do arquivo de um Part (multipart)
-     */
-    private String extrairNomeArquivo(Part part) {
-        String contentDisposition = part.getHeader("content-disposition");
-        for (String token : contentDisposition.split(";")) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length() - 1);
-            }
-        }
-        return "arquivo";
-    }
+				String sqlEstoque = "INSERT INTO estoque (usuario_id, produto_id, est_qtd, est_unidade, situacao_id) "
+						+ "VALUES (?, ?, ?, ?, 1)";
 
-    /**
-     * Extrai a extensão do arquivo
-     */
-    private String extrairExtensao(String nomeArquivo) {
-        int ultimoPonto = nomeArquivo.lastIndexOf(".");
-        if (ultimoPonto > 0) {
-            return nomeArquivo.substring(ultimoPonto);
-        }
-        return "";
-    }
+				try (PreparedStatement comandoEstoque = conexao.prepareStatement(sqlEstoque)) {
+					comandoEstoque.setInt(1, produtorLogado.getId());
+					comandoEstoque.setInt(2, produtoId);
+					comandoEstoque.setInt(3, quantidadeInt);
+					comandoEstoque.setString(4, unidade);
+					comandoEstoque.executeUpdate();
+				}
 
-    /**
-     * Deleta arquivo em caso de erro
-     */
-    private void deletarArquivo(String caminho) {
-        try {
-            Files.deleteIfExists(Paths.get(caminho));
-        } catch (IOException erro) {
-            System.err.println("Erro ao deletar arquivo: " + erro.getMessage());
-        }
-    }
+				System.out.println("INSERT realizado com sucesso");
+				requisicao.setAttribute("sucesso", "Anúncio criado com sucesso");
+			}
+
+			// Se chegou aqui, tudo funcionou
+			conexao.commit();
+			System.out.println("COMMIT realizado com sucesso");
+
+		} catch (SQLException erro) {
+			System.out.println("ERRO na transação: " + erro.getMessage());
+			erro.printStackTrace();
+
+			// Se qualquer coisa deu errado, desfaz tudo
+			try {
+				Connection conexao = ConexaoFactory.getConexao();
+				conexao.rollback();
+				System.out.println("ROLLBACK realizado");
+			} catch (SQLException rollbackErro) {
+				rollbackErro.printStackTrace();
+			}
+
+			// Deletar todas as fotos em caso de erro
+			// for (String caminho : caminhosCompletos) {
+			// deletarArquivo(caminho);
+			// }
+			requisicao.setAttribute("erro", "Erro ao publicar o anúncio: " + erro.getMessage());
+			try {
+				doGet(requisicao, resposta);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
+			return;
+
+		} finally {
+			// Restaurar auto-commit
+			try {
+				Connection conexao = ConexaoFactory.getConexao();
+				conexao.setAutoCommit(true);
+				System.out.println("Auto-commit restaurado");
+			} catch (SQLException erro) {
+				erro.printStackTrace();
+			}
+		}
+
+		// Redireciona para "Meus anúncios" após sucesso
+		resposta.sendRedirect(requisicao.getContextPath() + "/meus-anuncios");
+	}
+
+	private String gerarNomeUnicoArquivo(String nomeOriginal) {
+		String timestamp = String.valueOf(System.currentTimeMillis());
+		String extensao = nomeOriginal.substring(nomeOriginal.lastIndexOf("."));
+		return timestamp + extensao;
+	}
+
+	private void deletarArquivo(String caminho) {
+		try {
+			Files.deleteIfExists(Paths.get(caminho));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
