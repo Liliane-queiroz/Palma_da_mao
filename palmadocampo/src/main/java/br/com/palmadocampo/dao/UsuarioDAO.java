@@ -48,7 +48,8 @@ public class UsuarioDAO {
 	public List<Usuario> listarTodos() throws SQLException {
 		String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
 				+ "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
-				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao " + "FROM usuario ORDER BY usu_nome";
+				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao "
+				+ "FROM usuario ORDER BY usu_nome";
 
 		List<Usuario> usuarios = new ArrayList<>();
 
@@ -68,7 +69,8 @@ public class UsuarioDAO {
 	public Usuario buscarPorId(int id) throws SQLException {
 		String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
 				+ "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
-				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao " + "FROM usuario WHERE usu_id = ?";
+				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao "
+				+ "FROM usuario WHERE usu_id = ?";
 
 		try (Connection conexao = ConexaoFactory.getConexao();
 				PreparedStatement comando = conexao.prepareStatement(sql)) {
@@ -165,7 +167,8 @@ public class UsuarioDAO {
 	public Usuario buscarPorEmail(String email) throws SQLException {
 		String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
 				+ "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
-				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao " + "FROM usuario WHERE usu_email = ?";
+				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao "
+				+ "FROM usuario WHERE usu_email = ?";
 
 		try (Connection conexao = ConexaoFactory.getConexao();
 				PreparedStatement comando = conexao.prepareStatement(sql)) {
@@ -219,6 +222,33 @@ public class UsuarioDAO {
 		}
 	}
 
+	public void atualizarApresentacao(int usuarioId, String apresentacao) throws SQLException {
+		String sql = "UPDATE usuario SET usu_apresentacao = ? WHERE usu_id = ?";
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+			comando.setString(1, apresentacao);
+			comando.setInt(2, usuarioId);
+			comando.executeUpdate();
+		}
+	}
+
+	public void atualizarPerfil(int usuarioId, String telefone, String nomePropriedade, String apresentacao)
+			throws SQLException {
+		String sql = "UPDATE usuario SET usu_telefone = ?, usu_nome_propriedade = ?, usu_apresentacao = ? WHERE usu_id = ?";
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+			comando.setString(1, telefone);
+			comando.setString(2, nomePropriedade);
+			comando.setString(3, apresentacao);
+			comando.setInt(4, usuarioId);
+			comando.executeUpdate();
+		}
+	}
+
 	private Usuario montarUsuario(ResultSet resultado) throws SQLException {
 		Usuario usuario = new Usuario();
 		usuario.setId(resultado.getInt("usu_id"));
@@ -235,6 +265,7 @@ public class UsuarioDAO {
 		usuario.setSituacaoId(resultado.getInt("situacao_id"));
 		usuario.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
 		usuario.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
+		usuario.setApresentacao(resultado.getString("usu_apresentacao"));
 		return usuario;
 	}
 

@@ -292,7 +292,7 @@ public class ProdutoDAO {
 	public ProdutoDetalhe buscarDetalhePorId(int id) throws SQLException {
 		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
 				+ "p.prod_foto_url, c.ctg_descricao, "
-				+ "u.usu_nome, u.usu_cidade, u.usu_regiao, u.usu_telefone, u.data_criacao " + "FROM produto p "
+				+ "u.usu_id, u.usu_nome, u.usu_cidade, u.usu_regiao, u.usu_telefone, u.data_criacao " + "FROM produto p "
 				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
 				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id "
 				+ "INNER JOIN usuario u ON e.usuario_id = u.usu_id " + "WHERE p.prod_id = ? AND p.situacao_id = 1";
@@ -323,6 +323,7 @@ public class ProdutoDAO {
 		produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
 
 		produto.setProdutorNome(resultado.getString("usu_nome"));
+		produto.setProdutorId(resultado.getInt("usu_id"));
 		produto.setProdutorTelefone(resultado.getString("usu_telefone"));
 		produto.setProdutorCidade(resultado.getString("usu_cidade"));
 		produto.setProdutorRegiao(resultado.getString("usu_regiao"));
@@ -390,6 +391,26 @@ public class ProdutoDAO {
 				}
 			}
 		}
+	}
+	
+	public int contarPorUsuario(int usuarioId) throws SQLException {
+		String sql = "SELECT COUNT(*) as total FROM produto p "
+				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id "
+				+ "WHERE e.usuario_id = ? AND p.situacao_id = 1";
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+			comando.setInt(1, usuarioId);
+
+			try (ResultSet resultado = comando.executeQuery()) {
+				if (resultado.next()) {
+					return resultado.getInt("total");
+				}
+			}
+		}
+
+		return 0;
 	}
 
 }

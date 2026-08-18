@@ -8,28 +8,28 @@
 	gap: 1.5rem;
 }
 
-/* ===== SEÇÃO TÍTULO ===== */
+
 .secao-titulo {
-	max-width: 1280px;
-	margin: 2rem auto 0 auto;
-	padding: 0 1rem;
+	/*max-width: 1280px;*/
+	margin: 1.5rem 0 0 0;
 	border-bottom: 1px solid #F5F6E3;
-	padding-bottom: 1.5rem;
+	padding: 0 1rem 1.5rem 1rem;
 }
 
 .titulo-container {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+	max-width: 1280px;
+	margin: 0 auto;
 }
 
 .secao-titulo h1 {
-	font-size: 2rem;
+	font-size: 1.8rem;
 	color: #1a1a1a;
 	font-weight: bold;
 	margin: 0;
 }
-
 .contador-produtos {
 	background-color: #588D77;
 	color: white;

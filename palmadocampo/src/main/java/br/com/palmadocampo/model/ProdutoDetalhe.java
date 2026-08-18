@@ -19,6 +19,7 @@ public class ProdutoDetalhe {
     private String produtorCidade;
     private String produtorRegiao;
     private LocalDateTime produtorDataCadastro;
+    private int produtorId;
 
     public ProdutoDetalhe() {
     }
@@ -109,5 +110,13 @@ public class ProdutoDetalhe {
 
     public void setProdutorDataCadastro(LocalDateTime produtorDataCadastro) {
         this.produtorDataCadastro = produtorDataCadastro;
+    }
+    
+    public int getProdutorId() {
+        return produtorId;
+    }
+
+    public void setProdutorId(int produtorId) {
+        this.produtorId = produtorId;
     }
 }

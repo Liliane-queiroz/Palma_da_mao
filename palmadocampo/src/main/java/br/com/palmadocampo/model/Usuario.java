@@ -144,4 +144,14 @@ public class Usuario {
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
+    
+    private String apresentacao;
+
+    public String getApresentacao() {
+        return apresentacao;
+    }
+
+    public void setApresentacao(String apresentacao) {
+        this.apresentacao = apresentacao;
+    }
 }

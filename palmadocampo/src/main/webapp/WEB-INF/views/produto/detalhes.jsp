@@ -6,7 +6,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>${produto.nome}- Palma do Campo</title>
+<title>${produto.nome}-Palma do Campo</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/global.css">
 <link rel="stylesheet" type="text/css"
@@ -74,23 +74,18 @@
 			<div class="detalhes-vendedor">
 				<h2 class="vendedor-titulo">Informações do vendedor</h2>
 
-				<div class="vendedor-perfil">
-					<i class="bi bi-file-person vendedor-avatar"></i> <span
-						class="vendedor-nome"> <c:out
+				<a
+					href="${pageContext.request.contextPath}/perfil?id=${produto.produtorId}"
+					class="vendedor-perfil"> <i
+					class="bi bi-file-person vendedor-avatar"></i> <span
+					class="vendedor-nome"> <c:out
 							value="${produto.produtorNome}" />
-					</span>
-				</div>
+				</span>
+				</a>
 
 				<p class="vendedor-desde">No Palma do Campo desde de julho de
 					2026</p>
 
-				<!-- Avaliação: estrelas FIXAS, só enfeite por enquanto -->
-				<!--  <h3 class="vendedor-avaliacao-titulo">Avaliação de vendas</h3>
-				<div class="vendedor-estrelas">
-					<i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i
-						class="bi bi-star-fill"></i> <i class="bi bi-star-half"></i> <i
-						class="bi bi-star"></i>
-				</div>-->
 			</div>
 
 			<!-- Botão de contato via WhatsApp -->

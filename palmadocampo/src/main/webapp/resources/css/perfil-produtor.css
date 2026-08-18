@@ -1,0 +1,182 @@
+.container-perfil {
+	max-width: 1280px;
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+.perfil-header {
+	display: flex;
+	gap: 2rem;
+	align-items: center;
+	background-color: #034C48;
+	padding: 2.5rem;
+	border-radius: 16px;
+	margin-bottom: 2rem;
+}
+
+/* Avatar grande - simples, igual ao de cadastro-conta */
+.avatar-grande {
+	width: 100px;
+	height: 100px;
+	min-width: 100px;
+	border-radius: 50%;
+	background-color: #F5F6E3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #588D77;
+	font-size: 3rem;
+}
+
+/* Info do produtor */
+.perfil-info {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+h2.nome-produtor {
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: white !important;
+	margin: 0;
+	font-family: 'Inter', sans-serif;
+}
+
+.bio-produtor {
+	font-size: 0.95rem;
+	color: #E4E5D3;
+	margin: 0;
+	line-height: 1.5;
+	max-width: 500px;
+}
+
+/* Stats */
+.perfil-stats {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+}
+
+.stat-data {
+	font-size: 0.95rem;
+	color: white;
+	font-weight: 700;
+}
+
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.stat-numero {
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: white;
+}
+
+.stat-label {
+	font-size: 0.75rem;
+	color: #A8C4B8;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-weight: 500;
+}
+
+.stat-divisor {
+	width: 1px;
+	height: 30px;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Botão editar perfil */
+.btn-editar-perfil {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	background-color: #FF7C40;
+	color: white;
+	padding: 0.6rem 1.25rem;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: 600;
+	transition: background-color 0.3s ease;
+	font-size: 0.9rem;
+	width: fit-content;
+}
+
+.btn-editar-perfil:hover {
+	background-color: #e56a2a;
+}
+
+.btn-editar-perfil i {
+	font-size: 0.95rem;
+}
+
+/* Seção de produtos */
+.perfil-produtos {
+	background-color: white;
+	padding: 2rem;
+	border-radius: 16px;
+	border: 1px solid #F5F6E3;
+}
+
+.perfil-produtos h2 {
+	font-size: 1.3rem;
+	color: #1a1a1a;
+	margin: 0 0 0.3rem 0;
+	font-weight: 700;
+}
+
+.texto-info {
+	color: #999;
+	font-size: 0.9rem;
+	margin: 0 0 1.5rem 0;
+}
+
+/* Produtos vazios */
+.produtos-vazios {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 3rem 1rem;
+	text-align: center;
+	color: #999;
+}
+
+.produtos-vazios i {
+	font-size: 2.5rem;
+	color: #588D77;
+	margin-bottom: 1rem;
+	opacity: 0.5;
+}
+
+.produtos-vazios p {
+	font-size: 0.95rem;
+	margin: 0;
+}
+
+/* Responsivo */
+@media ( max-width : 768px) {
+	.perfil-header {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 2rem 1.5rem;
+	}
+	.perfil-info {
+		align-items: center;
+	}
+	.perfil-stats {
+		justify-content: center;
+	}
+	.bio-produtor {
+		max-width: none;
+	}
+	.btn-editar-perfil {
+		align-self: center;
+	}
+}

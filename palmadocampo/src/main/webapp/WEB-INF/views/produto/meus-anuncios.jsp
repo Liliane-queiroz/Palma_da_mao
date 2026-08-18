@@ -60,8 +60,7 @@
 						<div class="img-card">
 							<img
 								src="${pageContext.request.contextPath}/resources/images/uploads/produtos/frango_italiano_teste.jpg"
-								class="card-imagem" alt="${produto.nome}" /> <span
-								class="badge-status ativo">Ativo</span>
+								class="card-imagem" alt="${produto.nome}" /> 
 
 							<div class="botoes-acao">
 								<a

@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/menu-produtor.css">
+
 <nav class="navbar-geral">
 	<div class="container-parte-busca">
 		<div class="logo">
@@ -14,8 +17,7 @@
 			<input type="text" name="termo" class="buscar"
 				placeholder="Buscar produtos"> <span class="separador"></span>
 			<div class="navbar-localizacao-wrapper">
-				<i class="bi bi-geo-alt"></i> 
-				<select class="navbar-localizacao">
+				<i class="bi bi-geo-alt"></i> <select class="navbar-localizacao">
 					<option value="AC">AC</option>
 					<option value="AM">AM</option>
 					<option value="PA">PA</option>
@@ -37,10 +39,58 @@
 						class="btn-anunciar">Anunciar</a>
 					<a href="${pageContext.request.contextPath}/meus-anuncios"
 						class="btn-meus-anuncios">Meus anúncios</a>
-					<button class="btn-menu-produtor">
-						<i class="bi bi-person-circle"></i> Olá,
-						${sessionScope.usuarioLogado.nome} <i class="bi bi-chevron-down"></i>
-					</button>
+					<div class="menu-produtor-container">
+						<button class="btn-menu-produtor">
+							<i class="bi bi-person-circle"></i> Olá,
+							${sessionScope.usuarioLogado.nome} <i class="bi bi-chevron-down"></i>
+						</button>
+
+						<div class="dropdown-menu-produtor" id="dropdownMenuProdutor">
+							<div class="menu-header">
+								<img
+									src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png"
+									alt="Logo" class="logo-pequena">
+								<button class="btn-fechar-menu" id="btnFecharMenu">
+									<i class="bi bi-x"></i>
+								</button>
+							</div>
+
+							<div class="menu-produtor">
+								<div class="produtor-info">
+									<div class="avatar-produtor">
+										<i class="bi bi-person-circle"></i>
+									</div>
+									<div class="produtor-dados">
+										<p class="nome-produtor">${sessionScope.usuarioLogado.nome}</p>
+										<a
+											href="${pageContext.request.contextPath}/perfil?id=${sessionScope.usuarioLogado.id}"
+											class="link-perfil">Meu perfil</a>
+									</div>
+								</div>
+
+								<div class="secao-menu">
+									<h4 class="secao-titulo">MEUS PRODUTOS</h4>
+									<a href="${pageContext.request.contextPath}/cadastro-produto"
+										class="menu-item"> <i class="bi bi-plus-circle"></i>
+										Anunciar produto
+									</a> <a href="${pageContext.request.contextPath}/meus-anuncios"
+										class="menu-item"> <i class="bi bi-file-text"></i> Meus
+										anúncios
+									</a>
+								</div>
+
+								<div class="secao-menu">
+									<h4 class="secao-titulo">CONTA</h4>
+									<a href="${pageContext.request.contextPath}/editar-perfil"
+										class="menu-item"> <i class="bi bi-gear"></i> Editar dados
+									</a> <a href="${pageContext.request.contextPath}/logout"
+										class="menu-item menu-item-sair"> <i
+										class="bi bi-box-arrow-right"></i> Sair
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
 				</c:when>
 				<c:otherwise>
 					<!-- VISITANTE (não logado) -->
@@ -97,6 +147,9 @@
 			<i class="bi bi-arrow-right-circle-fill"></i>
 		</button>
 	</div>
+	<div class="menu-overlay" id="menuOverlay"></div>
 </nav>
 
 <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/menu-produtor.js"></script>
