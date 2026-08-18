@@ -88,16 +88,19 @@
 
 				</div>
 
-
 				<!-- Senha -->
 				<div class="form-group">
 
 					<label for="senha"> Senha <span class="campo-obrigatorio">*</span>
-					</label> <input type="password" id="senha" name="senha" required
-						placeholder="Sua senha">
+					</label>
+
+					<div class="campo-senha-wrapper">
+						<input type="password" id="senha" name="senha" required
+							placeholder="Sua senha"> <i
+							class="bi bi-eye-slash toggle-senha" id="toggleSenha"></i>
+					</div>
 
 				</div>
-
 
 				<!-- Botão de login -->
 				<button type="submit">
@@ -143,6 +146,6 @@
 
 	</div>
 
+	<script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
 </body>
-
 </html>

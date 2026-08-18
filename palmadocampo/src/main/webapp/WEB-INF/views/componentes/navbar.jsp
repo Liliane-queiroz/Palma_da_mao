@@ -17,13 +17,20 @@
 			<input type="text" name="termo" class="buscar"
 				placeholder="Buscar produtos"> <span class="separador"></span>
 			<div class="navbar-localizacao-wrapper">
-				<i class="bi bi-geo-alt"></i> <select class="navbar-localizacao">
-					<option value="AC">AC</option>
-					<option value="AM">AM</option>
-					<option value="PA">PA</option>
-					<option value="RO">RO</option>
-					<option value="RR">RR</option>
-					<option value="TO">TO</option>
+				<i class="bi bi-geo-alt"></i> <select class="navbar-localizacao"
+					name="estado">
+					<option value="Acre"
+						<c:if test="${estadoBuscado == 'Acre'}">selected</c:if>>AC</option>
+					<option value="Amazonas"
+						<c:if test="${estadoBuscado == 'Amazonas'}">selected</c:if>>AM</option>
+					<option value="Pará"
+						<c:if test="${estadoBuscado == 'Pará'}">selected</c:if>>PA</option>
+					<option value="Rondônia"
+						<c:if test="${estadoBuscado == 'Rondônia'}">selected</c:if>>RO</option>
+					<option value="Roraima"
+						<c:if test="${estadoBuscado == 'Roraima'}">selected</c:if>>RR</option>
+					<option value="Tocantins"
+						<c:if test="${estadoBuscado == 'Tocantins'}">selected</c:if>>TO</option>
 				</select>
 			</div>
 			<span class="separador"></span>

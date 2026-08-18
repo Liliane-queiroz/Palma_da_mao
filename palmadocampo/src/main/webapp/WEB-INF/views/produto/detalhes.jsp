@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -53,8 +56,7 @@
 			</h1>
 
 			<p class="detalhes-preco">
-				R$
-				<c:out value="${produto.precoEstimado}" />
+				<fmt:formatNumber value="${produto.precoEstimado}" type="currency" currencySymbol="R$ " />
 			</p>
 
 			<p class="detalhes-localizacao">
@@ -83,8 +85,7 @@
 				</span>
 				</a>
 
-				<p class="vendedor-desde">No Palma do Campo desde de julho de
-					2026</p>
+				<p class="vendedor-desde">No Palma do Campo desde ${dataCadastroFormatada}</p>
 
 			</div>
 

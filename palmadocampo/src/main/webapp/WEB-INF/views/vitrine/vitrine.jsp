@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -55,8 +57,7 @@
 						<c:out value="${produto.nome}" />
 					</h3>
 					<p class="card-preco">
-						R$
-						<c:out value="${produto.precoEstimado}" />
+						<fmt:formatNumber value="${produto.precoEstimado}" type="currency" currencySymbol="R$ " />
 					</p>
 					<p class="card-categoria">
 						<c:out value="${produto.categoriaDescricao}" />

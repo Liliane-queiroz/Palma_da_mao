@@ -14,6 +14,35 @@
 	margin-bottom: 2rem;
 }
 
+.navbar-geral {
+	display: none !important;
+}
+
+.perfil-topo {
+	max-width: 1280px;
+	margin: 1.5rem auto 0 auto;
+	padding: 0 1rem;
+}
+
+.btn-voltar-perfil {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: #034C48;
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.95rem;
+	transition: color 0.2s ease;
+}
+
+.btn-voltar-perfil:hover {
+	color: #FF7C40;
+}
+
+.btn-voltar-perfil i {
+	font-size: 1.1rem;
+}
+
 /* Avatar grande - simples, igual ao de cadastro-conta */
 .avatar-grande {
 	width: 100px;

@@ -2,7 +2,6 @@ package br.com.palmadocampo.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import br.com.palmadocampo.dao.ProdutoDAO;
 import br.com.palmadocampo.model.ProdutoDetalhe;
 import jakarta.servlet.ServletException;
@@ -10,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @WebServlet("/detalhes")
 public class DetalheProdutoServlet extends HttpServlet {
@@ -38,7 +39,12 @@ public class DetalheProdutoServlet extends HttpServlet {
                 return;
             }
 
+         // Formata a data de cadastro do produtor
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("MMMM 'de' yyyy", new Locale("pt", "BR"));
+            String dataCadastroFormatada = produto.getProdutorDataCadastro().format(formatador);
+
             requisicao.setAttribute("produto", produto);
+            requisicao.setAttribute("dataCadastroFormatada", dataCadastroFormatada);
             requisicao.getRequestDispatcher("/WEB-INF/views/produto/detalhes.jsp")
                       .forward(requisicao, resposta);
 

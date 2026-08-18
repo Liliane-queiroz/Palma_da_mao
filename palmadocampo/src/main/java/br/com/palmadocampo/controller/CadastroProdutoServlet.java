@@ -219,7 +219,7 @@ public class CadastroProdutoServlet extends HttpServlet {
 			} else {
 				// ===== INSERT: Criar novo produto e estoque =====
 				String sqlProduto = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, "
-						+ "categoria_id, situacao_id, prod_data_criacao) VALUES (?, ?, ?, ?, 1, NOW())";
+						+ "categoria_id, situacao_id, data_criacao) VALUES (?, ?, ?, ?, 1, NOW())";
 
 				try (PreparedStatement comandoProduto = conexao.prepareStatement(sqlProduto,
 						Statement.RETURN_GENERATED_KEYS)) {

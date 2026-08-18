@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -25,7 +26,12 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/componentes/navbar.jsp" />
-
+	<div class="perfil-topo">
+		<a href="${pageContext.request.contextPath}/vitrine"
+			class="btn-voltar-perfil"> <i class="bi bi-arrow-left"></i>
+			Voltar
+		</a>
+	</div>
 	<div class="container-perfil">
 		<div class="perfil-header">
 			<div class="avatar-grande">
@@ -79,8 +85,7 @@
 								<c:out value="${produto.nome}" />
 							</h3>
 							<p class="card-preco">
-								R$
-								<c:out value="${produto.precoEstimado}" />
+								<fmt:formatNumber value="${produto.precoEstimado}" type="currency" currencySymbol="R$ " />
 							</p>
 							<p class="card-categoria">
 								<c:out value="${produto.categoriaDescricao}" />

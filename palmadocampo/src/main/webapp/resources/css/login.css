@@ -140,6 +140,30 @@ body {
 	flex-direction: column;
 }
 
+.campo-senha-wrapper {
+	position: relative;
+}
+
+.campo-senha-wrapper input {
+	width: 100%;
+	padding-right: 2.5rem;
+}
+
+.toggle-senha {
+	position: absolute;
+	right: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	color: #666;
+	font-size: 1.1rem;
+	transition: color 0.2s ease;
+}
+
+.toggle-senha:hover {
+	color: #034C48;
+}
+
 label {
 	font-size: 0.9rem;
 	color: #1a1a1a;

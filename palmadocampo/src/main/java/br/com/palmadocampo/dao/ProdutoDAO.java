@@ -250,6 +250,56 @@ public class ProdutoDAO {
 		return produtos;
 	}
 
+	public List<ProdutoVitrine> pesquisarComFiltros(String termo, String estado) throws SQLException {
+		StringBuilder sql = new StringBuilder(
+				"SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
+				+ "p.prod_foto_url, c.ctg_descricao " + "FROM produto p "
+				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
+				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id "
+				+ "INNER JOIN usuario u ON e.usuario_id = u.usu_id "
+				+ "WHERE p.situacao_id = 1 ");
+
+		if (termo != null) {
+			sql.append("AND (p.prod_nome LIKE ? OR p.prod_descricao LIKE ? OR c.ctg_descricao LIKE ?) ");
+		}
+		if (estado != null) {
+			sql.append("AND u.usu_regiao = ? ");
+		}
+		sql.append("ORDER BY p.data_criacao DESC");
+
+		List<ProdutoVitrine> produtos = new ArrayList<>();
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql.toString())) {
+
+			int indice = 1;
+			if (termo != null) {
+				String termoBusca = "%" + termo + "%";
+				comando.setString(indice++, termoBusca);
+				comando.setString(indice++, termoBusca);
+				comando.setString(indice++, termoBusca);
+			}
+			if (estado != null) {
+				comando.setString(indice++, estado);
+			}
+
+			try (ResultSet resultado = comando.executeQuery()) {
+				while (resultado.next()) {
+					ProdutoVitrine produto = new ProdutoVitrine();
+					produto.setId(resultado.getInt("prod_id"));
+					produto.setNome(resultado.getString("prod_nome"));
+					produto.setDescricao(resultado.getString("prod_descricao"));
+					produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
+					produto.setFotoUrl(resultado.getString("prod_foto_url"));
+					produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+					produtos.add(produto);
+				}
+			}
+		}
+
+		return produtos;
+	}
+	
 	/*
 	 * Lista produtos ativos de uma categoria específica, filtrando pela descrição
 	 * da categoria.
