@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
-import java.io.IOException;
 import br.com.palmadocampo.dao.CategoriaDAO;
 import br.com.palmadocampo.dao.ConexaoFactory;
 import br.com.palmadocampo.dao.EstoqueDAO;
@@ -29,13 +28,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import br.com.palmadocampo.util.ConfiguracaoUpload;
 
 @WebServlet("/cadastro-produto")
 @MultipartConfig(maxFileSize = 5242880, maxRequestSize = 52428800)
 public class CadastroProdutoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final String PASTA_UPLOAD = "resources/images/uploads/produtos/";
+	// private static final String PASTA_UPLOAD =
+	// "resources/images/uploads/produtos/";//
 
 	@Override
 	protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta)
@@ -122,28 +126,35 @@ public class CadastroProdutoServlet extends HttpServlet {
 			// ===== ETAPA 1: Validar e processar upload de MÚLTIPLAS imagens =====
 			Collection<Part> todasAsParts = requisicao.getParts();
 
-			List<String> caminhosCompletos = new ArrayList<>();
+			// Pasta de uploads FORA do Tomcat — o caminho é resolvido automaticamente
+			// pra máquina atual (Windows local ou Linux na VM) e a pasta é criada
+			// se ainda não existir.
+			Path diretorioUploads = ConfiguracaoUpload.obterDiretorioUploads();
+
+			List<String> nomesArquivos = new ArrayList<>();
 
 			// Filtra só as partes que são arquivo (tem "filename")
 			for (Part part : todasAsParts) {
 				if (part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
 					String nomeArquivo = gerarNomeUnicoArquivo(part.getSubmittedFileName());
-					String caminhoRelativo = PASTA_UPLOAD + nomeArquivo;
-					String caminhoAbsoluto = requisicao.getServletContext().getRealPath("/") + caminhoRelativo;
 
-					// Cria pasta se não existir
-					File pastaUpload = new File(requisicao.getServletContext().getRealPath("/") + PASTA_UPLOAD);
-					if (!pastaUpload.exists()) {
-						pastaUpload.mkdirs();
+					// Caminho absoluto do arquivo dentro da pasta externa
+					Path destino = diretorioUploads.resolve(nomeArquivo);
+
+					// Copia os bytes enviados pra esse caminho no disco
+					try (InputStream entrada = part.getInputStream()) {
+						Files.copy(entrada, destino, StandardCopyOption.REPLACE_EXISTING);
 					}
 
-					// Salva o arquivo
-					part.write(caminhoAbsoluto);
-					caminhosCompletos.add(caminhoAbsoluto);
+					// No banco guardamos SÓ o nome do arquivo, nunca o caminho completo
+					nomesArquivos.add(nomeArquivo);
 
-					System.out.println("Arquivo salvo: " + caminhoAbsoluto);
+					System.out.println("Arquivo salvo: " + destino);
 				}
 			}
+
+			// Junta os nomes numa string separada por vírgula (pra múltiplas fotos)
+			String fotosUrl = String.join(",", nomesArquivos);
 
 			// ===== ETAPA 2: Validar e processar dados do formulário =====
 			String nomeProduto = requisicao.getParameter("nome");
@@ -219,14 +230,15 @@ public class CadastroProdutoServlet extends HttpServlet {
 			} else {
 				// ===== INSERT: Criar novo produto e estoque =====
 				String sqlProduto = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, "
-						+ "categoria_id, situacao_id, data_criacao) VALUES (?, ?, ?, ?, 1, NOW())";
+						+ "prod_foto_url, categoria_id, situacao_id, data_criacao) VALUES (?, ?, ?, ?, ?, 1, NOW())";
 
 				try (PreparedStatement comandoProduto = conexao.prepareStatement(sqlProduto,
 						Statement.RETURN_GENERATED_KEYS)) {
 					comandoProduto.setString(1, nomeProduto);
 					comandoProduto.setString(2, descricaoProduto);
 					comandoProduto.setBigDecimal(3, precoProduto);
-					comandoProduto.setInt(4, categoriaId);
+					comandoProduto.setString(4, fotosUrl);
+					comandoProduto.setInt(5, categoriaId);
 					comandoProduto.executeUpdate();
 
 					try (ResultSet chaves = comandoProduto.getGeneratedKeys()) {
@@ -296,9 +308,14 @@ public class CadastroProdutoServlet extends HttpServlet {
 	}
 
 	private String gerarNomeUnicoArquivo(String nomeOriginal) {
-		String timestamp = String.valueOf(System.currentTimeMillis());
-		String extensao = nomeOriginal.substring(nomeOriginal.lastIndexOf("."));
-		return timestamp + extensao;
+		String extensao = "";
+		int posicaoPonto = nomeOriginal.lastIndexOf(".");
+		if (posicaoPonto >= 0) {
+			extensao = nomeOriginal.substring(posicaoPonto);
+		}
+		// timestamp + pedaço aleatório = nome único mesmo com várias fotos de uma vez
+		String parteAleatoria = java.util.UUID.randomUUID().toString().substring(0, 8);
+		return System.currentTimeMillis() + "-" + parteAleatoria + extensao;
 	}
 
 	private void deletarArquivo(String caminho) {

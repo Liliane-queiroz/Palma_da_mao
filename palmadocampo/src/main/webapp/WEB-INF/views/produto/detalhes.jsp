@@ -9,7 +9,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>${produto.nome}-Palma do Campo</title>
+<title>${produto.nome}-PalmadoCampo</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/global.css">
 <link rel="stylesheet" type="text/css"
@@ -31,17 +31,17 @@
 
 		<!-- LADO ESQUERDO: foto do produto com as setas (enfeite por enquanto) -->
 		<div class="detalhes-foto">
+			<c:set var="primeiraFoto"
+				value="${not empty produto.fotoUrl ? fn:split(produto.fotoUrl, ',')[0] : ''}" />
 			<button class="seta-foto seta-foto-esquerda"
 				aria-label="Foto anterior">
 				<i class="bi bi-arrow-left-circle"></i>
 			</button>
 
-			<img
-				src="${pageContext.request.contextPath}/resources/images/uploads/produtos/frango_italiano_teste.jpg"
+			<img src="${pageContext.request.contextPath}/imagem/${primeiraFoto}"
 				class="detalhes-imagem-fundo" alt="" aria-hidden="true" /> <img
-				src="${pageContext.request.contextPath}/resources/images/uploads/produtos/frango_italiano_teste.jpg"
+				src="${pageContext.request.contextPath}/imagem/${primeiraFoto}"
 				class="detalhes-imagem" alt="${produto.nome}" />
-			<!-- ${produto.fotoUrl} -->
 
 			<button class="seta-foto seta-foto-direita" aria-label="Próxima foto">
 				<i class="bi bi-arrow-right-circle"></i>
@@ -56,7 +56,8 @@
 			</h1>
 
 			<p class="detalhes-preco">
-				<fmt:formatNumber value="${produto.precoEstimado}" type="currency" currencySymbol="R$ " />
+				<fmt:formatNumber value="${produto.precoEstimado}" type="currency"
+					currencySymbol="R$ " />
 			</p>
 
 			<p class="detalhes-localizacao">
@@ -85,7 +86,8 @@
 				</span>
 				</a>
 
-				<p class="vendedor-desde">No Palma do Campo desde ${dataCadastroFormatada}</p>
+				<p class="vendedor-desde">No Palma do Campo desde
+					${dataCadastroFormatada}</p>
 
 			</div>
 

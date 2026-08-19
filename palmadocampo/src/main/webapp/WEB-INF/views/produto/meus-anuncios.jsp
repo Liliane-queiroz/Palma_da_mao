@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -60,9 +61,13 @@
 				<c:forEach var="produto" items="${produtos}">
 					<div class="card-produto-meus-anuncios">
 						<div class="img-card">
-							<img
-								src="${pageContext.request.contextPath}/resources/images/uploads/produtos/frango_italiano_teste.jpg"
-								class="card-imagem" alt="${produto.nome}" /> 
+							<c:set var="primeiraFoto"
+								value="${not empty produto.fotoUrl ? fn:split(produto.fotoUrl, ',')[0] : ''}" />
+							<c:if test="${not empty primeiraFoto}">
+								<img
+									src="${pageContext.request.contextPath}/imagem/${primeiraFoto}"
+									class="card-imagem" alt="${produto.nome}" />
+							</c:if>
 
 							<div class="botoes-acao">
 								<a
@@ -82,7 +87,8 @@
 								<c:out value="${produto.nome}" />
 							</h3>
 							<p class="card-preco">
-								<fmt:formatNumber value="${produto.precoEstimado}" type="currency" currencySymbol="R$ " />
+								<fmt:formatNumber value="${produto.precoEstimado}"
+									type="currency" currencySymbol="R$ " />
 							</p>
 							<p class="card-categoria">
 								<c:out value="${produto.categoriaDescricao}" />
