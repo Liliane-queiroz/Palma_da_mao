@@ -26,26 +26,50 @@
 	rel="stylesheet">
 </head>
 <body>
+	<c:set var="listaFotos"
+		value="${not empty produto.fotoUrl ? fn:split(produto.fotoUrl, ',') : null}" />
+
 	<jsp:include page="/WEB-INF/views/componentes/navbar.jsp" />
 	<div class="container-detalhes">
 
 		<!-- LADO ESQUERDO: foto do produto com as setas (enfeite por enquanto) -->
 		<div class="detalhes-foto">
-			<c:set var="primeiraFoto"
-				value="${not empty produto.fotoUrl ? fn:split(produto.fotoUrl, ',')[0] : ''}" />
-			<button class="seta-foto seta-foto-esquerda"
-				aria-label="Foto anterior">
-				<i class="bi bi-arrow-left-circle"></i>
+			<button type="button" class="seta-foto seta-foto-esquerda"
+				aria-label="Foto anterior" onclick="trocarFoto(-1)">
+				<i class="bi bi-chevron-left"></i>
 			</button>
 
-			<img src="${pageContext.request.contextPath}/imagem/${primeiraFoto}"
-				class="detalhes-imagem-fundo" alt="" aria-hidden="true" /> <img
-				src="${pageContext.request.contextPath}/imagem/${primeiraFoto}"
-				class="detalhes-imagem" alt="${produto.nome}" />
+			<c:choose>
+				<c:when test="${not empty listaFotos}">
+					<img id="imagem-fundo"
+						src="${pageContext.request.contextPath}/imagem/${listaFotos[0]}"
+						class="detalhes-imagem-fundo" alt="" aria-hidden="true" />
+					<img id="imagem-principal"
+						src="${pageContext.request.contextPath}/imagem/${listaFotos[0]}"
+						class="detalhes-imagem" alt="${produto.nome}" />
+				</c:when>
+				<c:otherwise>
+					<div class="detalhes-imagem"
+						style="display: flex; align-items: center; justify-content: center;">
+						<i class="bi bi-image" style="font-size: 4rem; color: #ccc;"></i>
+					</div>
+				</c:otherwise>
+			</c:choose>
 
-			<button class="seta-foto seta-foto-direita" aria-label="Próxima foto">
-				<i class="bi bi-arrow-right-circle"></i>
+			<button type="button" class="seta-foto seta-foto-direita"
+				aria-label="Próxima foto" onclick="trocarFoto(1)">
+				<i class="bi bi-chevron-right"></i>
 			</button>
+
+			<c:if test="${fn:length(listaFotos) > 1}">
+				<div class="miniaturas">
+					<c:forEach var="foto" items="${listaFotos}" varStatus="s">
+						<img src="${pageContext.request.contextPath}/imagem/${foto}"
+							class="miniatura ${s.index == 0 ? 'miniatura-ativa' : ''}"
+							onclick="mostrarFoto(${s.index})" alt="Miniatura ${s.count}" />
+					</c:forEach>
+				</div>
+			</c:if>
 		</div>
 
 		<!-- LADO DIREITO: painel creme com todas as informações -->
@@ -101,5 +125,17 @@
 		</div>
 	</div>
 
+
+	<c:if test="${not empty listaFotos}">
+		<script>
+		// Única coisa que precisa do servidor: a lista de fotos deste produto
+		const fotos = [
+			<c:forEach var="foto" items="${listaFotos}" varStatus="s">"${pageContext.request.contextPath}/imagem/${foto}"<c:if test="${not s.last}">, </c:if></c:forEach>
+		];
+	</script>
+		<script
+			src="${pageContext.request.contextPath}/resources/js/detalhes.js">
+		</script>
+	</c:if>
 </body>
 </html>

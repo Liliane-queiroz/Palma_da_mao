@@ -34,7 +34,7 @@ import java.nio.file.StandardCopyOption;
 import br.com.palmadocampo.util.ConfiguracaoUpload;
 
 @WebServlet("/cadastro-produto")
-@MultipartConfig(maxFileSize = 5242880, maxRequestSize = 52428800)
+@MultipartConfig(maxFileSize = 5242880, maxRequestSize = 62914560)
 public class CadastroProdutoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -124,7 +124,35 @@ public class CadastroProdutoServlet extends HttpServlet {
 
 		try {
 			// ===== ETAPA 1: Validar e processar upload de MÚLTIPLAS imagens =====
-			Collection<Part> todasAsParts = requisicao.getParts();
+
+			//le as fotos enviadas. Se alguma passar do tamanho permitido aparece uma mensagem de erro
+		
+			Collection<Part> todasAsParts;
+			try {
+				todasAsParts = requisicao.getParts();
+			} catch (IllegalStateException erroTamanho) {
+				requisicao.setAttribute("erro",
+						"Alguma foto passou do tamanho permitido (máximo 5 MB por foto e 60 MB no total). "
+								+ "Reduza o tamanho das imagens e tente novamente.");
+				doGet(requisicao, resposta);
+				return;
+			}
+
+			// Conta quantas fotos vieram de verdade (partes que têm nome de arquivo)
+			int totalFotos = 0;
+			for (Part part : todasAsParts) {
+				if (part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
+					totalFotos++;
+				}
+			}
+
+			// Teto de 10 fotos por anúncio
+			if (totalFotos > 10) {
+				requisicao.setAttribute("erro",
+						"Você pode enviar no máximo 10 fotos por anúncio. Você selecionou " + totalFotos + ".");
+				doGet(requisicao, resposta);
+				return;
+			}
 
 			// Pasta de uploads FORA do Tomcat — o caminho é resolvido automaticamente
 			// pra máquina atual (Windows local ou Linux na VM) e a pasta é criada

@@ -1,4 +1,3 @@
-
 body {
 	margin: 0;
 	min-height: 100vh;
@@ -6,7 +5,6 @@ body {
 	overflow: hidden;
 }
 
-/* ===== CONTAINER PRINCIPAL ===== */
 .container {
 	width: 100%;
 	height: 100vh;
@@ -16,11 +14,9 @@ body {
 	background-color: #E4E5D3;
 }
 
-/* ===== LADO DIREITO: IMAGEM ====================== */
 .lado-imagem {
 	position: relative;
-	background-image:
-		url('../images/tela-cadastro-login/pexels-athena.jpg');
+	background-image: url('../images/tela-cadastro-login/pexels-athena.jpg');
 	background-size: cover;
 	background-position: center;
 	display: flex;
@@ -30,9 +26,9 @@ body {
 	padding: 2.5rem;
 	box-sizing: border-box;
 	border-radius: 0;
+	border-left: 3px solid #EFEBE0;
 }
 
-/* ===== FRASE ===== */
 .boas-vindas {
 	align-self: center;
 	text-align: center;
@@ -42,19 +38,16 @@ body {
 	font-weight: bold;
 }
 
-/* ===== LOGO ===== */
 .logo-cadastro {
 	width: 350px;
 	height: auto;
 	transition: transform 1s ease;
 }
 
-/* Giro completo da logo */
 .logo-cadastro:hover {
 	transform: rotate(360deg);
 }
 
-/* ===== NOME DA MARCA ===== */
 .nome-marca {
 	font-family: 'Righteous', sans-serif;
 	font-size: 1.8rem;
@@ -63,9 +56,6 @@ body {
 	transform: translateY(-9.5rem);
 }
 
-/* ================================================= */
-/* ===== LADO ESQUERDO: FORMULÁRIO ================= */
-/* ================================================= */
 .lado-formulario {
 	padding: 2rem 3rem;
 	display: flex;
@@ -76,7 +66,6 @@ body {
 	border-radius: 0;
 }
 
-/* ===== CABEÇALHO ===== */
 .cadastro-cabecalho {
 	display: flex;
 	flex-direction: column;
@@ -86,7 +75,6 @@ body {
 	padding: 0;
 }
 
-/* ===== ÍCONE ===== */
 .cadastro-cabecalho i {
 	color: #FF7C40;
 	font-size: 1.8rem;
@@ -100,7 +88,6 @@ body {
 	margin-bottom: 0.6rem;
 }
 
-/* ===== TÍTULO ===== */
 .cadastro-cabecalho h1 {
 	font-size: 1.5rem;
 	color: #1a1a1a;
@@ -109,9 +96,6 @@ body {
 	font-weight: bold;
 }
 
-/* ================================================= */
-/* ===== MENSAGENS ================================= */
-/* ================================================= */
 .erro {
 	background: #FCEBEB;
 	color: #A32D2D;
@@ -121,7 +105,6 @@ body {
 	font-size: 0.9rem;
 }
 
-/* Mensagem de sucesso */
 .sucesso {
 	background: #E7F4EA;
 	color: #246B35;
@@ -131,9 +114,6 @@ body {
 	font-size: 0.9rem;
 }
 
-/* ================================================= */
-/* ===== CAMPOS ==================================== */
-/* ================================================= */
 .form-group {
 	margin-bottom: 1rem;
 	display: flex;
@@ -175,7 +155,6 @@ label {
 	color: #FF7C40;
 }
 
-/* ===== INPUTS ===== */
 input[type="text"], input[type="email"], input[type="password"], select
 	{
 	width: 100%;
@@ -188,16 +167,12 @@ input[type="text"], input[type="email"], input[type="password"], select
 	box-sizing: border-box;
 }
 
-/* ===== INPUT AO CLICAR ===== */
 input:focus, select:focus {
 	outline: none;
 	border-color: #588D77;
 	box-shadow: 0 0 5px rgba(88, 141, 119, 0.3);
 }
 
-/* ================================================= */
-/* ===== BOTÃO ===================================== */
-/* ================================================= */
 button[type="submit"] {
 	width: 100%;
 	background: #FF7C40;
@@ -217,15 +192,11 @@ button[type="submit"] {
 	transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* ===== HOVER DO BOTÃO ===== */
 button[type="submit"]:hover {
 	background: #e56a30;
 	transform: translateY(-1px);
 }
 
-/* ================================================= */
-/* ===== LINK PARA CADASTRO ======================== */
-/* ================================================= */
 .voltar {
 	text-align: center;
 	margin-top: 1rem;
@@ -242,9 +213,7 @@ button[type="submit"]:hover {
 	text-decoration: underline;
 }
 
-/* ================================================= */
-/* ===== RESPONSIVIDADE ============================ */
-/* ================================================= */
+/*RESPONSIVIDADE*/
 @media ( max-width : 900px) {
 	.container {
 		grid-template-columns: 50% 50%;
@@ -260,9 +229,7 @@ button[type="submit"]:hover {
 	}
 }
 
-/* ================================================= */
-/* ===== MOBILE ==================================== */
-/* ================================================= */
+/*Mobile*/
 @media ( max-width : 768px) {
 	body {
 		overflow: auto;
@@ -272,18 +239,11 @@ button[type="submit"]:hover {
 		min-height: 100vh;
 		grid-template-columns: 1fr;
 	}
-
-	/* Formulário aparece primeiro no mobile */
-	.lado-formulario {
-		order: 1;
-		padding: 2rem 1.5rem;
-	}
-
-	/* Imagem aparece depois do formulário */
 	.lado-imagem {
+		order: 1;
+	}
+	.lado-formulario {
 		order: 2;
-		min-height: 320px;
-		padding: 2rem;
 	}
 	.boas-vindas {
 		font-size: 1.8rem;
