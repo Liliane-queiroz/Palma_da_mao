@@ -127,5 +127,6 @@
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/meus-anuncios.js"></script>
+		<jsp:include page="/WEB-INF/views/componentes/rodape.jsp" />
 </body>
 </html>

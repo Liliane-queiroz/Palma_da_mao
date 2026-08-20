@@ -1,0 +1,151 @@
+.container-como-funciona {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 2rem 1rem 4rem 1rem;
+}
+
+/* Hero */
+.cf-hero {
+	text-align: center;
+	padding: 3rem 1rem;
+}
+
+.cf-hero h1 {
+	font-size: 2.2rem;
+	color: #093824;
+	margin-bottom: 1rem;
+	font-weight: bold;
+}
+
+.cf-subtitulo {
+	font-size: 1.15rem;
+	color: #555;
+	max-width: 650px;
+	margin: 0 auto;
+	line-height: 1.6;
+}
+
+/* Seções */
+.cf-secao {
+	padding: 3rem 1.5rem;
+	border-radius: 16px;
+	margin-bottom: 2rem;
+}
+
+.cf-secao-alt {
+	background-color: #F5F6E3;
+}
+
+.cf-secao h2 {
+	font-size: 1.6rem;
+	color: #093824;
+	margin-bottom: 0.75rem;
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.cf-intro {
+	font-size: 1.05rem;
+	color: #555;
+	margin-bottom: 2rem;
+	line-height: 1.5;
+}
+
+/* Passos */
+.cf-passos {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1.5rem;
+}
+
+.cf-passo {
+	background-color: white;
+	padding: 1.5rem;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.cf-secao-alt .cf-passo {
+	background-color: white;
+}
+
+.cf-numero {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	background-color: #588D77;
+	color: white;
+	border-radius: 50%;
+	font-weight: bold;
+	font-size: 1.1rem;
+	margin-bottom: 0.75rem;
+}
+
+.cf-passo h3 {
+	font-size: 1.05rem;
+	color: #093824;
+	margin-bottom: 0.5rem;
+}
+
+.cf-passo p {
+	font-size: 0.9rem;
+	color: #666;
+	line-height: 1.4;
+}
+
+/* Transparência */
+.cf-texto-transparencia {
+	font-size: 1.05rem;
+	color: #555;
+	line-height: 1.7;
+	max-width: 750px;
+}
+
+/* CTA */
+.cf-cta {
+	display: flex;
+	gap: 1rem;
+	margin-top: 2rem;
+	flex-wrap: wrap;
+}
+
+.cf-btn-primario, .cf-btn-secundario {
+	padding: 0.9rem 1.75rem;
+	border-radius: 10px;
+	text-decoration: none;
+	font-weight: 600;
+	transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.cf-btn-primario {
+	background-color: #093824;
+	color: white;
+}
+
+.cf-btn-primario:hover {
+	background-color: #052520;
+	transform: scale(1.03);
+}
+
+.cf-btn-secundario {
+	background-color: transparent;
+	color: #093824;
+	border: 2px solid #093824;
+}
+
+.cf-btn-secundario:hover {
+	background-color: #093824;
+	color: white;
+}
+
+@media (max-width: 768px) {
+	.cf-hero h1 {
+		font-size: 1.7rem;
+	}
+	.cf-secao {
+		padding: 2rem 1rem;
+	}
+}

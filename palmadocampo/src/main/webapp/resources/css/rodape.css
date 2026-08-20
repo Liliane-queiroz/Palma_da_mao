@@ -1,0 +1,57 @@
+.rodape {
+	background-color: #034C48;
+	color: white;
+	margin-top: 3rem;
+}
+
+.rodape-conteudo {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2.5rem 1.5rem;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 2rem;
+}
+
+.rodape-logo {
+	font-family: 'Righteous', sans-serif;
+	font-size: 1.3rem;
+	display: block;
+	margin-bottom: 0.5rem;
+}
+
+.rodape-marca p {
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.rodape-links {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.rodape-links a {
+	color: rgba(255, 255, 255, 0.9);
+	text-decoration: none;
+	font-size: 0.95rem;
+	transition: color 0.2s ease;
+}
+
+.rodape-links a:hover {
+	color: white;
+	text-decoration: underline;
+}
+
+.rodape-base {
+	border-top: 1px solid rgba(255, 255, 255, 0.15);
+	padding: 1.2rem 1.5rem;
+	text-align: center;
+}
+
+.rodape-base p {
+	font-size: 0.85rem;
+	color: rgba(255, 255, 255, 0.7);
+	margin: 0;
+}

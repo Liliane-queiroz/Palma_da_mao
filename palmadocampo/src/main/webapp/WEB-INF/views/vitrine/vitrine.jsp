@@ -108,5 +108,6 @@
 			<span>Menu</span>
 		</a>
 	</div>
+	<jsp:include page="/WEB-INF/views/componentes/rodape.jsp" />
 </body>
 </html>

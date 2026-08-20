@@ -163,5 +163,6 @@
 			src="${pageContext.request.contextPath}/resources/js/detalhes.js">
 		</script>
 	</c:if>
+	<jsp:include page="/WEB-INF/views/componentes/rodape.jsp" />
 </body>
 </html>

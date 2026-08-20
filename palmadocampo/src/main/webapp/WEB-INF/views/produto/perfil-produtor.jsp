@@ -112,5 +112,6 @@
 	</div>
 
 	<script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
+	<jsp:include page="/WEB-INF/views/componentes/rodape.jsp" />
 </body>
 </html>
