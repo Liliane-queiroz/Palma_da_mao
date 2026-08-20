@@ -31,7 +31,7 @@
 <body>
 	<jsp:include page="/WEB-INF/views/componentes/navbar.jsp" />
 
-	<div class="secao-titulo">
+	<div class="secao-titulo-anuncios">
 		<div class="titulo-container">
 			<h1>Meus Anúncios</h1>
 			<c:if test="${not empty produtos}">

@@ -124,7 +124,6 @@
 
 	</div>
 
-	<script
-		src="${pageContext.request.contextPath}/resources/js/cadastro-produtor.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/cadastro-conta.js"></script>
 </body>
 </html>

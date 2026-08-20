@@ -341,7 +341,8 @@ public class ProdutoDAO {
 	 */
 	public ProdutoDetalhe buscarDetalhePorId(int id) throws SQLException {
 		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
-				+ "p.prod_foto_url, c.ctg_descricao, "
+				+ "p.prod_foto_url, p.prod_data_prevista_entrega, c.ctg_descricao, "
+				+ "e.est_qtd, e.est_unidade, "
 				+ "u.usu_id, u.usu_nome, u.usu_cidade, u.usu_regiao, u.usu_telefone, u.data_criacao " + "FROM produto p "
 				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
 				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id "
@@ -371,6 +372,13 @@ public class ProdutoDAO {
 		produto.setPrecoEstimado(resultado.getBigDecimal("prod_preco_estimado"));
 		produto.setFotoUrl(resultado.getString("prod_foto_url"));
 		produto.setCategoriaDescricao(resultado.getString("ctg_descricao"));
+		produto.setQuantidade(resultado.getBigDecimal("est_qtd"));
+		produto.setUnidade(resultado.getString("est_unidade"));
+
+		java.sql.Date dataPrevista = resultado.getDate("prod_data_prevista_entrega");
+		if (dataPrevista != null) {
+			produto.setDataPrevistaEntrega(dataPrevista.toLocalDate());
+		}
 
 		produto.setProdutorNome(resultado.getString("usu_nome"));
 		produto.setProdutorId(resultado.getInt("usu_id"));

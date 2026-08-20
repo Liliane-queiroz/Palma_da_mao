@@ -176,8 +176,8 @@
 
 		<!-- Link voltar à vitrine -->
 		<div class="voltar">
-			<a href="${pageContext.request.contextPath}/vitrine">← Voltar à
-				vitrine</a>
+			<a href="${pageContext.request.contextPath}/vitrine">← Voltar à	vitrine
+			</a>
 		</div>
 	</div>
 

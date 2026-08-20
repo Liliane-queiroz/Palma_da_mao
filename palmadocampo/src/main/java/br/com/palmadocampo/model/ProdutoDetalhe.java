@@ -12,6 +12,9 @@ public class ProdutoDetalhe {
     private BigDecimal precoEstimado;
     private String fotoUrl;
     private String categoriaDescricao;
+    private java.math.BigDecimal quantidade;
+    private String unidade;
+    private java.time.LocalDate dataPrevistaEntrega;
 
     // Dados do produtor (vêm da tabela usuario, via estoque)
     private String produtorNome;
@@ -118,5 +121,26 @@ public class ProdutoDetalhe {
 
     public void setProdutorId(int produtorId) {
         this.produtorId = produtorId;
+    }
+    
+    public java.math.BigDecimal getQuantidade() {
+        return quantidade;
+    }
+    public void setQuantidade(java.math.BigDecimal quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public String getUnidade() {
+        return unidade;
+    }
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+
+    public java.time.LocalDate getDataPrevistaEntrega() {
+        return dataPrevistaEntrega;
+    }
+    public void setDataPrevistaEntrega(java.time.LocalDate dataPrevistaEntrega) {
+        this.dataPrevistaEntrega = dataPrevistaEntrega;
     }
 }

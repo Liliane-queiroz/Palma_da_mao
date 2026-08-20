@@ -191,7 +191,14 @@ public class CadastroProdutoServlet extends HttpServlet {
 			String categoriaIdStr = requisicao.getParameter("categoria");
 			String quantidade = requisicao.getParameter("quantidade");
 			String unidade = requisicao.getParameter("unidade");
+			String dataEntregaStr = requisicao.getParameter("data-entrega");
 
+			// Converte a data (vem como "2026-09-15" do input type=date)
+			// Se veio vazia, fica null
+			java.sql.Date dataPrevistaEntrega = null;
+			if (dataEntregaStr != null && !dataEntregaStr.isBlank()) {
+				dataPrevistaEntrega = java.sql.Date.valueOf(dataEntregaStr);
+			}
 			// Validações básicas
 			if (nomeProduto == null || nomeProduto.trim().isEmpty()) {
 				throw new IllegalArgumentException("Nome do produto é obrigatório");
@@ -258,7 +265,8 @@ public class CadastroProdutoServlet extends HttpServlet {
 			} else {
 				// ===== INSERT: Criar novo produto e estoque =====
 				String sqlProduto = "INSERT INTO produto (prod_nome, prod_descricao, prod_preco_estimado, "
-						+ "prod_foto_url, categoria_id, situacao_id, data_criacao) VALUES (?, ?, ?, ?, ?, 1, NOW())";
+						+ "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, data_criacao) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, 1, NOW())";
 
 				try (PreparedStatement comandoProduto = conexao.prepareStatement(sqlProduto,
 						Statement.RETURN_GENERATED_KEYS)) {
@@ -266,7 +274,12 @@ public class CadastroProdutoServlet extends HttpServlet {
 					comandoProduto.setString(2, descricaoProduto);
 					comandoProduto.setBigDecimal(3, precoProduto);
 					comandoProduto.setString(4, fotosUrl);
-					comandoProduto.setInt(5, categoriaId);
+					if (dataPrevistaEntrega != null) {
+						comandoProduto.setDate(5, dataPrevistaEntrega);
+					} else {
+						comandoProduto.setNull(5, java.sql.Types.DATE);
+					}
+					comandoProduto.setInt(6, categoriaId);
 					comandoProduto.executeUpdate();
 
 					try (ResultSet chaves = comandoProduto.getGeneratedKeys()) {

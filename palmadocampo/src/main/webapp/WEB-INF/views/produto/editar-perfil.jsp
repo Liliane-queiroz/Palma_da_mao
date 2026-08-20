@@ -61,6 +61,6 @@
             </div>
         </form>
     </div>
-
+	<script src="${pageContext.request.contextPath}/resources/js/cadastro-conta.js"></script>
 </body>
 </html>

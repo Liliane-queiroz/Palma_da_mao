@@ -8,12 +8,10 @@
 	gap: 1.5rem;
 }
 
-
-.secao-titulo {
-	/*max-width: 1280px;*/
-	margin: 1.5rem 0 0 0;
+.secao-titulo-anuncios {
+	padding: 1.5rem 1rem 1.5rem 1rem;
+	margin: 3rem auto 0 auto;
 	border-bottom: 1px solid #F5F6E3;
-	padding: 0 1rem 1.5rem 1rem;
 }
 
 .titulo-container {
@@ -24,12 +22,13 @@
 	margin: 0 auto;
 }
 
-.secao-titulo h1 {
+.secao-titulo-anuncios h1 {
 	font-size: 1.8rem;
 	color: #1a1a1a;
 	font-weight: bold;
 	margin: 0;
 }
+
 .contador-produtos {
 	background-color: #588D77;
 	color: white;
@@ -39,9 +38,8 @@
 	font-weight: 600;
 }
 
-/* ===== MENSAGEM VAZIA ===== */
 .vitrine-vazia-container {
-	grid-column: 1 / -1;
+	grid-column: 1/-1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -99,7 +97,7 @@
 	font-size: 2.5rem;
 	line-height: 1;
 	align-items: center;
-	color:#ffffff;
+	color: #ffffff;
 }
 
 .btn-publicar-primeiro:hover {
@@ -107,14 +105,13 @@
 	transform: scale(1.05);
 }
 
-/* ===== CARD DO PRODUTO (MEUS ANÚNCIOS) ===== */
 .card-produto-meus-anuncios {
 	background-color: var(--cor-cards);
 	border-radius: 12px;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	box-shadow: -2px -2px 0 0 #F5F6E3, 0 2px 8px rgba(0,0,0,.1);
+	box-shadow: -2px -2px 0 0 #F5F6E3, 0 2px 8px rgba(0, 0, 0, .1);
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -123,7 +120,6 @@
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== IMAGEM E AÇÕES ===== */
 .card-produto-meus-anuncios .img-card {
 	position: relative;
 	padding: 10px 8px;
@@ -139,7 +135,6 @@
 	transition: opacity 0.3s ease;
 }
 
-/* Badge de status */
 .badge-status {
 	position: absolute;
 	top: 20px;
@@ -161,7 +156,6 @@
 	color: white;
 }
 
-/* Botões de ação (editar/deletar) */
 .botoes-acao {
 	position: absolute;
 	bottom: 20px;
@@ -210,7 +204,6 @@
 	transform: scale(1.1);
 }
 
-/* ===== INFORMAÇÕES DO CARD ===== */
 .card-info {
 	display: flex;
 	flex-direction: column;
@@ -268,7 +261,6 @@
 	transform: scale(1.05);
 }
 
-/* ===== MODAL DE DELETAR ===== */
 .modal-deletar {
 	position: fixed;
 	top: 0;
@@ -340,38 +332,34 @@
 }
 
 /* ===== RESPONSIVIDADE ===== */
-@media (max-width: 1024px) {
+@media ( max-width : 1024px) {
 	.container-vitrine {
 		grid-template-columns: repeat(4, 1fr);
 	}
 }
 
-@media (max-width: 768px) {
+@media ( max-width : 768px) {
 	.container-vitrine {
 		grid-template-columns: repeat(2, 1fr);
 	}
-
 	.secao-titulo h1 {
 		font-size: 1.5rem;
 	}
-
 	.botoes-acao {
 		opacity: 1;
 	}
 }
 
-@media (max-width: 480px) {
+@media ( max-width : 480px) {
 	.container-vitrine {
 		grid-template-columns: 1fr;
 		gap: 1rem;
 	}
-
 	.secao-titulo {
 		padding: 0 1rem;
 	}
 }
 
-/* ===== NOTIFICAÇÃO ===== */
 .notificacao {
 	position: fixed;
 	top: 20px;
@@ -404,29 +392,27 @@
 	animation: fade-out 0.3s ease;
 }
 
-@keyframes slide-down {
-	from {
-		opacity: 0;
-		transform: translateX(-50%) translateY(-20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateX(-50%) translateY(0);
-	}
+@keyframes slide-down {from { opacity:0;
+	transform: translateX(-50%) translateY(-20px);
 }
 
-@keyframes fade-out {
-	from {
-		opacity: 1;
-		transform: translateX(-50%) translateY(0);
-	}
-	to {
-		opacity: 0;
-		transform: translateX(-50%) translateY(-20px);
-	}
+to {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
 }
 
-@media (max-width: 600px) {
+}
+@keyframes fade-out {from { opacity:1;
+	transform: translateX(-50%) translateY(0);
+}
+
+to {
+	opacity: 0;
+	transform: translateX(-50%) translateY(-20px);
+}
+
+}
+@media ( max-width : 600px) {
 	.notificacao {
 		max-width: 90%;
 		top: 10px;

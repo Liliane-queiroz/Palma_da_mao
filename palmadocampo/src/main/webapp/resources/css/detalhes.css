@@ -124,8 +124,6 @@
 	background-color: var(--cor-cards);
 	border-radius: 0 12px 12px 0;
 	padding: 2rem;
-	/*box-shadow: -2px -2px 0 0 #F5F6E3,
-                 0 2px 8px rgba(0,0,0,.1);*/
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -143,6 +141,12 @@
 	font-weight: bold;
 	color: #1a1a1a;
 	margin-bottom: 1rem;
+}
+
+.preco-unidade {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #666;
 }
 
 .detalhes-localizacao {
@@ -170,9 +174,33 @@
 	margin-bottom: 0.5rem;
 }
 
-/* ===== BLOCO DO VENDEDOR ===== */
+.detalhes-infos {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.info-linha {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    margin: 0;
+}
+
+.info-linha i {
+    font-size: 1.1rem;
+    color: #093824;
+}
+
+.info-linha span {
+    font-weight: 600;
+}
+
 .detalhes-vendedor {
-	border-top: 1px solid rgba(0, 0, 0, .1); /* linha sutil separando */
+	border-top: 1px solid rgba(0, 0, 0, .1); 
 	padding-top: 1.5rem;
 	margin-bottom: 1.5rem;
 }
@@ -218,6 +246,7 @@
 	margin-bottom: 1.5rem;
 }
 
+
 .btn-whatsapp {
 	width: 100%;
 	background-color: #093824;
@@ -243,6 +272,35 @@
 .btn-whatsapp:hover {
 	background-color: #052520;
 	transform: scale(1.02);
+}
+
+.dica-seguranca {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    padding: 0.9rem 1rem;
+    background-color: #F5F6E3;
+    border-left: 3px solid #588D77;
+    border-radius: 8px;
+}
+
+.dica-seguranca i {
+    color: #588D77;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.dica-seguranca p {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.dica-seguranca strong {
+    color: #093824;
 }
 
 /* RESPONSIVIDADE MOBILE */

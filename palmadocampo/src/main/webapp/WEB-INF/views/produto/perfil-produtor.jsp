@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -76,16 +77,20 @@
 					<c:forEach var="produto" items="${produtos}">
 						<div class="card-produto">
 							<div class="img-card">
-								<img
-									src="${pageContext.request.contextPath}/resources/images/uploads/produtos/frango_italiano_teste.jpg"
-									class="card-imagem" alt="${produto.nome}" />
+								<c:set var="primeiraFoto"
+									value="${not empty produto.fotoUrl ? fn:split(produto.fotoUrl, ',')[0] : ''}" />
+								<c:if test="${not empty primeiraFoto}">
+									<img
+										src="${pageContext.request.contextPath}/imagem/${primeiraFoto}"
+										class="card-imagem" alt="${produto.nome}" />
+								</c:if>
 							</div>
-
 							<h3 class="card-nome">
 								<c:out value="${produto.nome}" />
 							</h3>
 							<p class="card-preco">
-								<fmt:formatNumber value="${produto.precoEstimado}" type="currency" currencySymbol="R$ " />
+								<fmt:formatNumber value="${produto.precoEstimado}"
+									type="currency" currencySymbol="R$ " />
 							</p>
 							<p class="card-categoria">
 								<c:out value="${produto.categoriaDescricao}" />

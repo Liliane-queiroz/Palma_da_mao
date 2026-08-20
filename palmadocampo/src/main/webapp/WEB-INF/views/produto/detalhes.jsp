@@ -82,6 +82,9 @@
 			<p class="detalhes-preco">
 				<fmt:formatNumber value="${produto.precoEstimado}" type="currency"
 					currencySymbol="R$ " />
+				<c:if test="${not empty produto.unidade}">
+					<span class="preco-unidade">/ ${produto.unidade}</span>
+				</c:if>
 			</p>
 
 			<p class="detalhes-localizacao">
@@ -96,6 +99,21 @@
 				<p>
 					<c:out value="${produto.descricao}" />
 				</p>
+			</div>
+
+			<!-- Informações extras do produto -->
+			<div class="detalhes-infos">
+				<p class="info-linha">
+					<i class="bi bi-tag"></i> <span>Categoria:</span>
+					<c:out value="${produto.categoriaDescricao}" />
+				</p>
+
+				<c:if test="${not empty dataEntregaFormatada}">
+					<p class="info-linha">
+						<i class="bi bi-calendar-check"></i> <span>Entrega
+							prevista:</span> ${dataEntregaFormatada}
+					</p>
+				</c:if>
 			</div>
 
 			<div class="detalhes-vendedor">
@@ -121,7 +139,15 @@
 				class="btn-whatsapp" target="_blank"> <i class="bi bi-whatsapp"></i>
 				Enviar mensagem
 			</a>
-
+			<!-- Dica de segurança para o cliente -->
+			<div class="dica-seguranca">
+				<i class="bi bi-shield-check"></i>
+				<p>
+					<strong>Para sua segurança:</strong> prefira combinar a retirada ou
+					entrega em local seguro e pague preferencialmente na hora de
+					receber. Desconfie de pedidos de pagamento antecipado.
+				</p>
+			</div>
 		</div>
 	</div>
 
