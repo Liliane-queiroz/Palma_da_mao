@@ -143,4 +143,14 @@ public class ProdutoDetalhe {
     public void setDataPrevistaEntrega(java.time.LocalDate dataPrevistaEntrega) {
         this.dataPrevistaEntrega = dataPrevistaEntrega;
     }
+    
+    private String produtorFotoUrl;
+
+    public String getProdutorFotoUrl() {
+        return produtorFotoUrl;
+    }
+
+    public void setProdutorFotoUrl(String produtorFotoUrl) {
+        this.produtorFotoUrl = produtorFotoUrl;
+    }
 }

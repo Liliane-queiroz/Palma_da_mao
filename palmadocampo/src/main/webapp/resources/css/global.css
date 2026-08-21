@@ -137,6 +137,13 @@ body {
     align-items: center;
 }
 
+.navbar-avatar-foto {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .navbar-buttons {
     display: flex;
     gap: 1rem;

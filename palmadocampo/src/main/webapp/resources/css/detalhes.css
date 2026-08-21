@@ -213,14 +213,23 @@
 }
 
 .vendedor-perfil {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	margin-bottom: 0.5rem;
-	cursor: pointer;
-	transition: opacity 0.3s ease;
-	text-decoration: none;
-	color: inherit
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.vendedor-avatar-foto {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .vendedor-perfil:hover {
@@ -238,6 +247,14 @@
 	font-weight: bold;
 	color: #1a1a1a;
 	text-decoration: none;
+}
+
+.vendedor-avatar-foto {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .vendedor-desde {

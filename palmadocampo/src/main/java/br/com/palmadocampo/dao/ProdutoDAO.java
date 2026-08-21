@@ -343,7 +343,7 @@ public class ProdutoDAO {
 		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
 				+ "p.prod_foto_url, p.prod_data_prevista_entrega, c.ctg_descricao, "
 				+ "e.est_qtd, e.est_unidade, "
-				+ "u.usu_id, u.usu_nome, u.usu_cidade, u.usu_regiao, u.usu_telefone, u.data_criacao " + "FROM produto p "
+				+ "u.usu_id, u.usu_nome, u.usu_cidade, u.usu_regiao, u.usu_telefone, u.usu_foto_url, u.data_criacao " + "FROM produto p "
 				+ "INNER JOIN categoria c ON p.categoria_id = c.ctg_id "
 				+ "INNER JOIN estoque e ON e.produto_id = p.prod_id "
 				+ "INNER JOIN usuario u ON e.usuario_id = u.usu_id " + "WHERE p.prod_id = ? AND p.situacao_id = 1";
@@ -386,10 +386,11 @@ public class ProdutoDAO {
 		produto.setProdutorCidade(resultado.getString("usu_cidade"));
 		produto.setProdutorRegiao(resultado.getString("usu_regiao"));
 		produto.setProdutorDataCadastro(resultado.getTimestamp("data_criacao").toLocalDateTime());
+		produto.setProdutorFotoUrl(resultado.getString("usu_foto_url"));
 		return produto;
 	}
 
-	/*
+	 /*
 	 * Deleta um produto E seu estoque associado em transação. Valida que o produto
 	 * pertence ao usuário antes de deletar.
 	 */

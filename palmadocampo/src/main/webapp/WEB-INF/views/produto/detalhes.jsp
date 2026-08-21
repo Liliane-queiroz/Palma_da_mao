@@ -121,11 +121,19 @@
 
 				<a
 					href="${pageContext.request.contextPath}/perfil?id=${produto.produtorId}"
-					class="vendedor-perfil"> <i
-					class="bi bi-file-person vendedor-avatar"></i> <span
-					class="vendedor-nome"> <c:out
+					class="vendedor-perfil">
+					<c:choose>
+						<c:when test="${not empty produto.produtorFotoUrl}">
+							<img src="${pageContext.request.contextPath}/imagem/${produto.produtorFotoUrl}"
+								alt="${produto.produtorNome}" class="vendedor-avatar-foto" />
+						</c:when>
+						<c:otherwise>
+							<i class="bi bi-file-person vendedor-avatar"></i>
+						</c:otherwise>
+					</c:choose>
+					<span class="vendedor-nome"> <c:out
 							value="${produto.produtorNome}" />
-				</span>
+					</span>
 				</a>
 
 				<p class="vendedor-desde">No Palma do Campo desde

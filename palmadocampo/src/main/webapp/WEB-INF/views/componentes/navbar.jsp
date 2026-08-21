@@ -20,10 +20,8 @@
 				<i class="bi bi-geo-alt"></i> <select class="navbar-localizacao"
 					name="cidade" id="selectCidade">
 					<option value="">Todas as cidades</option>
-					<option value="Alta Floresta D'Oeste">Alta Floresta
-						D'Oeste</option>
-					<option value="Alto Alegre dos Parecis">Alto Alegre dos
-						Parecis</option>
+					<option value="Alta Floresta D'Oeste">Alta Floresta D'Oeste</option>
+					<option value="Alto Alegre dos Parecis">Alto Alegre dos Parecis</option>
 					<option value="Alto Paraíso">Alto Paraíso</option>
 					<option value="Alvorada D'Oeste">Alvorada D'Oeste</option>
 					<option value="Ariquemes">Ariquemes</option>
@@ -31,8 +29,7 @@
 					<option value="Cabixi">Cabixi</option>
 					<option value="Cacaulândia">Cacaulândia</option>
 					<option value="Cacoal">Cacoal</option>
-					<option value="Campo Novo de Rondônia">Campo Novo de
-						Rondônia</option>
+					<option value="Campo Novo de Rondônia">Campo Novo de Rondônia</option>
 					<option value="Candeias do Jamari">Candeias do Jamari</option>
 					<option value="Castanheiras">Castanheiras</option>
 					<option value="Cerejeiras">Cerejeiras</option>
@@ -42,8 +39,7 @@
 					<option value="Costa Marques">Costa Marques</option>
 					<option value="Cujubim">Cujubim</option>
 					<option value="Espigão D'Oeste">Espigão D'Oeste</option>
-					<option value="Governador Jorge Teixeira">Governador Jorge
-						Teixeira</option>
+					<option value="Governador Jorge Teixeira">Governador Jorge Teixeira</option>
 					<option value="Guajará-Mirim">Guajará-Mirim</option>
 					<option value="Itapuã do Oeste">Itapuã do Oeste</option>
 					<option value="Jaru">Jaru</option>
@@ -52,28 +48,23 @@
 					<option value="Ministro Andreazza">Ministro Andreazza</option>
 					<option value="Mirante da Serra">Mirante da Serra</option>
 					<option value="Monte Negro">Monte Negro</option>
-					<option value="Nova Brasilândia D'Oeste">Nova Brasilândia
-						D'Oeste</option>
+					<option value="Nova Brasilândia D'Oeste">Nova Brasilândia D'Oeste</option>
 					<option value="Nova Mamoré">Nova Mamoré</option>
 					<option value="Nova União">Nova União</option>
-					<option value="Novo Horizonte do Oeste">Novo Horizonte do
-						Oeste</option>
+					<option value="Novo Horizonte do Oeste">Novo Horizonte do Oeste</option>
 					<option value="Ouro Preto do Oeste">Ouro Preto do Oeste</option>
 					<option value="Parecis">Parecis</option>
 					<option value="Pimenta Bueno">Pimenta Bueno</option>
 					<option value="Pimenteiras do Oeste">Pimenteiras do Oeste</option>
 					<option value="Porto Velho">Porto Velho</option>
 					<option value="Presidente Médici">Presidente Médici</option>
-					<option value="Primavera de Rondônia">Primavera de
-						Rondônia</option>
+					<option value="Primavera de Rondônia">Primavera de Rondônia</option>
 					<option value="Rio Crespo">Rio Crespo</option>
 					<option value="Rolim de Moura">Rolim de Moura</option>
 					<option value="Santa Luzia D'Oeste">Santa Luzia D'Oeste</option>
 					<option value="São Felipe D'Oeste">São Felipe D'Oeste</option>
-					<option value="São Francisco do Guaporé">São Francisco do
-						Guaporé</option>
-					<option value="São Miguel do Guaporé">São Miguel do
-						Guaporé</option>
+					<option value="São Francisco do Guaporé">São Francisco do Guaporé</option>
+					<option value="São Miguel do Guaporé">São Miguel do Guaporé</option>
 					<option value="Seringueiras">Seringueiras</option>
 					<option value="Teixeirópolis">Teixeirópolis</option>
 					<option value="Theobroma">Theobroma</option>
@@ -98,8 +89,16 @@
 						class="btn-meus-anuncios">Meus anúncios</a>
 					<div class="menu-produtor-container">
 						<button class="btn-menu-produtor">
-							<i class="bi bi-person-circle"></i> Olá,
-							${sessionScope.usuarioLogado.nome} <i class="bi bi-chevron-down"></i>
+							<c:choose>
+								<c:when test="${not empty sessionScope.usuarioLogado.fotoUrl}">
+									<img src="${pageContext.request.contextPath}/imagem/${sessionScope.usuarioLogado.fotoUrl}"
+									alt="${sessionScope.usuarioLogado.nome}" class="navbar-avatar-foto" />
+								</c:when>
+								<c:otherwise>
+									<i class="bi bi-person-circle"></i>
+								</c:otherwise>
+								</c:choose>
+									Olá, ${sessionScope.usuarioLogado.nome} <i class="bi bi-chevron-down"></i>
 						</button>
 
 						<div class="dropdown-menu-produtor" id="dropdownMenuProdutor">
@@ -115,7 +114,18 @@
 							<div class="menu-produtor">
 								<div class="produtor-info">
 									<div class="avatar-produtor">
-										<i class="bi bi-person-circle"></i>
+										<c:choose>
+											<c:when
+												test="${not empty sessionScope.usuarioLogado.fotoUrl}">
+												<img
+													src="${pageContext.request.contextPath}/imagem/${sessionScope.usuarioLogado.fotoUrl}"
+													alt="${sessionScope.usuarioLogado.nome}"
+													class="avatar-foto" />
+											</c:when>
+											<c:otherwise>
+												<i class="bi bi-person-circle"></i>
+											</c:otherwise>
+										</c:choose>
 									</div>
 									<div class="produtor-dados">
 										<p class="nome-produtor">${sessionScope.usuarioLogado.nome}</p>
@@ -208,11 +218,12 @@
 </nav>
 
 <script src="${pageContext.request.contextPath}/resources/js/global.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/menu-produtor.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/menu-produtor.js"></script>
 <script>
 	// Marca a cidade selecionada no dropdown após a busca
 	var cidadeSelecionada = "${cidadeBuscada}";
 	if (cidadeSelecionada) {
 		document.getElementById("selectCidade").value = cidadeSelecionada;
 	}
-</script>	
+</script>
