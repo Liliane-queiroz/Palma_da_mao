@@ -2,6 +2,7 @@
 	max-width: 1280px;
 	margin: 2rem auto;
 	padding: 0 1rem;
+	width: 100%;
 }
 
 .perfil-header {
@@ -22,9 +23,11 @@
 	max-width: 1280px;
 	margin: 1.5rem auto 0 auto;
 	padding: 0 1rem;
+	width: 100%;
 }
 
 .btn-voltar-perfil {
+	align-items: left;
 	display: inline-flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -43,7 +46,6 @@
 	font-size: 1.1rem;
 }
 
-/* Avatar grande - simples, igual ao de cadastro-conta */
 .avatar-grande {
 	width: 100px;
 	height: 100px;
@@ -65,7 +67,6 @@
 	border-radius: 50%;
 }
 
-/* Info do produtor */
 .perfil-info {
 	flex: 1;
 	display: flex;
@@ -89,7 +90,6 @@ h2.nome-produtor {
 	max-width: 500px;
 }
 
-/* Stats */
 .perfil-stats {
 	display: flex;
 	align-items: center;
@@ -128,7 +128,6 @@ h2.nome-produtor {
 	background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Botão editar perfil */
 .btn-editar-perfil {
 	display: inline-flex;
 	align-items: center;
@@ -152,7 +151,6 @@ h2.nome-produtor {
 	font-size: 0.95rem;
 }
 
-/* Seção de produtos */
 .perfil-produtos {
 	background-color: white;
 	padding: 2rem;
@@ -173,7 +171,6 @@ h2.nome-produtor {
 	margin: 0 0 1.5rem 0;
 }
 
-/* Produtos vazios */
 .produtos-vazios {
 	display: flex;
 	flex-direction: column;

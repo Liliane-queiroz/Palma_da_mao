@@ -10,9 +10,10 @@
 
 .secao-titulo-anuncios {
 	padding: 1.5rem 1rem 1.5rem 1rem;
-	margin: 3rem auto 0 auto;
+	
 	border-bottom: 1px solid #F5F6E3;
 }
+
 
 .titulo-container {
 	display: flex;
@@ -23,6 +24,7 @@
 }
 
 .secao-titulo-anuncios h1 {
+	text-align: left;
 	font-size: 1.8rem;
 	color: #1a1a1a;
 	font-weight: bold;

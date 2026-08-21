@@ -9,8 +9,21 @@
     --fonte-branca: #ffffff;
 }
 
+.conteudo-principal {
+    flex: 1;
+}
+
+.navbar-geral {
+    flex-shrink: 0;
+    width: 100%;
+}
+
 body {
     font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 @media(max-width:768px){

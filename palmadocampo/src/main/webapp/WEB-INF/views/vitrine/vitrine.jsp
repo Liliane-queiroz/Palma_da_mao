@@ -29,6 +29,8 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/componentes/navbar.jsp" />
+	
+	<main class="conteudo-principal">
 
 		<c:if test="${not empty termoBuscado or not empty cidadeBuscada}">
 		<div class="titulo-busca">
@@ -113,7 +115,7 @@
 		</c:choose>
 	</div>
 
-	<!-- Menu Mobile -->
+	<!-- Menu Mobile
 	<div class="navbar-mobile-menu">
 		<a href="#" class="mobile-menu-item"> <i class="bi bi-house-fill"></i>
 			<span>Início</span>
@@ -122,7 +124,10 @@
 		</a> <a href="#" class="mobile-menu-item"> <i class="bi bi-list"></i>
 			<span>Menu</span>
 		</a>
-	</div>
+	</div>-->
+	
+	</main>
+	
 	<jsp:include page="/WEB-INF/views/componentes/rodape.jsp" />
 </body>
 </html>

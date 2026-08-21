@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/global.css">
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/resources/css/cadastro-produto.css">
+	href="${pageContext.request.contextPath}/resources/css/editar-perfil.css">
 
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -40,7 +40,7 @@
 			enctype="multipart/form-data">
 			<!-- Foto de perfil (opcional) -->
 			<div class="form-group">
-				<label>Foto de perfil</label>
+				<label class="avatar-upload-label">Foto de perfil</label>
 				<div class="avatar-upload">
 					<label for="fotoPerfil" class="avatar-upload-circulo">
 						<div class="avatar-foto-wrapper">
