@@ -36,7 +36,16 @@
 	<div class="container-perfil">
 		<div class="perfil-header">
 			<div class="avatar-grande">
-				<i class="bi bi-person-circle"></i>
+				<c:choose>
+					<c:when test="${not empty produtor.fotoUrl}">
+						<img
+							src="${pageContext.request.contextPath}/imagem/${produtor.fotoUrl}"
+							alt="${produtor.nome}" class="avatar-foto" />
+					</c:when>
+					<c:otherwise>
+						<i class="bi bi-person-circle"></i>
+					</c:otherwise>
+				</c:choose>
 			</div>
 
 			<div class="perfil-info">

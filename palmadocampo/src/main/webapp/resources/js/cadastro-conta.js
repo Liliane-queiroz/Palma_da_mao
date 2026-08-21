@@ -44,3 +44,27 @@ if (campoTelefone) {
         });
     }
 }
+
+
+// ===== Preview da foto de perfil ao escolher arquivo =====
+const inputFotoPerfil = document.getElementById('fotoPerfil');
+if (inputFotoPerfil) {
+    inputFotoPerfil.addEventListener('change', function () {
+        const arquivo = inputFotoPerfil.files[0];
+        if (!arquivo) return;
+
+        const preview = document.getElementById('preview-foto');
+        const iconeVazio = document.querySelector('.avatar-upload-icone-vazio');
+
+        // Lê o arquivo escolhido e mostra na hora
+        const leitor = new FileReader();
+        leitor.onload = function (evento) {
+            preview.src = evento.target.result;
+            preview.style.display = 'block';
+            if (iconeVazio) {
+                iconeVazio.style.display = 'none';
+            }
+        };
+        leitor.readAsDataURL(arquivo);
+    });
+}

@@ -55,6 +55,14 @@
 	justify-content: center;
 	color: #588D77;
 	font-size: 3rem;
+	overflow: hidden;
+}
+
+.avatar-foto {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
 }
 
 /* Info do produtor */

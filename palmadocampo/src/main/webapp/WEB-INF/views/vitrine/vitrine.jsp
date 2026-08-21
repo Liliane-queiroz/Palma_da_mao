@@ -30,12 +30,17 @@
 <body>
 	<jsp:include page="/WEB-INF/views/componentes/navbar.jsp" />
 
-	<c:if test="${not empty termoBuscado}">
+		<c:if test="${not empty termoBuscado or not empty cidadeBuscada}">
 		<div class="titulo-busca">
 			<h2>
-				Resultados para "
-				<c:out value='${termoBuscado}' />
-				"
+				<c:choose>
+					<c:when test="${not empty termoBuscado}">
+						Resultados para "<c:out value='${termoBuscado}' />"<c:if test="${not empty cidadeBuscada}"> em <c:out value='${cidadeBuscada}' /></c:if>
+					</c:when>
+					<c:otherwise>
+						Produtos em <c:out value='${cidadeBuscada}' />
+					</c:otherwise>
+				</c:choose>
 			</h2>
 		</div>
 	</c:if>
@@ -50,12 +55,22 @@
 	<div class="container-vitrine">
 		<c:choose>
 			<c:when test="${empty produtos}">
-				<c:choose>
+								<c:choose>
+					<c:when test="${not empty termoBuscado and not empty cidadeBuscada}">
+						<p class="vitrine-vazia">
+							Nenhum resultado para "<c:out value='${termoBuscado}' />" em <c:out value='${cidadeBuscada}' />.
+							<br>Tente buscar em outra cidade.
+						</p>
+					</c:when>
 					<c:when test="${not empty termoBuscado}">
 						<p class="vitrine-vazia">
-							Nenhum resultado para "
-							<c:out value='${termoBuscado}' />
-							"
+							Nenhum resultado para "<c:out value='${termoBuscado}' />".
+						</p>
+					</c:when>
+					<c:when test="${not empty cidadeBuscada}">
+						<p class="vitrine-vazia">
+							Nenhum produto disponível em <c:out value='${cidadeBuscada}' /> no momento.
+							<br>Tente buscar em outra cidade.
 						</p>
 					</c:when>
 					<c:otherwise>

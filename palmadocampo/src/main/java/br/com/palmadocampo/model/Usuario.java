@@ -154,4 +154,14 @@ public class Usuario {
     public void setApresentacao(String apresentacao) {
         this.apresentacao = apresentacao;
     }
+    
+    private String fotoUrl;
+
+    public String getFotoUrl() {
+        return fotoUrl;
+    }
+
+    public void setFotoUrl(String fotoUrl) {
+        this.fotoUrl = fotoUrl;
+    }
 }

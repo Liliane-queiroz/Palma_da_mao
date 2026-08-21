@@ -19,14 +19,14 @@ public class BuscaServlet extends HttpServlet {
         try {
             // Lê o texto que o usuário digitou (ex.: /buscar?termo=batata)
             String termo = requisicao.getParameter("termo");
-            // Lê o estado selecionado (ex.: /buscar?estado=Rondônia)
-            String estado = requisicao.getParameter("estado");
+            // Lê a cidade selecionada (ex.: /buscar?cidade=Cacoal)
+            String cidade = requisicao.getParameter("cidade");
 
             boolean temTermo = termo != null && !termo.isBlank();
-            boolean temEstado = estado != null && !estado.isBlank();
+            boolean temCidade = cidade != null && !cidade.isBlank();
 
-            // Se não veio nem texto nem estado, manda pra vitrine normal
-            if (!temTermo && !temEstado) {
+            // Se não veio nem texto nem cidade, manda pra vitrine normal
+            if (!temTermo && !temCidade) {
                 resposta.sendRedirect(requisicao.getContextPath() + "/vitrine");
                 return;
             }
@@ -34,13 +34,13 @@ public class BuscaServlet extends HttpServlet {
             ProdutoDAO produtoDAO = new ProdutoDAO();
             List<ProdutoVitrine> produtos = produtoDAO.pesquisarComFiltros(
                     temTermo ? termo.trim() : null,
-                    temEstado ? estado.trim() : null
+                    temCidade ? cidade.trim() : null
             );
 
             // Manda os dados pro JSP
             requisicao.setAttribute("produtos", produtos);
             requisicao.setAttribute("termoBuscado", temTermo ? termo.trim() : "");
-            requisicao.setAttribute("estadoBuscado", temEstado ? estado.trim() : "");
+            requisicao.setAttribute("cidadeBuscada", temCidade ? cidade.trim() : "");
 
             // Reusa a MESMA vitrine.jsp pra mostrar o resultado
             requisicao.getRequestDispatcher("/WEB-INF/views/vitrine/vitrine.jsp")

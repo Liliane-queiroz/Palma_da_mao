@@ -48,7 +48,7 @@ public class UsuarioDAO {
 	public List<Usuario> listarTodos() throws SQLException {
 		String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
 				+ "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
-				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao "
+				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao, usu_foto_url "
 				+ "FROM usuario ORDER BY usu_nome";
 
 		List<Usuario> usuarios = new ArrayList<>();
@@ -69,7 +69,7 @@ public class UsuarioDAO {
 	public Usuario buscarPorId(int id) throws SQLException {
 		String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
 				+ "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
-				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao "
+				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao, usu_foto_url "
 				+ "FROM usuario WHERE usu_id = ?";
 
 		try (Connection conexao = ConexaoFactory.getConexao();
@@ -167,7 +167,7 @@ public class UsuarioDAO {
 	public Usuario buscarPorEmail(String email) throws SQLException {
 		String sql = "SELECT usu_id, usu_cpfcnpj, usu_nome, usu_telefone, usu_email, "
 				+ "usu_senha_hash, usu_endereco, usu_cidade, usu_regiao, usu_nome_propriedade, "
-				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao "
+				+ "usu_tipo, situacao_id, data_criacao, data_atualizacao, usu_apresentacao, usu_foto_url "
 				+ "FROM usuario WHERE usu_email = ?";
 
 		try (Connection conexao = ConexaoFactory.getConexao();
@@ -249,6 +249,19 @@ public class UsuarioDAO {
 		}
 	}
 
+	/* Atualiza só a foto de perfil do produtor */
+	public void atualizarFotoPerfil(int usuarioId, String fotoUrl) throws SQLException {
+		String sql = "UPDATE usuario SET usu_foto_url = ? WHERE usu_id = ?";
+
+		try (Connection conexao = ConexaoFactory.getConexao();
+				PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+			comando.setString(1, fotoUrl);
+			comando.setInt(2, usuarioId);
+			comando.executeUpdate();
+		}
+	}
+
 	private Usuario montarUsuario(ResultSet resultado) throws SQLException {
 		Usuario usuario = new Usuario();
 		usuario.setId(resultado.getInt("usu_id"));
@@ -266,6 +279,7 @@ public class UsuarioDAO {
 		usuario.setDataCriacao(resultado.getTimestamp("data_criacao").toLocalDateTime());
 		usuario.setDataAtualizacao(resultado.getTimestamp("data_atualizacao").toLocalDateTime());
 		usuario.setApresentacao(resultado.getString("usu_apresentacao"));
+		usuario.setFotoUrl(resultado.getString("usu_foto_url"));
 		return usuario;
 	}
 

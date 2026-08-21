@@ -250,7 +250,7 @@ public class ProdutoDAO {
 		return produtos;
 	}
 
-	public List<ProdutoVitrine> pesquisarComFiltros(String termo, String estado) throws SQLException {
+	public List<ProdutoVitrine> pesquisarComFiltros(String termo, String cidade) throws SQLException {
 		StringBuilder sql = new StringBuilder(
 				"SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
 				+ "p.prod_foto_url, c.ctg_descricao " + "FROM produto p "
@@ -262,8 +262,8 @@ public class ProdutoDAO {
 		if (termo != null) {
 			sql.append("AND (p.prod_nome LIKE ? OR p.prod_descricao LIKE ? OR c.ctg_descricao LIKE ?) ");
 		}
-		if (estado != null) {
-			sql.append("AND u.usu_regiao = ? ");
+		if (cidade != null) {
+			sql.append("AND u.usu_cidade = ? ");
 		}
 		sql.append("ORDER BY p.data_criacao DESC");
 
@@ -279,8 +279,8 @@ public class ProdutoDAO {
 				comando.setString(indice++, termoBusca);
 				comando.setString(indice++, termoBusca);
 			}
-			if (estado != null) {
-				comando.setString(indice++, estado);
+			if (cidade != null) {
+				comando.setString(indice++, cidade);
 			}
 
 			try (ResultSet resultado = comando.executeQuery()) {
