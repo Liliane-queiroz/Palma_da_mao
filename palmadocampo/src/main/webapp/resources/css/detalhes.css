@@ -320,16 +320,34 @@
 }
 
 /*Responsividade*/
-@media ( max-width : 768px) {
+@media (max-width: 768px) {
 	.container-detalhes {
 		grid-template-columns: 1fr;
-		gap: 1rem;
+		gap: 0;
+		margin: 0 auto;
+		padding: 0;
 	}
 	.detalhes-foto {
-		min-height: 300px;
-		padding: 1rem;
+		min-height: 280px;
+		border-radius: 0;
+	}
+	.detalhes-painel {
+		border-radius: 0;
+		padding: 1.2rem;
 	}
 	.detalhes-nome {
-		font-size: 1.5rem;
+		font-size: 1.3rem;
+	}
+	.detalhes-preco {
+		font-size: 1.1rem;
+	}
+	.btn-whatsapp {
+		padding: 1rem;
+		font-size: 1rem;
+	}
+	.seta-foto {
+		width: 32px;
+		height: 32px;
+		font-size: 1rem;
 	}
 }

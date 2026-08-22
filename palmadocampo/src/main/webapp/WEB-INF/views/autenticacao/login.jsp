@@ -11,6 +11,7 @@
 
 <title>Entrar - Palma do Campo</title>
 
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/global.css">
 

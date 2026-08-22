@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meus Anúncios - Palma do Campo</title>
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/global.css">
 <link rel="stylesheet" type="text/css"
@@ -102,16 +103,6 @@
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
-	</div>
-
-	<div class="navbar-mobile-menu">
-		<a href="${pageContext.request.contextPath}/vitrine"
-			class="mobile-menu-item"> <i class="bi bi-house-fill"></i> <span>Início</span>
-		</a> <a href="${pageContext.request.contextPath}/cadastro-produto"
-			class="mobile-menu-item"> <i class="bi bi-plus-circle"></i> <span>Anunciar</span>
-		</a> <a href="#" class="mobile-menu-item"> <i class="bi bi-list"></i>
-			<span>Menu</span>
-		</a>
 	</div>
 
 	<div id="modal-deletar" class="modal-deletar" style="display: none;">
