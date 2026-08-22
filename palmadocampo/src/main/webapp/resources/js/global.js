@@ -1,11 +1,11 @@
 // ===== SETAS DA BARRA DE CATEGORIAS =====
-// Faz a esteira de categorias deslizar pros lados ao clicar nas setas,
+// Faz a barra de categorias deslizar pros lados ao clicar nas setas,
 // e mostra/esconde cada seta conforme a posição do deslize.
 
 // Pega os elementos da página pelo id (o crachá único de cada um)
 const esteira = document.getElementById('esteiraCategorias');   // a "fita" que segura os links e desliza
-const setaEsquerda = document.getElementById('setaEsquerda');   // botão da seta esquerda
-const setaDireita = document.getElementById('setaDireita');     // botão da seta direita
+const setaEsquerda = document.getElementById('setaEsquerda');  
+const setaDireita = document.getElementById('setaDireita');     
 
 // Quantos pixels a esteira desliza a cada clique numa seta
 const distancia = 300;

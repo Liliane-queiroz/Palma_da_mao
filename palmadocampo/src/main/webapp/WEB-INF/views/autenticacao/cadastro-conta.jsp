@@ -24,7 +24,6 @@
 <body>
 	<div class="container">
 
-		<!-- ===== LADO ESQUERDO: imagem + logo ===== -->
 		<div class="lado-imagem">
 			<h2 class="boas-vindas">Bem-vindo!</h2>
 			<img
@@ -33,10 +32,8 @@
 				class="nome-marca">Palma do Campo</span>
 		</div>
 
-		<!-- ===== LADO DIREITO: formulário ===== -->
 		<div class="lado-formulario">
 
-			<!-- Cabeçalho -->
 			<div class="cadastro-cabecalho">
 				<i class="bi bi-person-plus"></i>
 				<h1>Criar conta de produtor</h1>
@@ -49,7 +46,6 @@
 				</div>
 			</c:if>
 
-			<!-- Formulário -->
 			<form method="POST"
 				action="${pageContext.request.contextPath}/cadastro-conta">
 
@@ -161,8 +157,7 @@
 				</button>
 
 				<div class="voltar">
-					<a href="${pageContext.request.contextPath}/login">Já tem
-						conta? Entrar</a>
+					<a href="${pageContext.request.contextPath}/login">Já tem conta? Entrar</a>
 				</div>
 			</form>
 		</div>

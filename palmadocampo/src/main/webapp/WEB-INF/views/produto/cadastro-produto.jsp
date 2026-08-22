@@ -25,7 +25,6 @@
 </head>
 <body>
 	<div class="container">
-		<!-- Cabeçalho verde com ícone laranja -->
 		<div class="cadastro-cabecalho">
 			<img
 				src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png"
@@ -40,29 +39,24 @@
 			</c:choose>
 		</div>
 
-		<!-- Mensagem de erro (se houver) -->
 		<c:if test="${not empty erro}">
 			<div class="erro">
 				<strong>Erro:</strong> ${erro}
 			</div>
 		</c:if>
-		<!-- Mensagem de sucesso (se houver) -->
 		<c:if test="${not empty sucesso}">
 			<div class="sucesso">
 				<strong>Sucesso:</strong> ${sucesso}
 			</div>
 		</c:if>
 
-		<!-- Formulário -->
 		<form method="POST"
 			action="${pageContext.request.contextPath}/cadastro-produto"
 			enctype="multipart/form-data">
-			<!-- Hidden field com ID (se for edição) -->
 			<c:if test="${eEdicao}">
 				<input type="hidden" name="id" value="${produtoParaEditar.id}">
 			</c:if>
 
-			<!-- Foto (obrigatória) - área tracejada clicável -->
 			<div class="form-group">
 				<label for="arquivo">Foto do produto <span
 					class="campo-obrigatorio">*</span></label>
@@ -84,10 +78,7 @@
 				</c:choose>
 			</div>
 
-			<!-- Preview das fotos -->
 			<div id="preview-fotos" class="preview-container"></div>
-
-			<!-- Nome (obrigatório) -->
 			<div class="form-group">
 				<label for="nome">Nome do produto <span
 					class="campo-obrigatorio">*</span></label> <input type="text" id="nome"
@@ -95,7 +86,6 @@
 					value="${eEdicao ? produtoParaEditar.nome : ''}">
 			</div>
 
-			<!-- Categoria (obrigatória) -->
 			<div class="form-group">
 				<label for="categoria">Categoria <span
 					class="campo-obrigatorio">*</span></label> <select id="categoria"
@@ -109,14 +99,12 @@
 				</select>
 			</div>
 
-			<!-- Descrição -->
 			<div class="form-group">
 				<label for="descricao">Descrição do produto</label>
 				<textarea id="descricao" name="descricao" rows="4"
 					placeholder="Descreva seu produto com detalhes...">${eEdicao ? produtoParaEditar.descricao : ''}</textarea>
 			</div>
 
-			<!-- Preço e Quantidade lado a lado -->
 			<div class="form-row">
 				<div class="form-group">
 					<label for="preco">Preço (R$) <span
@@ -138,7 +126,6 @@
 				</div>
 			</div>
 
-			<!-- Unidade e Data prevista lado a lado -->
 			<div class="form-row">
 				<div class="form-group">
 					<label for="unidade">Unidade <span
@@ -168,20 +155,17 @@
 				</div>
 			</div>
 
-			<!-- Botão de submissão -->
 			<button type="submit" class="btn-submit">
 				<i class="bi bi-check-circle"></i> Publicar anúncio
 			</button>
 		</form>
 
-		<!-- Link voltar à vitrine -->
 		<div class="voltar">
 			<a href="${pageContext.request.contextPath}/vitrine">← Voltar à	vitrine
 			</a>
 		</div>
 	</div>
 
-	<!-- Script para preview de fotos -->
 	<script
 		src="${pageContext.request.contextPath}/resources/js/cadastro-produto.js"></script>
 </body>

@@ -22,7 +22,6 @@
 
 	<div class="container-como-funciona">
 
-		<!-- Seção 1: O que é -->
 		<section class="cf-hero">
 			<h1>Como funciona a Palma do Campo</h1>
 			<p class="cf-subtitulo">
@@ -32,7 +31,6 @@
 			</p>
 		</section>
 
-		<!-- Seção 2: Para o cliente -->
 		<section class="cf-secao">
 			<h2><i class="bi bi-cart-check"></i> Para quem quer comprar</h2>
 			<p class="cf-intro">
@@ -63,7 +61,6 @@
 			</div>
 		</section>
 
-		<!-- Seção 3: Para o produtor -->
 		<section class="cf-secao cf-secao-alt">
 			<h2><i class="bi bi-shop"></i> Para quem quer vender</h2>
 			<p class="cf-intro">
@@ -94,7 +91,6 @@
 			</div>
 		</section>
 
-		<!-- Seção 4: Transparência -->
 		<section class="cf-secao">
 			<h2><i class="bi bi-shield-check"></i> Contato direto, do seu jeito</h2>
 			<p class="cf-texto-transparencia">

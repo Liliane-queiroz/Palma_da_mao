@@ -224,7 +224,7 @@ button[type="submit"]:hover {
 	margin: 1rem 1.5rem 0;
 }
 
-/* ===== RESPONSIVIDADE MOBILE ===== */
+/*Responsividade*/
 @media ( max-width : 768px) {
 	.form-row {
 		grid-template-columns: 1fr; /* duas colunas viram uma no celular */

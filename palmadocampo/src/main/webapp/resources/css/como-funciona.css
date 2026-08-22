@@ -4,7 +4,6 @@
 	padding: 2rem 1rem 4rem 1rem;
 }
 
-/* Hero */
 .cf-hero {
 	text-align: center;
 	padding: 3rem 1rem;
@@ -25,7 +24,6 @@
 	line-height: 1.6;
 }
 
-/* Seções */
 .cf-secao {
 	padding: 3rem 1.5rem;
 	border-radius: 16px;
@@ -52,7 +50,6 @@
 	line-height: 1.5;
 }
 
-/* Passos */
 .cf-passos {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -96,7 +93,6 @@
 	line-height: 1.4;
 }
 
-/* Transparência */
 .cf-texto-transparencia {
 	font-size: 1.05rem;
 	color: #555;
@@ -104,7 +100,6 @@
 	max-width: 750px;
 }
 
-/* CTA */
 .cf-cta {
 	display: flex;
 	gap: 1rem;
@@ -141,6 +136,8 @@
 	color: white;
 }
 
+
+/*Responsividade*/
 @media (max-width: 768px) {
 	.cf-hero h1 {
 		font-size: 1.7rem;

@@ -85,7 +85,6 @@
 					<div class="card-produto">
 						<div class="img-card">
 
-							<!-- ${produto.fotoUrl} -->
 							<c:set var="primeiraFoto"
 								value="${not empty produto.fotoUrl ? fn:split(produto.fotoUrl, ',')[0] : ''}" />
 							<c:if test="${not empty primeiraFoto}">

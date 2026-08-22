@@ -67,7 +67,6 @@ public class ProdutoDAO {
 		return produtos;
 	}
 
-	/* Comando apenas para admin executar */
 	public Produto buscarPorId(int id) throws SQLException {
 		String sql = "SELECT prod_id, prod_nome, prod_descricao, prod_preco_estimado, "
 				+ "prod_foto_url, prod_data_prevista_entrega, categoria_id, situacao_id, "
@@ -88,7 +87,6 @@ public class ProdutoDAO {
 		return null;
 	}
 
-	/* Comando apenas para admin executar */
 	public void atualizar(Produto produto) throws SQLException {
 		String sql = "UPDATE produto SET prod_nome = ?, prod_descricao = ?, "
 				+ "prod_preco_estimado = ?, prod_foto_url = ?, prod_data_prevista_entrega = ?, "
@@ -115,7 +113,6 @@ public class ProdutoDAO {
 		}
 	}
 
-	/* Comando apenas para admin executar */
 	public void deletar(int id) throws SQLException {
 		String sql = "DELETE FROM produto WHERE prod_id = ?";
 
@@ -212,8 +209,7 @@ public class ProdutoDAO {
 
 	/*
 	 * Pesquisa produtos ativos cujo nome, descrição OU categoria contenham o termo
-	 * digitado. O LIKE com % antes e depois acha o termo em qualquer posição do
-	 * texto.
+	 * digitado.
 	 */
 	public List<ProdutoVitrine> pesquisarProdutos(String termo) throws SQLException {
 		String sql = "SELECT p.prod_id, p.prod_nome, p.prod_descricao, p.prod_preco_estimado, "
@@ -227,11 +223,10 @@ public class ProdutoDAO {
 		try (Connection conexao = ConexaoFactory.getConexao();
 				PreparedStatement comando = conexao.prepareStatement(sql)) {
 
-			// Monta o termo com % dos dois lados: "batata" vira "%batata%"
 			String termoBusca = "%" + termo + "%";
-			comando.setString(1, termoBusca); // para o nome
-			comando.setString(2, termoBusca); // para a descrição
-			comando.setString(3, termoBusca); // para a categoria
+			comando.setString(1, termoBusca);
+			comando.setString(2, termoBusca); 
+			comando.setString(3, termoBusca); 
 
 			try (ResultSet resultado = comando.executeQuery()) {
 				while (resultado.next()) {
@@ -363,7 +358,7 @@ public class ProdutoDAO {
 		return null;
 	}
 
-	/* Monta um ProdutoDetalhe a partir de uma linha do ResultSet (padrão DRY). */
+	/* Monta um ProdutoDetalhe a partir de uma linha do ResultSet*/
 	private ProdutoDetalhe montarProdutoDetalhe(ResultSet resultado) throws SQLException {
 		ProdutoDetalhe produto = new ProdutoDetalhe();
 		produto.setId(resultado.getInt("prod_id"));
@@ -391,7 +386,7 @@ public class ProdutoDAO {
 	}
 
 	 /*
-	 * Deleta um produto E seu estoque associado em transação. Valida que o produto
+	 * Deleta um produto E seu "estoque" associado em transação. Valida que o produto
 	 * pertence ao usuário antes de deletar.
 	 */
 	public boolean deletarComEstoque(int produtoId, int usuarioId) throws SQLException {
@@ -409,7 +404,7 @@ public class ProdutoDAO {
 					resultado.next();
 					if (resultado.getInt("total") == 0) {
 						conexao.rollback();
-						return false; // Produto não pertence a este usuário
+						return false; // <- Produto não pertence a este usuário
 					}
 				}
 			}

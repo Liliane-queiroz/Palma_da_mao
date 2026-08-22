@@ -309,7 +309,7 @@ position: absolute;
     display: block;
 }
 
-/* ===== RESPONSIVIDADE MOBILE ===== */
+/*Responsividade*/
 @media ( max-width : 768px) {
 	.form-row {
 		grid-template-columns: 1fr; /* duas colunas viram uma no celular */

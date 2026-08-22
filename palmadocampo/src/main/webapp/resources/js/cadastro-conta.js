@@ -15,7 +15,7 @@ if (campoCpf) {
 
 
 // ===== Máscara de telefone: (69) 99999-9999 =====
-// Formata visualmente enquanto digita, mas envia só números pro banco.
+// Formata visualmente enquanto digita.
 
 const campoTelefone = document.getElementById('telefone');
 
@@ -46,7 +46,7 @@ if (campoTelefone) {
 }
 
 
-// ===== Preview da foto de perfil ao escolher arquivo =====
+//Preview da foto de perfil ao escolher arquivo
 const inputFotoPerfil = document.getElementById('fotoPerfil');
 if (inputFotoPerfil) {
     inputFotoPerfil.addEventListener('change', function () {

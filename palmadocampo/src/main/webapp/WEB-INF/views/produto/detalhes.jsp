@@ -32,7 +32,6 @@
 	<jsp:include page="/WEB-INF/views/componentes/navbar.jsp" />
 	<div class="container-detalhes">
 
-		<!-- LADO ESQUERDO: foto do produto com as setas (enfeite por enquanto) -->
 		<div class="detalhes-foto">
 			<button type="button" class="seta-foto seta-foto-esquerda"
 				aria-label="Foto anterior" onclick="trocarFoto(-1)">
@@ -72,7 +71,6 @@
 			</c:if>
 		</div>
 
-		<!-- LADO DIREITO: painel creme com todas as informações -->
 		<div class="detalhes-painel">
 
 			<h1 class="detalhes-nome">
@@ -101,7 +99,6 @@
 				</p>
 			</div>
 
-			<!-- Informações extras do produto -->
 			<div class="detalhes-infos">
 				<p class="info-linha">
 					<i class="bi bi-tag"></i> <span>Categoria:</span>
@@ -141,13 +138,11 @@
 
 			</div>
 
-			<!-- Botão de contato via WhatsApp -->
 			<a
 				href="https://wa.me/55${fn:replace(fn:replace(fn:replace(fn:replace(produto.produtorTelefone, '(', ''), ')', ''), '-', ''), ' ', '')}?text=Olá! Me interessei pelo seu ${produto.nome} anunciado no Palma do Campo. Ainda está disponível?"
 				class="btn-whatsapp" target="_blank"> <i class="bi bi-whatsapp"></i>
 				Enviar mensagem
 			</a>
-			<!-- Dica de segurança para o cliente -->
 			<div class="dica-seguranca">
 				<i class="bi bi-shield-check"></i>
 				<p>
@@ -162,7 +157,7 @@
 
 	<c:if test="${not empty listaFotos}">
 		<script>
-		// Única coisa que precisa do servidor: a lista de fotos deste produto
+		//a lista de fotos de determinado produto
 		const fotos = [
 			<c:forEach var="foto" items="${listaFotos}" varStatus="s">"${pageContext.request.contextPath}/imagem/${foto}"<c:if test="${not s.last}">, </c:if></c:forEach>
 		];

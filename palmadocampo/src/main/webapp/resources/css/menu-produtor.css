@@ -214,7 +214,7 @@
 	opacity: 1;
 }
 
-/* Responsivo */
+/*Responsividade*/
 @media (max-width: 768px) {
 	.dropdown-menu-produtor {
 		width: 280px;

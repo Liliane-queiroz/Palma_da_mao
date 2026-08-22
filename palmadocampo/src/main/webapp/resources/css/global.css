@@ -273,3 +273,62 @@ body {
 .btn-seta-categorias.escondida {
     display: none;
 }
+
+/*Responsividade*/
+@media (max-width: 768px) {
+    .navbar-geral {
+        height: auto;
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .container-parte-busca {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .logo img {
+        height: 32px;
+    }
+
+    .logo span {
+        font-size: 14px;
+    }
+
+    .navbar-buscar-group {
+        order: 3;
+        width: 100%;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .navbar-localizacao-wrapper {
+        display: none;
+    }
+
+    .separador {
+        display: none;
+    }
+
+    .navbar-buttons {
+        gap: 0.5rem;
+    }
+
+    .btn-entrar,
+    .btn-anunciar,
+    .btn-meus-anuncios,
+    .btn-menu-produtor {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .container-categorias {
+        padding: 0.25rem 0.5rem;
+    }
+
+    .categoria-link {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+    }
+}
+

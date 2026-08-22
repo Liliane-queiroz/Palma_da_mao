@@ -1,4 +1,4 @@
-// ===== MODAL DE DELETAR =====
+//MODAL DE DELETAR produto
 
 let produtoIdParaDeletar = null;
 

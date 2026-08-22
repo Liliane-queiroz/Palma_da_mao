@@ -82,7 +82,6 @@
 		<div class="navbar-buttons">
 			<c:choose>
 				<c:when test="${not empty sessionScope.usuarioLogado}">
-					<!-- PRODUTOR LOGADO -->
 					<a href="${pageContext.request.contextPath}/cadastro-produto"
 						class="btn-anunciar">Anunciar</a>
 					<a href="${pageContext.request.contextPath}/meus-anuncios"
@@ -160,7 +159,6 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<!-- VISITANTE (não logado) -->
 					<a href="${pageContext.request.contextPath}/login"
 						class="btn-anunciar">Anunciar</a>
 					<a href="${pageContext.request.contextPath}/login"

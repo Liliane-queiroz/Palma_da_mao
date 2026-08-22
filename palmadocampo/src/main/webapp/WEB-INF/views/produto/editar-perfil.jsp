@@ -26,7 +26,6 @@
 <body>
 	<div class="container">
 
-		<!-- Cabeçalho verde -->
 		<div class="cadastro-cabecalho">
 			<img
 				src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png"
@@ -34,11 +33,9 @@
 			<h1>Editar Perfil</h1>
 		</div>
 
-		<!-- Formulário -->
 		<form method="POST"
 			action="${pageContext.request.contextPath}/editar-perfil"
 			enctype="multipart/form-data">
-			<!-- Foto de perfil (opcional) -->
 			<div class="form-group">
 				<label class="avatar-upload-label">Foto de perfil</label>
 				<div class="avatar-upload">
@@ -64,7 +61,6 @@
 				</div>
 				<small class="avatar-upload-dica">Clique na foto para trocar</small>
 			</div>
-			<!-- Nome da propriedade -->
 			<div class="form-group">
 				<label for="nomePropriedade">Nome da propriedade</label> <input
 					type="text" id="nomePropriedade" name="nomePropriedade"
@@ -72,7 +68,6 @@
 					value="${produtor.nomePropriedade}">
 			</div>
 
-			<!-- Telefone -->
 			<div class="form-group">
 				<label for="telefone">Telefone / WhatsApp <span
 					class="campo-obrigatorio">*</span></label> <input type="text" id="telefone"
@@ -80,7 +75,6 @@
 					placeholder="(69) 99999-9999" value="${produtor.telefone}">
 			</div>
 
-			<!-- Bio / Apresentação -->
 			<div class="form-group">
 				<label for="apresentacao">Sobre você e sua propriedade</label>
 				<textarea id="apresentacao" name="apresentacao" maxlength="500"
@@ -88,12 +82,10 @@
 					placeholder="Conte um pouco sobre você, sua propriedade e seus produtos...">${produtor.apresentacao}</textarea>
 			</div>
 
-			<!-- Botão de envio -->
 			<button type="submit">
 				<i class="bi bi-check-lg"></i> Salvar alterações
 			</button>
 
-			<!-- Link para voltar -->
 			<div class="voltar">
 				<a
 					href="${pageContext.request.contextPath}/perfil?id=${produtor.id}">←

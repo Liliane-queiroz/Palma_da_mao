@@ -31,7 +31,6 @@
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	/* min-height: 500px;*/
 }
 
 .detalhes-imagem {
@@ -229,7 +228,7 @@
     height: 48px;
     min-width: 48px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: cover; 
 }
 
 .vendedor-perfil:hover {
@@ -320,7 +319,7 @@
     color: #093824;
 }
 
-/* RESPONSIVIDADE MOBILE */
+/*Responsividade*/
 @media ( max-width : 768px) {
 	.container-detalhes {
 		grid-template-columns: 1fr;

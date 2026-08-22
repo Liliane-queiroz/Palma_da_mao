@@ -11,19 +11,15 @@
 
 <title>Entrar - Palma do Campo</title>
 
-<!-- CSS global -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/global.css">
 
-<!-- CSS específico da tela de login -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/login.css">
 
-<!-- Bootstrap Icons -->
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com"
 	crossorigin="anonymous">
@@ -38,13 +34,8 @@
 
 	<div class="container">
 
-		<!-- ================================================= -->
-		<!-- ===== LADO ESQUERDO: FORMULÁRIO DE LOGIN ===== -->
-		<!-- ================================================= -->
-
 		<div class="lado-formulario">
 
-			<!-- Cabeçalho -->
 			<div class="cadastro-cabecalho">
 
 				<i class="bi bi-person-circle"></i>
@@ -74,12 +65,8 @@
 
 			</c:if>
 
-
-			<!-- Formulário -->
 			<form method="POST" action="${pageContext.request.contextPath}/login">
 
-
-				<!-- E-mail -->
 				<div class="form-group">
 
 					<label for="email"> E-mail <span class="campo-obrigatorio">*</span>
@@ -88,7 +75,6 @@
 
 				</div>
 
-				<!-- Senha -->
 				<div class="form-group">
 
 					<label for="senha"> Senha <span class="campo-obrigatorio">*</span>
@@ -102,7 +88,6 @@
 
 				</div>
 
-				<!-- Botão de login -->
 				<button type="submit">
 
 					<i class="bi bi-box-arrow-in-right"></i> Entrar
@@ -110,7 +95,6 @@
 				</button>
 
 
-				<!-- Link para cadastro -->
 				<div class="voltar">
 
 					<a href="${pageContext.request.contextPath}/cadastro-conta">
@@ -123,23 +107,15 @@
 		</div>
 
 
-		<!-- ================================================= -->
-		<!-- ===== LADO DIREITO: IMAGEM + LOGO ============== -->
-		<!-- ================================================= -->
-
 		<div class="lado-imagem">
 
-			<!-- Frase da tela de login -->
 			<h2 class="boas-vindas">Conecte-se ao campo</h2>
 
-
-			<!-- Logo -->
 			<img
 				src="${pageContext.request.contextPath}/resources/images/logo/logo palma do campo 7.png"
 				alt="Palma do Campo" class="logo-cadastro">
 
 
-			<!-- Nome da marca -->
 			<span class="nome-marca"> Palma do Campo </span>
 
 		</div>
